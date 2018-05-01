@@ -80,7 +80,7 @@ namespace ManagerFaktur
             }
         }
 
-        [System.Xml.Serialization.XmlElement("WorkPath")]
+        [XmlElement("WorkPath")]
         public string DefWorkPath
         {
             get
@@ -94,7 +94,7 @@ namespace ManagerFaktur
             }
         }
 
-        [System.Xml.Serialization.XmlElement("DestPath")]
+        [XmlElement("DestPath")]
         public string DefDestPath
         {
             get
@@ -110,7 +110,7 @@ namespace ManagerFaktur
 
         [XmlIgnore]
         [Browsable(false)]
-        public Settings s
+        public Settings MyInstance
         {
             get
             {
@@ -121,6 +121,11 @@ namespace ManagerFaktur
                 instance = value;
                 SerializeXml();
             }
+        }
+
+        public void Serialze()
+        {
+            SerializeXml();
         }
     }
 }

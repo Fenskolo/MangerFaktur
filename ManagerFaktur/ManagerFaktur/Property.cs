@@ -15,12 +15,12 @@ namespace ManagerFaktur
         public Property()
         {
             InitializeComponent();
-            propGrid.SelectedObject = Settings.Instance.s;
+            propGrid.SelectedObject = Settings.Instance.MyInstance;
         }
 
         private void Save_Click(object sender, EventArgs e)
         {
-            Settings.Instance.s = (Settings)propGrid.SelectedObject;
+            Settings.Instance.MyInstance = (Settings)propGrid.SelectedObject;
         }
     }
 }

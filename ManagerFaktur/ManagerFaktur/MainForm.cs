@@ -22,5 +22,10 @@ namespace ManagerFaktur
             var pG = new Property();
             pG.ShowDialog();
         }
+
+        private void MF_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Settings.Instance.Serialze();
+        }
     }
 }

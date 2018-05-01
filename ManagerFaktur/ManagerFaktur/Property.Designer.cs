@@ -31,6 +31,7 @@
             this.propGrid = new System.Windows.Forms.PropertyGrid();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.Save = new System.Windows.Forms.Button();
+            this.BtnCancel = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -58,6 +59,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.BtnCancel);
             this.splitContainer1.Panel2.Controls.Add(this.Save);
             this.splitContainer1.Size = new System.Drawing.Size(606, 376);
             this.splitContainer1.SplitterDistance = 332;
@@ -65,6 +67,7 @@
             // 
             // Save
             // 
+            this.Save.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Save.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.Save.Location = new System.Drawing.Point(519, 14);
             this.Save.Name = "Save";
@@ -73,6 +76,16 @@
             this.Save.Text = "Zapisz";
             this.Save.UseVisualStyleBackColor = true;
             this.Save.Click += new System.EventHandler(this.Save_Click);
+            // 
+            // BtnCancel
+            // 
+            this.BtnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.BtnCancel.Location = new System.Drawing.Point(0, 14);
+            this.BtnCancel.Name = "BtnCancel";
+            this.BtnCancel.Size = new System.Drawing.Size(75, 23);
+            this.BtnCancel.TabIndex = 1;
+            this.BtnCancel.Text = "Anuluj";
+            this.BtnCancel.UseVisualStyleBackColor = true;
             // 
             // Property
             // 
@@ -95,5 +108,6 @@
         private System.Windows.Forms.PropertyGrid propGrid;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Button Save;
+        private System.Windows.Forms.Button BtnCancel;
     }
 }

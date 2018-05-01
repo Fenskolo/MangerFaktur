@@ -62,6 +62,7 @@
             this.Controls.Add(this.toolStrip1);
             this.Name = "MF";
             this.Text = "Manager Faktur";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MF_FormClosing);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
