@@ -59,7 +59,7 @@ namespace ManagerFaktur
 
             UltraListViewSubItemColumn colOkres = this.uListView.SubItemColumns.Add("Okres");
             UltraListViewSubItemColumn colSymbol = this.uListView.SubItemColumns.Add("Symbol");
-            colOkres.DataType = typeof(string);
+            colOkres.DataType = typeof(DateTime);
             colSymbol.DataType = typeof(string);
             colSymbol.Text = "Symbol";
             colOkres.Text = "Okres";

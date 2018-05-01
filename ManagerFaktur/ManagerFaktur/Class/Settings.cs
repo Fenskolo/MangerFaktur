@@ -18,10 +18,11 @@ namespace ManagerFaktur
     {
         private static Settings instance;
         private Settings() { }
-        private static string xmlFile = "settings.xml";
+        private static string xmlFile = @"D:\Dane\Dysk Google\Faktury\settings.xml";
         private string _defWorkPath = string.Empty;
         private string _defDestPath = string.Empty;
         private string _fileNameStart = string.Empty;
+        private SearchOption searchO = 0;
         private List<string> _listExtenstion;
 
         public static Settings Instance
@@ -163,6 +164,19 @@ namespace ManagerFaktur
             set
             {
                 _fileNameStart = value;
+            }
+        }
+
+        public SearchOption SearchO
+        {
+            get
+            {
+                return searchO;
+            }
+
+            set
+            {
+                searchO = value;
             }
         }
 

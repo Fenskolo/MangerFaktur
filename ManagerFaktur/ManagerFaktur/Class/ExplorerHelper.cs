@@ -24,13 +24,12 @@ namespace ManagerFaktur
         {
             try
             {
-                Infragistics.Win.Appearance appPdf = ulv.Appearances.Add("pdf");
-                appPdf.Image = Properties.Resources.pdf;
-                Infragistics.Win.Appearance appWord = ulv.Appearances.Add("Word");
-                appWord.Image = Properties.Resources.word;
+                if (!Directory.Exists(Settings.Instance.DefWorkPath))
+                {
+                    return;
+                }
 
                 DirectoryInfo cDriveInfo = new DirectoryInfo(Settings.Instance.DefWorkPath);
-
 
                 //Infragistics.Win.Appearance appFolder = this.uListView.Appearances.Add("folder");
                 //appFolder.Image = Properties.Resources.folder;
@@ -45,7 +44,12 @@ namespace ManagerFaktur
                 //    item.Appearance = this.uListView.Appearances["folder"];
                 //}
 
-                FileInfo[] files = cDriveInfo.GetFiles();
+                Infragistics.Win.Appearance appPdf = ulv.Appearances.Add("pdf");
+                appPdf.Image = Properties.Resources.pdf;
+                Infragistics.Win.Appearance appWord = ulv.Appearances.Add("Word");
+                appWord.Image = Properties.Resources.word;
+
+                FileInfo[] files = cDriveInfo.GetFiles("*.*", Settings.Instance.SearchO);
                 for (int i = 0; i < files.Length; i++)
                 {
                     FileInfo fileInfo = files[i];
@@ -65,28 +69,49 @@ namespace ManagerFaktur
                     {
                         item.Appearance = appPdf;
                         string tekst = ExtractTextFromPdf(fileInfo.FullName);
-                        
+
                         string okres = getBetween(tekst, "\nOkresrozliczenia:", "(M-MIESIĄC)");
+                        DateTime? okresD = null;
                         string symbol = getBetween(tekst, "\nSymbol:", "\nIdentyfikacjazobowiązania");
 
-                        if(string.IsNullOrEmpty(symbol))
+                        if (string.IsNullOrEmpty(symbol))
                         {
                             if (tekst.Contains("PRZELEWZEWNĘTRZNYDOZUS"))
                             {
-                                symbol= "ZUS";
+                                symbol = "ZUS";
                             }
-                            else if(tekst.Contains("BIURORACHUNKOWEPERFEKTS.C."))
+                            else if (tekst.Contains("BIURORACHUNKOWEPERFEKTS.C."))
                             {
                                 symbol = "Perfekt";
+                            }
+                            else if (tekst.Contains("AWP POLSKA SP Z O.O."))
+                            {
+                                symbol = "AWP";
+
+                                okres = getBetween(tekst, "\nData sprzeda|y: ", "\nSprzedawca:");
+                                if(string.IsNullOrEmpty(okres))
+                                {
+                                    okres = getBetween(tekst, "\nData sprzeda|y: ", "\nSPRZEDAWCA:");
+                                }
+                                if (okres.Length == 10)
+                                {
+                                    okresD = BuildDate(okres.Substring(6, 4), okres?.Substring(3, 2), okres.Substring(0, 2));
+                                }
                             }
                         }
 
                         if (string.IsNullOrEmpty(okres))
                         {
-                            okres= getBetween(tekst, "Dataoperacji:", "\nDataksięgowania");
+                            okres = getBetween(tekst, "Dataoperacji:", "\nDataksięgowania");
+                            okresD = string.IsNullOrEmpty(okres) ? new DateTime() : Convert.ToDateTime(okres).AddMonths(-1);
+                        }
+                        else if (!okresD.HasValue)
+                        {
+                            okresD = BuildDate(okres.Split('M')[0], okres.Split('M')[1], null);
                         }
 
-                        item.SubItems["Okres"].Value = okres;
+
+                        item.SubItems["Okres"].Value = okresD;
                         item.SubItems["Symbol"].Value = symbol;
 
                     }
@@ -98,10 +123,26 @@ namespace ManagerFaktur
 
                 ulv.View = UltraListViewStyle.Details;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + Environment.NewLine + ex.StackTrace);
             }
+        }
+
+
+
+        private DateTime BuildDate(string yearS, string monthS, string dayS)
+        {
+            if (string.IsNullOrEmpty(yearS)|| string.IsNullOrEmpty(monthS))
+            {
+                return new DateTime();
+            }
+
+            int year = yearS.Length==2? Convert.ToInt32(yearS)+2000: Convert.ToInt32(yearS);
+            int month = Convert.ToInt32(monthS);
+            int day = !string.IsNullOrEmpty(dayS)? Convert.ToInt32(dayS) : 1;
+
+            return new DateTime(year, month, day);
         }
 
         public static string getBetween(string strSource, string strStart, string strEnd)
