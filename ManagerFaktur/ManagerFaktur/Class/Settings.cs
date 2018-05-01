@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Windows.Forms;
+using System.Windows.Forms.Design;
 
 namespace ManagerFaktur
 {
@@ -19,6 +21,7 @@ namespace ManagerFaktur
         private static string xmlFile = "settings.xml";
         private string _defWorkPath = string.Empty;
         private string _defDestPath = string.Empty;
+        private string _fileNameStart = string.Empty;
         private List<string> _listExtenstion;
 
         public static Settings Instance
@@ -82,6 +85,7 @@ namespace ManagerFaktur
             }
         }
 
+        [EditorAttribute(typeof(FolderNameEditor), typeof(UITypeEditor))]
         [XmlElement("WorkPath")]
         public string DefWorkPath
         {
@@ -96,6 +100,7 @@ namespace ManagerFaktur
             }
         }
 
+        [EditorAttribute(typeof(FolderNameEditor), typeof(UITypeEditor))]
         [XmlElement("DestPath")]
         public string DefDestPath
         {
@@ -144,6 +149,20 @@ namespace ManagerFaktur
             set
             {
                 _listExtenstion = value;
+            }
+        }
+
+        [XmlElement("NazwaPoczątkuPliku")]
+        public string FileNameStart
+        {
+            get
+            {
+                return _fileNameStart;
+            }
+
+            set
+            {
+                _fileNameStart = value;
             }
         }
 
