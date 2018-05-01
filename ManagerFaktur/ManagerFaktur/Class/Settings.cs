@@ -10,6 +10,8 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using System.Collections;
+using System.ComponentModel.Design;
 
 namespace ManagerFaktur
 {
@@ -24,6 +26,7 @@ namespace ManagerFaktur
         private string _fileNameStart = string.Empty;
         private SearchOption searchO = 0;
         private List<string> _listExtenstion;
+        private SymbolCollection ep;
 
         public static Settings Instance
         {
@@ -183,6 +186,88 @@ namespace ManagerFaktur
         public void Serialze()
         {
             SerializeXml();
+        }
+
+        [Editor(typeof(SymbolCollectionEditor), typeof(System.Drawing.Design.UITypeEditor))]
+        //[Category("Organization")]
+        //[DisplayName("Employees")]
+        //[Description("A collection of the employees within the organization")]
+        public SymbolCollection Symbole
+        {
+            get {
+                if(ep==null)
+                {
+                    ep = new SymbolCollection();
+                }
+                return ep;
+                    }
+            set { ep = value; }
+        }
+    }
+
+    public class SymbolCollection : CollectionBase
+    {
+        public Symbol this[int index]
+        {
+            get { return (Symbol)List[index]; }
+        }
+
+        public void Add(Symbol emp)
+        {
+            List.Add(emp);
+        }
+
+        public void Remove(Symbol emp)
+        {
+            List.Remove(emp);
+        }
+    }
+
+    public class Symbol
+    {
+        private string firstString;
+        private string lastString;
+     //   private DateTime dateOfHire;
+        
+        [Category("Symbol")]
+        [DisplayName("Start")]
+        public string FirstString
+        {
+            get { return @firstString; }
+            set { firstString = @value; }
+        }
+
+        [Category("Symbol")]
+        [DisplayName("End")]
+        public string LastString
+        {
+            get { return @lastString; }
+            set { lastString = @value; }
+        }
+
+        //[Category("Employee")]
+        //[DisplayName("Date of Hire")]
+        //[Description("The hire date of the employee.")]
+        //public DateTime DateOfHire
+        //{
+        //    get { return dateOfHire; }
+        //    set { dateOfHire = value; }
+        //}
+    }
+
+    public class SymbolCollectionEditor : CollectionEditor
+    {
+        public SymbolCollectionEditor(Type type)
+            : base(type)
+        {
+        }
+
+        protected override string GetDisplayText(object value)
+        {
+            Symbol item = new Symbol();
+            item = (Symbol)value;
+
+            return base.GetDisplayText(string.Format("{0}, {1}", item.FirstString, item.LastString));
         }
     }
 }

@@ -89,7 +89,7 @@ namespace ManagerFaktur
                                 symbol = "AWP";
 
                                 okres = getBetween(tekst, "\nData sprzeda|y: ", "\nSprzedawca:");
-                                if(string.IsNullOrEmpty(okres))
+                                if (string.IsNullOrEmpty(okres))
                                 {
                                     okres = getBetween(tekst, "\nData sprzeda|y: ", "\nSPRZEDAWCA:");
                                 }
