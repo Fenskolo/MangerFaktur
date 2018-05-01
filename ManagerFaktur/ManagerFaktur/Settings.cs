@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing.Design;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,7 @@ namespace ManagerFaktur
         private static string xmlFile = "settings.xml";
         private string _defWorkPath = string.Empty;
         private string _defDestPath = string.Empty;
+        private List<string> _listExtenstion;
 
         public static Settings Instance
         {
@@ -67,7 +69,7 @@ namespace ManagerFaktur
                 writer = new StreamWriter(xmlFile, false);
                 xsSubmit.Serialize(writer, instance);
             }
-            catch( Exception ex)
+            catch(Exception)
             {
                 throw;
             }
@@ -120,6 +122,28 @@ namespace ManagerFaktur
             {
                 instance = value;
                 SerializeXml();
+            }
+        }
+
+        [Editor(@"System.Windows.Forms.Design.StringCollectionEditor," +
+        "System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+       typeof(UITypeEditor))]
+        
+        public List<string> ListExtenstion
+        {
+            get
+            {
+                if(_listExtenstion == null)
+                {
+                    _listExtenstion = new List<string>();
+                }
+
+                return _listExtenstion;
+            }
+
+            set
+            {
+                _listExtenstion = value;
             }
         }
 
