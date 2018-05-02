@@ -1,17 +1,14 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Drawing.Design;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using System.Collections;
-using System.ComponentModel.Design;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace ManagerFaktur
 {
@@ -20,13 +17,23 @@ namespace ManagerFaktur
     {
         private static Settings instance;
         private Settings() { }
-        private static string xmlFile = @"D:\Dane\Dysk Google\Faktury\settings.xml";
+        private static string xmlFile = Properties.Settings.Default.XmlConfig;
         private string _defWorkPath = string.Empty;
         private string _defDestPath = string.Empty;
         private string _fileNameStart = string.Empty;
         private SearchOption searchO = 0;
         private List<string> _listExtenstion;
         private SymbolCollection ep;
+
+        /// <summary>
+        /// Mail
+        /// </summary>
+        private string _login = string.Empty;
+        private string _password = string.Empty;
+        private string _from = string.Empty;
+        private string _to = string.Empty;
+
+
 
         public static Settings Instance
         {
@@ -189,9 +196,6 @@ namespace ManagerFaktur
         }
 
         [Editor(typeof(SymbolCollectionEditor), typeof(System.Drawing.Design.UITypeEditor))]
-        //[Category("Organization")]
-        //[DisplayName("Employees")]
-        //[Description("A collection of the employees within the organization")]
         public SymbolCollection Symbole
         {
             get {
@@ -202,6 +206,64 @@ namespace ManagerFaktur
                 return ep;
                     }
             set { ep = value; }
+        }
+
+        [Category("SendMail"), Description("login do poczty")]
+        public string Login
+        {
+            get
+            {
+                return _login;
+            }
+
+            set
+            {
+                _login = value;
+            }
+        }
+
+        [Category("SendMail"), Description("hasło do poczty")]
+        [TypeConverter(typeof(PasswordConverter))]
+        [Editor(typeof(PasswordEditor), typeof(UITypeEditor))]
+        public string Password
+        {
+            get
+            {
+                return _password;
+            }
+
+            set
+            {
+                _password = value;
+            }
+        }
+
+        [Category("SendMail"), Description("Mail od")]
+        public string From
+        {
+            get
+            {
+                return _from;
+            }
+
+            set
+            {
+                _from = value;
+            }
+        }
+
+        [Category("SendMail"),Description("Mail do")]
+        public string To
+        {
+            get
+            {
+                return _to;
+            }
+
+            set
+            {
+                _to = value;
+            }
         }
     }
 
@@ -227,7 +289,6 @@ namespace ManagerFaktur
     {
         private string firstString;
         private string lastString;
-     //   private DateTime dateOfHire;
         
         [Category("Symbol")]
         [DisplayName("Start")]
@@ -268,6 +329,50 @@ namespace ManagerFaktur
             item = (Symbol)value;
 
             return base.GetDisplayText(string.Format("{0}, {1}", item.FirstString, item.LastString));
+        }
+    }
+
+    class PasswordConverter : TypeConverter
+    {
+        public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, System.Type destinationType)
+        {
+            return destinationType == typeof(string) ? "********" :
+                base.ConvertTo(context, culture, value, destinationType);
+
+
+        }
+    }
+
+    class PasswordEditor : UITypeEditor
+    {
+        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+        {
+            return UITypeEditorEditStyle.Modal;
+        }
+        public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
+        {
+            IWindowsFormsEditorService svc = (IWindowsFormsEditorService)
+                provider.GetService(typeof(IWindowsFormsEditorService));
+            if (svc != null)
+            {
+                TextBox tb;
+                Button btn;
+                Form frm = new Form
+                {
+                    Controls = {
+                 (tb = new TextBox { PasswordChar = '*', Dock = DockStyle.Top,
+                     Text = (string)value}),
+                 (btn = new Button { Text = "OK", Dock = DockStyle.Bottom, DialogResult = DialogResult.OK})
+            },
+                    AcceptButton = btn
+                };
+
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    value = tb.Text;
+                }
+            }
+            return value;
         }
     }
 }

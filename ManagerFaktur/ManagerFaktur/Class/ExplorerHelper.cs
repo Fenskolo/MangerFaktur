@@ -2,11 +2,8 @@
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ManagerFaktur
@@ -14,10 +11,16 @@ namespace ManagerFaktur
     class ExplorerHelper
     {
         private UltraListView ulv;
+        private Infragistics.Win.Appearance appPdf;
+        Infragistics.Win.Appearance appWord;
 
         public ExplorerHelper(UltraListView _ulv)
         {
             ulv = _ulv;
+            appPdf = ulv.Appearances.Add("pdf");
+            appPdf.Image = Properties.Resources.pdf;
+            appWord = ulv.Appearances.Add("Word");
+            appWord.Image = Properties.Resources.word;
         }
 
         public void LoadExplorer()
@@ -43,12 +46,7 @@ namespace ManagerFaktur
                 //    item.SubItems["DateModified"].Value = directoryInfo.LastWriteTime;
                 //    item.Appearance = this.uListView.Appearances["folder"];
                 //}
-
-                Infragistics.Win.Appearance appPdf = ulv.Appearances.Add("pdf");
-                appPdf.Image = Properties.Resources.pdf;
-                Infragistics.Win.Appearance appWord = ulv.Appearances.Add("Word");
-                appWord.Image = Properties.Resources.word;
-
+                       
                 FileInfo[] files = cDriveInfo.GetFiles("*.*", Settings.Instance.SearchO);
                 for (int i = 0; i < files.Length; i++)
                 {

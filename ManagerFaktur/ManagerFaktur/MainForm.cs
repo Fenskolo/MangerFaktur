@@ -1,17 +1,10 @@
 ﻿using Infragistics.Win;
 using Infragistics.Win.UltraWinListView;
-using Microsoft.Office.Interop.Word;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
@@ -21,13 +14,15 @@ namespace ManagerFaktur
     public partial class MF : Form
     {
         private WBHelper wb;
-        private ExplorerHelper eh;        
+        private ExplorerHelper eh;
+        private MailSender.MS ms;
 
         public MF()
         {
             InitializeComponent();
             wb = new WBHelper(WBrowser);
-            eh = new ExplorerHelper(uListView);       
+            eh = new ExplorerHelper(uListView);
+            ms = new MailSender.MS();            
         }
 
         private void MF_Load(object sender, EventArgs e)
@@ -81,19 +76,17 @@ namespace ManagerFaktur
             Process.Start(e.Item.Key);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnRefresh_Click(object sender, EventArgs e)
         {
-            foreach(var x in uListView.Items)
-            {
-                if(Convert.ToBoolean(x.CheckState))
-                {
-                    MessageBox.Show(x.Key);
-                }
-            }
+            RefreshExplorer();
         }
 
         private void uListView_ItemActivated(object sender, ItemActivatedEventArgs e)
         {
+            if(e.Item?.Key == null)
+            {
+                return;
+            }
             if (e.Item.Key.ToUpper().Contains(".PDF"))
             {
                 WBrowser.Navigate(e.Item.Key);
