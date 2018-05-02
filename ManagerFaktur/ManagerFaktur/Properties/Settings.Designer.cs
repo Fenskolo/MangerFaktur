@@ -34,5 +34,17 @@ namespace ManagerFaktur.Properties {
                 this["XmlConfig"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("D:\\Dane\\Dysk Google\\Faktury\\log.xml")]
+        public string Log {
+            get {
+                return ((string)(this["Log"]));
+            }
+            set {
+                this["Log"] = value;
+            }
+        }
     }
 }

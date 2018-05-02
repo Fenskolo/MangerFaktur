@@ -20,6 +20,7 @@ namespace ManagerFaktur
         private static string xmlFile = Properties.Settings.Default.XmlConfig;
         private string _defWorkPath = string.Empty;
         private string _defDestPath = string.Empty;
+        private string _logPath = Properties.Settings.Default.Log;
         private string _fileNameStart = string.Empty;
         private SearchOption searchO = 0;
         private List<string> _listExtenstion;
@@ -32,8 +33,7 @@ namespace ManagerFaktur
         private string _password = string.Empty;
         private string _from = string.Empty;
         private string _to = string.Empty;
-
-
+        private List<string> _listMail;
 
         public static Settings Instance
         {
@@ -142,9 +142,29 @@ namespace ManagerFaktur
         }
 
         [Editor(@"System.Windows.Forms.Design.StringCollectionEditor," +
+      "System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+     typeof(UITypeEditor))]
+        public List<string> ListMail
+        {
+            get
+            {
+                if (_listMail == null)
+                {
+                    _listMail = new List<string>();
+                }
+
+                return _listMail;
+            }
+
+            set
+            {
+                _listMail = value;
+            }
+        }
+
+        [Editor(@"System.Windows.Forms.Design.StringCollectionEditor," +
         "System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
-       typeof(UITypeEditor))]
-        
+       typeof(UITypeEditor))]        
         public List<string> ListExtenstion
         {
             get
@@ -263,6 +283,19 @@ namespace ManagerFaktur
             set
             {
                 _to = value;
+            }
+        }
+
+        public string LogPath
+        {
+            get
+            {
+                return _logPath;
+            }
+
+            set
+            {
+                _logPath = value;
             }
         }
     }

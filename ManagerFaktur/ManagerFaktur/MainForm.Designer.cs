@@ -29,7 +29,8 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MF));
-            Infragistics.Win.UltraWinEditors.EditorButton editorButton1 = new Infragistics.Win.UltraWinEditors.EditorButton();
+            Infragistics.Win.UltraWinEditors.EditorButton editorButton1 = new Infragistics.Win.UltraWinEditors.EditorButton("leftB");
+            Infragistics.Win.UltraWinEditors.EditorButton editorButton2 = new Infragistics.Win.UltraWinEditors.EditorButton("rightB");
             Infragistics.Win.Appearance appearance1 = new Infragistics.Win.Appearance();
             this.mainMenu = new System.Windows.Forms.ToolStrip();
             this.Ustawienia = new System.Windows.Forms.ToolStripButton();
@@ -128,10 +129,13 @@
             // uTxt
             // 
             this.uTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            editorButton1.Key = "leftB";
+            this.uTxt.ButtonsLeft.Add(editorButton1);
             appearance1.Image = global::ManagerFaktur.Properties.Resources.right_button;
-            editorButton1.Appearance = appearance1;
-            editorButton1.ButtonStyle = Infragistics.Win.UIElementButtonStyle.Button;
-            this.uTxt.ButtonsRight.Add(editorButton1);
+            editorButton2.Appearance = appearance1;
+            editorButton2.ButtonStyle = Infragistics.Win.UIElementButtonStyle.Button;
+            editorButton2.Key = "rightB";
+            this.uTxt.ButtonsRight.Add(editorButton2);
             this.uTxt.DisplayStyle = Infragistics.Win.EmbeddableElementDisplayStyle.WindowsVista;
             this.uTxt.Location = new System.Drawing.Point(730, 0);
             this.uTxt.Name = "uTxt";

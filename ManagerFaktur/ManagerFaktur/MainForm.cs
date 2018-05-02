@@ -10,6 +10,7 @@ using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace ManagerFaktur
 {
@@ -137,34 +138,50 @@ namespace ManagerFaktur
 
         private void uTxt_EditorButtonClick(object sender, Infragistics.Win.UltraWinEditors.EditorButtonEventArgs e)
         {
-            string MailTo = uTxt.Value == null ? Settings.Instance.To : uTxt.Value.ToString();
-            List<string> atach = new List<string>();
-
-            foreach (var item in uListView.Items)
+            if (e.Button.Key == "rightB")
             {
-                if (item.CheckState == CheckState.Checked)
+                string MailTo = MailSettings.Ins.MailTo;
+                string message = MailSettings.Ins.Message;
+                string subject = MailSettings.Ins.Subject;
+                List<string> atach = new List<string>();
+
+                foreach (var item in uListView.Items)
                 {
-                    atach.Add(item.Key);
+                    if (item.CheckState == CheckState.Checked)
+                    {
+                        atach.Add(item.Key);
+                    }
                 }
+
+                MailSettings.Ins.ListAtach = atach;
+
+                SendMailTask(MailTo, MailSettings.Ins.ListAtach, message, subject);
+
+                uTxt.Value = null;
             }
-
-            SendMailTask(MailTo, atach);
-
-            uTxt.Value = null;
+            else if((e.Button.Key == "leftB"))
+            {
+                MailProperty mp = new MailProperty();
+                mp.ShowDialog();
+            }
         }
 
-        private void SendMailTask(string MailTo, List<string> atach)
+        private void SendMailTask(string MailTo, List<string> atach, string message, string subject)
         {
             Task.Run(() =>
             {
-                if (ms.SendMail(Settings.Instance.Login, Settings.Instance.Password, Settings.Instance.From, MailTo, atach))
+                uTxt.ButtonsLeft[0].Enabled = false;
+                if (ms.SendMail(Settings.Instance.Login, Settings.Instance.Password, Settings.Instance.From, MailTo, atach, message, subject))
                 {
+                    Logs.Log.MyInstance = null;
+                    MailSettings.Ins.MyInstance = null;
                     MessageBox.Show("Wysyłka maila powiodła się");
                 }
                 else
                 {
                     MessageBox.Show("coś poszło nie tak");
                 }
+                uTxt.ButtonsLeft[0].Enabled = true;
             });
         }
     }

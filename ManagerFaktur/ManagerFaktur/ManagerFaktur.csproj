@@ -62,6 +62,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class\ExplorerHelper.cs" />
+    <Compile Include="Class\MailSettings.cs" />
+    <Compile Include="MailProperty.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MailProperty.Designer.cs">
+      <DependentUpon>MailProperty.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,6 +85,9 @@
     </Compile>
     <Compile Include="Class\Settings.cs" />
     <Compile Include="Class\WBHelper.cs" />
+    <EmbeddedResource Include="MailProperty.resx">
+      <DependentUpon>MailProperty.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

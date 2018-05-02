@@ -11,7 +11,7 @@ namespace MailSender
 {
     public class MS
     {
-        public bool SendMail(string login, string haslo, string from, string to, List<string> atach)
+        public bool SendMail(string login, string haslo, string from, string to, List<string> atach, string message, string subject)
         {
             bool Sukces = false;
 
@@ -28,12 +28,12 @@ namespace MailSender
                         smtp.UseDefaultCredentials = false;
                         smtp.Credentials = new NetworkCredential(login, haslo);
                         smtp.Host = "smtp.gmail.com";
-
+                        smtp.Timeout = 30000000;
                         mail.To.Add(new MailAddress(to));
 
                         mail.IsBodyHtml = true;
-                        mail.Subject = "temat";
-                        mail.Body = "tresc";
+                        mail.Subject = subject;
+                        mail.Body = message;
                         if (atach != null && atach.Count > 0)
                         {
                             foreach (var at in atach)

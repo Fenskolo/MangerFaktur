@@ -5,5 +5,8 @@
     <Setting Name="XmlConfig" Type="System.String" Scope="User">
       <Value Profile="(Default)">D:\Dane\Dysk Google\Faktury\settings.xml</Value>
     </Setting>
+    <Setting Name="Log" Type="System.String" Scope="User">
+      <Value Profile="(Default)">D:\Dane\Dysk Google\Faktury\log.xml</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
