@@ -29,31 +29,35 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MF));
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            Infragistics.Win.UltraWinEditors.EditorButton editorButton1 = new Infragistics.Win.UltraWinEditors.EditorButton();
+            Infragistics.Win.Appearance appearance1 = new Infragistics.Win.Appearance();
+            this.mainMenu = new System.Windows.Forms.ToolStrip();
             this.Ustawienia = new System.Windows.Forms.ToolStripButton();
             this.tCB = new System.Windows.Forms.ToolStripComboBox();
             this.uListView = new Infragistics.Win.UltraWinListView.UltraListView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.WBrowser = new System.Windows.Forms.WebBrowser();
             this.btnRefresh = new System.Windows.Forms.Button();
-            this.toolStrip1.SuspendLayout();
+            this.uTxt = new Infragistics.Win.UltraWinEditors.UltraTextEditor();
+            this.mainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uListView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.uTxt)).BeginInit();
             this.SuspendLayout();
             // 
-            // toolStrip1
+            // mainMenu
             // 
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.Ustawienia,
             this.tCB});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(948, 25);
-            this.toolStrip1.TabIndex = 0;
-            this.toolStrip1.Text = "toolStrip1";
+            this.mainMenu.Location = new System.Drawing.Point(0, 0);
+            this.mainMenu.Name = "mainMenu";
+            this.mainMenu.Size = new System.Drawing.Size(948, 25);
+            this.mainMenu.TabIndex = 0;
+            this.mainMenu.Text = "toolStrip1";
             // 
             // Ustawienia
             // 
@@ -121,25 +125,42 @@
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
+            // uTxt
+            // 
+            this.uTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            appearance1.Image = global::ManagerFaktur.Properties.Resources.right_button;
+            editorButton1.Appearance = appearance1;
+            editorButton1.ButtonStyle = Infragistics.Win.UIElementButtonStyle.Button;
+            this.uTxt.ButtonsRight.Add(editorButton1);
+            this.uTxt.DisplayStyle = Infragistics.Win.EmbeddableElementDisplayStyle.WindowsVista;
+            this.uTxt.Location = new System.Drawing.Point(730, 0);
+            this.uTxt.Name = "uTxt";
+            this.uTxt.NullText = "Mail do";
+            this.uTxt.Size = new System.Drawing.Size(206, 21);
+            this.uTxt.TabIndex = 5;
+            this.uTxt.EditorButtonClick += new Infragistics.Win.UltraWinEditors.EditorButtonEventHandler(this.uTxt_EditorButtonClick);
+            // 
             // MF
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(948, 371);
+            this.Controls.Add(this.uTxt);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.splitContainer1);
-            this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.mainMenu);
             this.Name = "MF";
             this.Text = "Manager Faktur";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MF_FormClosing);
             this.Load += new System.EventHandler(this.MF_Load);
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
+            this.mainMenu.ResumeLayout(false);
+            this.mainMenu.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uListView)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.uTxt)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -147,13 +168,14 @@
 
         #endregion
 
-        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStrip mainMenu;
         private System.Windows.Forms.ToolStripButton Ustawienia;
         private Infragistics.Win.UltraWinListView.UltraListView uListView;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Button btnRefresh;
         public System.Windows.Forms.WebBrowser WBrowser;
         private System.Windows.Forms.ToolStripComboBox tCB;
+        private Infragistics.Win.UltraWinEditors.UltraTextEditor uTxt;
     }
 }
 

@@ -11,8 +11,10 @@ namespace MailSender
 {
     public class MS
     {
-        public void SendMail(string login, string haslo, string from, string to, string[] atach)
+        public bool SendMail(string login, string haslo, string from, string to, List<string> atach)
         {
+            bool Sukces = false;
+
             try
             {
                 using (MailMessage mail = new MailMessage())
@@ -32,7 +34,7 @@ namespace MailSender
                         mail.IsBodyHtml = true;
                         mail.Subject = "temat";
                         mail.Body = "tresc";
-                        if (atach != null && atach.Length > 0)
+                        if (atach != null && atach.Count > 0)
                         {
                             foreach (var at in atach)
                             {
@@ -42,6 +44,7 @@ namespace MailSender
                         }
 
                         smtp.Send(mail);
+                        Sukces = true;
                     }
                 }
             }
@@ -49,6 +52,8 @@ namespace MailSender
             {
                 MessageBox.Show(ex.Message);
             }
+
+            return Sukces;
         }
     }
 }

@@ -8,6 +8,8 @@ using System.Text;
 using System.Windows.Forms;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ManagerFaktur
 {
@@ -131,6 +133,39 @@ namespace ManagerFaktur
 
                 return text.ToString();
             }
+        }
+
+        private void uTxt_EditorButtonClick(object sender, Infragistics.Win.UltraWinEditors.EditorButtonEventArgs e)
+        {
+            string MailTo = uTxt.Value == null ? Settings.Instance.To : uTxt.Value.ToString();
+            List<string> atach = new List<string>();
+
+            foreach (var item in uListView.Items)
+            {
+                if (item.CheckState == CheckState.Checked)
+                {
+                    atach.Add(item.Key);
+                }
+            }
+
+            SendMailTask(MailTo, atach);
+
+            uTxt.Value = null;
+        }
+
+        private void SendMailTask(string MailTo, List<string> atach)
+        {
+            Task.Run(() =>
+            {
+                if (ms.SendMail(Settings.Instance.Login, Settings.Instance.Password, Settings.Instance.From, MailTo, atach))
+                {
+                    MessageBox.Show("Wysyłka maila powiodła się");
+                }
+                else
+                {
+                    MessageBox.Show("coś poszło nie tak");
+                }
+            });
         }
     }
 }
