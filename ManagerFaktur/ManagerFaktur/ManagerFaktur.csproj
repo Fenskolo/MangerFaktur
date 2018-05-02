@@ -34,8 +34,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Infragistics2.Shared.v10.1, Version=10.1.20101.1007, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
-    <Reference Include="Infragistics2.Win.UltraWinEditors.v10.1, Version=10.1.20101.1007, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
-    <Reference Include="Infragistics2.Win.UltraWinGrid.v10.1, Version=10.1.20101.1007, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
     <Reference Include="Infragistics2.Win.UltraWinListView.v10.1, Version=10.1.20101.1007, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
     <Reference Include="Infragistics2.Win.v10.1, Version=10.1.20101.1007, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
     <Reference Include="itextsharp, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
@@ -115,25 +113,6 @@
     <Content Include="Image\pdf.png" />
     <Content Include="Image\right-button.png" />
     <Content Include="Image\word.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="AcroPDFLib">
-      <Guid>{05BFD3F1-6319-4F30-B752-C7A22889BCC4}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="AxAcroPDFLib">
-      <Guid>{05BFD3F1-6319-4F30-B752-C7A22889BCC4}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>aximp</WrapperTool>
-      <Isolated>False</Isolated>
-    </COMReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MailSender\MailSender.csproj">
