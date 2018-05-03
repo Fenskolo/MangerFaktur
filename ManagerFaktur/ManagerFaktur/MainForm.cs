@@ -70,7 +70,14 @@ namespace ManagerFaktur
 
         private void MF_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Settings.Instance.Serialze();
+            if (MessageBox.Show("Czy napewno chcesz zakończyć pracę z programem?", typeof(Program).Assembly.GetName().Name, MessageBoxButtons.YesNo) == DialogResult.No)
+            {
+                e.Cancel = true;
+            }
+            else
+            {
+                Settings.Instance.Serialze();
+            }
         }  
 
         private void UListView_ItemDoubleClick(object sender, ItemDoubleClickEventArgs e)

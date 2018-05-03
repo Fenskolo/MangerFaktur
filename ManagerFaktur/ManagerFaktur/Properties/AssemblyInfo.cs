@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ManagerFaktur")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Manager Faktur")]
+[assembly: AssemblyDescription("Program do zarządzania fakturami")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ManagerFaktur")]
+[assembly: AssemblyCompany("Tomasz Zysk")]
+[assembly: AssemblyProduct("Manager Faktur")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
