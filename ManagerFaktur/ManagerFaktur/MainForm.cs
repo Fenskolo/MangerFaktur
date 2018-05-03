@@ -99,7 +99,6 @@ namespace ManagerFaktur
             if (e.Item.Key.ToUpper().Contains(".PDF"))
             {
                 WBrowser.Navigate(e.Item.Key);
-                var x = ExtractTextFromPdf(e.Item.Key);
             }
             else
             {               
@@ -109,8 +108,9 @@ namespace ManagerFaktur
 
         private void WBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            if (wb.TempFileName != string.Empty && !e.Url.ToString().ToUpper().Contains(".PDF"))
+            if (wb.TempFileName != string.Empty && !e.Url.ToString().ToUpper().Contains(".PDF") && e.Url.ToString() != "about:blank")
             {
+                System.Threading.Thread.Sleep(100);
                 File.Delete(wb.TempFileName);
                 wb.TempFileName = string.Empty;
             }
@@ -125,21 +125,6 @@ namespace ManagerFaktur
         private void TCB_TextChanged(object sender, EventArgs e)
         {
             this.uListView.View = (UltraListViewStyle)Enum.Parse(typeof(UltraListViewStyle), tCB.SelectedItem.ToString());
-        }
-
-        public string ExtractTextFromPdf(string path)
-        {
-            using (PdfReader reader = new PdfReader(path))
-            {
-                StringBuilder text = new StringBuilder();
-
-                for (int i = 1; i <= reader.NumberOfPages; i++)
-                {
-                    text.Append(PdfTextExtractor.GetTextFromPage(reader, i));
-                }
-
-                return text.ToString();
-            }
         }
 
         private void UTxt_EditorButtonClick(object sender, Infragistics.Win.UltraWinEditors.EditorButtonEventArgs e)
@@ -189,6 +174,73 @@ namespace ManagerFaktur
                 }
                 uTxt.ButtonsLeft[0].Enabled = true;
             });
+        }
+
+        private void uBtnMove_Click(object sender, EventArgs e)
+        {
+            foreach(var x in uListView.Items)
+            {
+                if(x.CheckState == CheckState.Checked && x.SubItems["Okres"]?.Value!=null && (DateTime)x.SubItems["Okres"].Value != new DateTime())
+                {
+                    DateTime dt = (DateTime)x.SubItems["Okres"].Value;
+                    string month = dt.Month.ToString();
+                    month = month.Length == 1 ? "0" + month : month;
+                    string year = dt.Year.ToString();
+                    string MonthYear = month + "-" + year;
+                    string destDirectory = System.IO.Path.Combine(Settings.Instance.DestPath, MonthYear);
+
+                    if(!Directory.Exists(destDirectory))
+                    {
+                        Directory.CreateDirectory(destDirectory);
+                    }
+
+                    string symbol = (string)x.SubItems["Symbol"].Value;
+
+                    symbol = string.IsNullOrEmpty(symbol) ? "Faktura" : symbol;
+
+                    int nrFaktury = 1;
+
+
+                    string fileName = Settings.Instance.FileNameDest + " " + symbol + " " + MonthYear + ".pdf";
+                    if(symbol == "Faktura")
+                    {
+                        fileName = Settings.Instance.FileNameDest + " " + symbol + nrFaktury.ToString() + " " + MonthYear + ".pdf";
+                        nrFaktury++;
+                    }
+
+                    bool notExists = false;
+                    while (!notExists)
+                    {
+                        if (File.Exists(System.IO.Path.Combine(destDirectory, fileName)))
+                        {
+                            fileName = Settings.Instance.FileNameDest + " " + symbol +nrFaktury.ToString()+ " " + MonthYear + ".pdf";
+                            nrFaktury++;
+                        }
+                        else
+                        {
+                            notExists = true;
+                        }
+                    }
+
+                    WBrowser.Navigate("about:blank");
+                    while (WBrowser.ReadyState != WebBrowserReadyState.Complete)
+                    {
+                        Application.DoEvents();
+                        System.Threading.Thread.Sleep(100);
+                    }
+                    File.Move(x.Key.ToString(), System.IO.Path.Combine(destDirectory, fileName));
+                }
+            }
+
+            RefreshExplorer();
+        }
+
+        private void uBtnShowTxt_Click(object sender, EventArgs e)
+        {
+            string tekst = eh.ExtractTextFromPdf(WBrowser.Url.ToString());
+            TxtFromPdf txt = new TxtFromPdf(tekst);
+            txt.ShowDialog();
+            
         }
     }
 }

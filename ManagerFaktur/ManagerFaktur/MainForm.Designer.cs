@@ -28,19 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MF));
             Infragistics.Win.UltraWinEditors.EditorButton editorButton1 = new Infragistics.Win.UltraWinEditors.EditorButton("leftB");
             Infragistics.Win.Appearance appearance1 = new Infragistics.Win.Appearance();
             Infragistics.Win.UltraWinEditors.EditorButton editorButton2 = new Infragistics.Win.UltraWinEditors.EditorButton("rightB");
             Infragistics.Win.Appearance appearance2 = new Infragistics.Win.Appearance();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MF));
             this.mainMenu = new System.Windows.Forms.ToolStrip();
+            this.Ustawienia = new System.Windows.Forms.ToolStripButton();
             this.tCB = new System.Windows.Forms.ToolStripComboBox();
             this.uListView = new Infragistics.Win.UltraWinListView.UltraListView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.WBrowser = new System.Windows.Forms.WebBrowser();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.uTxt = new Infragistics.Win.UltraWinEditors.UltraTextEditor();
-            this.Ustawienia = new System.Windows.Forms.ToolStripButton();
+            this.uBtnMove = new Infragistics.Win.Misc.UltraButton();
+            this.uBtnShowTxt = new Infragistics.Win.Misc.UltraButton();
             this.mainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uListView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -60,6 +62,16 @@
             this.mainMenu.Size = new System.Drawing.Size(948, 25);
             this.mainMenu.TabIndex = 0;
             this.mainMenu.Text = "toolStrip1";
+            // 
+            // Ustawienia
+            // 
+            this.Ustawienia.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.Ustawienia.Image = ((System.Drawing.Image)(resources.GetObject("Ustawienia.Image")));
+            this.Ustawienia.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.Ustawienia.Name = "Ustawienia";
+            this.Ustawienia.Size = new System.Drawing.Size(68, 22);
+            this.Ustawienia.Text = "Ustawienia";
+            this.Ustawienia.Click += new System.EventHandler(this.Ustawienia_Click);
             // 
             // tCB
             // 
@@ -92,6 +104,7 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.uBtnShowTxt);
             this.splitContainer1.Panel2.Controls.Add(this.WBrowser);
             this.splitContainer1.Size = new System.Drawing.Size(948, 346);
             this.splitContainer1.SplitterDistance = 587;
@@ -99,11 +112,13 @@
             // 
             // WBrowser
             // 
-            this.WBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.WBrowser.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.WBrowser.Location = new System.Drawing.Point(0, 0);
             this.WBrowser.MinimumSize = new System.Drawing.Size(20, 20);
             this.WBrowser.Name = "WBrowser";
-            this.WBrowser.Size = new System.Drawing.Size(357, 346);
+            this.WBrowser.Size = new System.Drawing.Size(357, 320);
             this.WBrowser.TabIndex = 1;
             this.WBrowser.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.WBrowser_DocumentCompleted);
             // 
@@ -137,21 +152,32 @@
             this.uTxt.TabIndex = 5;
             this.uTxt.EditorButtonClick += new Infragistics.Win.UltraWinEditors.EditorButtonEventHandler(this.UTxt_EditorButtonClick);
             // 
-            // Ustawienia
+            // uBtnMove
             // 
-            this.Ustawienia.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.Ustawienia.Image = ((System.Drawing.Image)(resources.GetObject("Ustawienia.Image")));
-            this.Ustawienia.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.Ustawienia.Name = "Ustawienia";
-            this.Ustawienia.Size = new System.Drawing.Size(68, 22);
-            this.Ustawienia.Text = "Ustawienia";
-            this.Ustawienia.Click += new System.EventHandler(this.Ustawienia_Click);
+            this.uBtnMove.Location = new System.Drawing.Point(282, 2);
+            this.uBtnMove.Name = "uBtnMove";
+            this.uBtnMove.Size = new System.Drawing.Size(86, 23);
+            this.uBtnMove.TabIndex = 6;
+            this.uBtnMove.Text = "Przenieś Pliki";
+            this.uBtnMove.Click += new System.EventHandler(this.uBtnMove_Click);
+            // 
+            // uBtnShowTxt
+            // 
+            this.uBtnShowTxt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.uBtnShowTxt.Location = new System.Drawing.Point(0, 320);
+            this.uBtnShowTxt.Name = "uBtnShowTxt";
+            this.uBtnShowTxt.Size = new System.Drawing.Size(354, 23);
+            this.uBtnShowTxt.TabIndex = 2;
+            this.uBtnShowTxt.Text = "Zobacz Tekst";
+            this.uBtnShowTxt.Click += new System.EventHandler(this.uBtnShowTxt_Click);
             // 
             // MF
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(948, 371);
+            this.Controls.Add(this.uBtnMove);
             this.Controls.Add(this.uTxt);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.splitContainer1);
@@ -185,6 +211,8 @@
         public System.Windows.Forms.WebBrowser WBrowser;
         private System.Windows.Forms.ToolStripComboBox tCB;
         private Infragistics.Win.UltraWinEditors.UltraTextEditor uTxt;
+        private Infragistics.Win.Misc.UltraButton uBtnMove;
+        private Infragistics.Win.Misc.UltraButton uBtnShowTxt;
     }
 }
 

@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Infragistics4.Shared.v15.1, Version=15.1.20151.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="Infragistics4.Win.Misc.v15.1, Version=15.1.20151.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
     <Reference Include="Infragistics4.Win.UltraWinEditors.v15.1, Version=15.1.20151.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
     <Reference Include="Infragistics4.Win.UltraWinListView.v15.1, Version=15.1.20151.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
     <Reference Include="Infragistics4.Win.v15.1, Version=15.1.20151.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
@@ -91,6 +92,12 @@
     </Compile>
     <Compile Include="Class\Settings.cs" />
     <Compile Include="Class\WBHelper.cs" />
+    <Compile Include="TxtFromPdf.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TxtFromPdf.Designer.cs">
+      <DependentUpon>TxtFromPdf.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="MailProperty.resx">
       <DependentUpon>MailProperty.cs</DependentUpon>
     </EmbeddedResource>
@@ -110,6 +117,9 @@
     </Compile>
     <EmbeddedResource Include="Property.resx">
       <DependentUpon>Property.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TxtFromPdf.resx">
+      <DependentUpon>TxtFromPdf.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
