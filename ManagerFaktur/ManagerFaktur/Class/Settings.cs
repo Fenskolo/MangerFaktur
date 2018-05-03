@@ -24,6 +24,8 @@ namespace ManagerFaktur
         private SearchOption searchO = 0;
         private List<string> _listExtenstion;
         private SymbolCollection ep;
+        private List<string> _listSDelOneMonth;
+        
 
         /// <summary>
         /// Mail
@@ -215,30 +217,24 @@ namespace ManagerFaktur
         }
 
         [Editor(typeof(SymbolCollectionEditor), typeof(UITypeEditor))]
-        public SymbolCollection Symbole
+        public SymbolCollection SymboleOkres
         {
-            get {
+            get
+            {
                 if(ep==null)
                 {
                     ep = new SymbolCollection();
                 }
                 return ep;
-                    }
+            }
             set { ep = value; }
         }
 
         [Category("SendMail"), Description("login do poczty")]
         public string Login
         {
-            get
-            {
-                return _login;
-            }
-
-            set
-            {
-                _login = value;
-            }
+            get { return _login; }
+            set { _login = value; }
         }
 
         [Category("SendMail"), Description("hasło do poczty")]
@@ -246,57 +242,44 @@ namespace ManagerFaktur
         [Editor(typeof(PasswordEditor), typeof(UITypeEditor))]
         public string Password
         {
-            get
-            {
-                return _password;
-            }
-
-            set
-            {
-                _password = value;
-            }
+            get{return (_password);}
+            set{_password = value;}
         }
 
         [Category("SendMail"), Description("Mail od")]
         public string From
         {
-            get
-            {
-                return _from;
-            }
-
-            set
-            {
-                _from = value;
-            }
+            get{return _from;}
+            set{_from = value;}
         }
 
         [Category("SendMail"),Description("Mail do")]
         public string To
         {
-            get
-            {
-                return _to;
-            }
-
-            set
-            {
-                _to = value;
-            }
+            get {return _to;}
+            set{_to = value;}
         }
 
         public string LogPath
         {
+            get{return _logPath;}
+            set{_logPath = value;}
+        }
+
+        [Editor(@"System.Windows.Forms.Design.StringCollectionEditor,"+"System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+       typeof(UITypeEditor))]
+        public List<string> ListSDelOneMonth
+        {
             get
             {
-                return _logPath;
-            }
+                if (_listSDelOneMonth == null)
+                {
+                    _listSDelOneMonth = new List<string>();
+                }
 
-            set
-            {
-                _logPath = value;
+                return _listSDelOneMonth;
             }
-        }
+            set => _listSDelOneMonth = value; }
     }
 
     public class SymbolCollection : CollectionBase
@@ -321,31 +304,27 @@ namespace ManagerFaktur
     {
         private string firstString;
         private string lastString;
+        private TypDanych td;
         
         [Category("Symbol")]
         [DisplayName("Start")]
-        public string FirstString
-        {
-            get { return @firstString; }
-            set { firstString = @value; }
-        }
+        public string FirstString { get => firstString; set => firstString = value; }       
 
         [Category("Symbol")]
         [DisplayName("End")]
-        public string LastString
-        {
-            get { return @lastString; }
-            set { lastString = @value; }
-        }
+        public string LastString { get => lastString; set => lastString = value; }
 
-        //[Category("Employee")]
-        //[DisplayName("Date of Hire")]
-        //[Description("The hire date of the employee.")]
-        //public DateTime DateOfHire
-        //{
-        //    get { return dateOfHire; }
-        //    set { dateOfHire = value; }
-        //}
+        [Category("Symbol")]
+        [DisplayName("Typ")]
+        public TypDanych Td { get => td; set => td = value; }        
+    }
+
+    public enum TypDanych
+    {
+        containsOkres = 0,
+        okresOdDo =1,
+        containsSymbol =2,
+        symbolOdDo=3
     }
 
     public class SymbolCollectionEditor : CollectionEditor
