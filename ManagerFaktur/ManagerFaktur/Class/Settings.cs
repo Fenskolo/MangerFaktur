@@ -17,11 +17,11 @@ namespace ManagerFaktur
         private static Settings instance;
         private Settings() { }
         private static string xmlFile = Properties.Settings.Default.XmlConfig;
-        private string _defWorkPath = string.Empty;
-        private string _defDestPath = string.Empty;
+        private string _workPath = string.Empty;
+        private string _destPath = string.Empty;
         private string _logPath = Properties.Settings.Default.Log;
-        private string _fileNameStart = string.Empty;
-        private SearchOption searchO = 0;
+        private string _fileNameDest = string.Empty;
+        private SearchOption searchOptions = 0;
         private List<string> _listExtenstion;
         private SymbolCollection ep;
         private List<string> _listSDelOneMonth;
@@ -96,45 +96,13 @@ namespace ManagerFaktur
                 }
             }
         }
-
-        [EditorAttribute(typeof(FolderNameEditor), typeof(UITypeEditor))]
-        [XmlElement("WorkPath")]
-        public string DefWorkPath
-        {
-            get
-            {
-                return _defWorkPath;
-            }
-
-            set
-            {
-                _defWorkPath = value;
-            }
-        }
-
-        [EditorAttribute(typeof(FolderNameEditor), typeof(UITypeEditor))]
-        [XmlElement("DestPath")]
-        public string DefDestPath
-        {
-            get
-            {
-                return _defDestPath;
-            }
-
-            set
-            {
-                _defDestPath = value;
-            }
-        }
+         
 
         [XmlIgnore]
         [Browsable(false)]
         public Settings MyInstance
         {
-            get
-            {
-                return instance;
-            }
+            get => instance;
             set
             {
                 instance = value;
@@ -156,11 +124,7 @@ namespace ManagerFaktur
 
                 return _listMail;
             }
-
-            set
-            {
-                _listMail = value;
-            }
+            set => _listMail = value;
         }
 
         [Editor(@"System.Windows.Forms.Design.StringCollectionEditor," +
@@ -177,39 +141,8 @@ namespace ManagerFaktur
 
                 return _listExtenstion;
             }
-
-            set
-            {
-                _listExtenstion = value;
-            }
-        }
-
-        [XmlElement("NazwaPoczątkuPliku")]
-        public string FileNameStart
-        {
-            get
-            {
-                return _fileNameStart;
-            }
-
-            set
-            {
-                _fileNameStart = value;
-            }
-        }
-
-        public SearchOption SearchO
-        {
-            get
-            {
-                return searchO;
-            }
-
-            set
-            {
-                searchO = value;
-            }
-        }
+            set => _listExtenstion = value;
+        }          
 
         public void Serialze()
         {
@@ -227,44 +160,24 @@ namespace ManagerFaktur
                 }
                 return ep;
             }
-            set { ep = value; }
+            set => ep = value; 
         }
 
         [Category("SendMail"), Description("login do poczty")]
-        public string Login
-        {
-            get { return _login; }
-            set { _login = value; }
-        }
+        public string Login{ get => _login; set => _login = value; }
 
         [Category("SendMail"), Description("hasło do poczty")]
         [TypeConverter(typeof(PasswordConverter))]
         [Editor(typeof(PasswordEditor), typeof(UITypeEditor))]
-        public string Password
-        {
-            get{return (_password);}
-            set{_password = value;}
-        }
+        public string Password{ get => _password; set =>  _password = value;}
 
         [Category("SendMail"), Description("Mail od")]
-        public string From
-        {
-            get{return _from;}
-            set{_from = value;}
-        }
+        public string From { get => _from; set =>  _from = value;}
 
         [Category("SendMail"),Description("Mail do")]
-        public string To
-        {
-            get {return _to;}
-            set{_to = value;}
-        }
+        public string To { get => _to; set => _to = value;}
 
-        public string LogPath
-        {
-            get{return _logPath;}
-            set{_logPath = value;}
-        }
+        public string LogPath { get => _logPath; set => _logPath = value;}
 
         [Editor(@"System.Windows.Forms.Design.StringCollectionEditor,"+"System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
        typeof(UITypeEditor))]
@@ -279,15 +192,24 @@ namespace ManagerFaktur
 
                 return _listSDelOneMonth;
             }
-            set => _listSDelOneMonth = value; }
+            set => _listSDelOneMonth = value;
+        }
+
+        public SearchOption SearchOptions { get => searchOptions; set => searchOptions = value; }
+
+        [EditorAttribute(typeof(FolderNameEditor), typeof(UITypeEditor))]
+        [XmlElement("WorkPath")]
+        public string WorkPath { get => _workPath; set => _workPath = value; }
+        [EditorAttribute(typeof(FolderNameEditor), typeof(UITypeEditor))]
+        [XmlElement("DestPath")]
+        public string DestPath { get => _destPath; set => _destPath = value; }
+        [XmlElement("NazwaPoczątkuPliku")]
+        public string FileNameDest { get => _fileNameDest; set => _fileNameDest = value; }
     }
 
     public class SymbolCollection : CollectionBase
     {
-        public Symbol this[int index]
-        {
-            get { return (Symbol)List[index]; }
-        }
+        public Symbol this[int index] {get => (Symbol)List[index]; }
 
         public void Add(Symbol emp)
         {

@@ -27,14 +27,14 @@ namespace ManagerFaktur
         {
             try
             {
-                if (!Directory.Exists(Settings.Instance.DefWorkPath))
+                if (!Directory.Exists(Settings.Instance.WorkPath))
                 {
                     return;
                 }
 
-                DirectoryInfo cDriveInfo = new DirectoryInfo(Settings.Instance.DefWorkPath);
+                DirectoryInfo cDriveInfo = new DirectoryInfo(Settings.Instance.WorkPath);
                        
-                FileInfo[] files = cDriveInfo.GetFiles("*.*", Settings.Instance.SearchO);
+                FileInfo[] files = cDriveInfo.GetFiles("*.*", Settings.Instance.SearchOptions);
                 for (int i = 0; i < files.Length; i++)
                 {
                     FileInfo fileInfo = files[i];

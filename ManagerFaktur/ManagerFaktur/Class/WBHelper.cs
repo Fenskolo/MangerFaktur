@@ -10,18 +10,7 @@ namespace ManagerFaktur
         private WebBrowser wb;
         private string tempFileName;
 
-        public string TempFileName
-        {
-            get
-            {
-                return tempFileName;
-            }
-
-            set
-            {
-                tempFileName = value;
-            }
-        }
+        public string TempFileName { get => tempFileName; set => tempFileName = value; }
 
         delegate void ConvertDocumentDelegate(string fileName);
 
@@ -32,8 +21,7 @@ namespace ManagerFaktur
         
         public void LoadDocument(string fileName)
         {
-            ConvertDocumentDelegate del = new ConvertDocumentDelegate(ConvertDocument);
-            
+            ConvertDocumentDelegate del = new ConvertDocumentDelegate(ConvertDocument);            
             del.BeginInvoke(fileName, DocumentConversionComplete, null);
         }
 

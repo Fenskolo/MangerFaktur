@@ -23,10 +23,7 @@ namespace ManagerFaktur
                 }
                 return _ms;
             }
-            set
-            {
-                _ms = value;
-            }
+            set => _ms = value;
         }
 
         public static Logs Log
@@ -42,35 +39,16 @@ namespace ManagerFaktur
             }           
         }
 
-        public DateTime TimeSent
-        {
-            get
-            {               
-                return DateTime.Now;
-            }
-            set
-            {
-                _timeSent = value;
-            }            
-        }
+        public DateTime TimeSent { get => DateTime.Now; set => _timeSent = value; }        
 
         [XmlIgnore]
         [Browsable(false)]
-        public Logs MyInstance
-        {
-            get
-            {
-                return _log;
-            }
-            set
-            {
-                _log = value;
-            }
-        }
-
+        public Logs MyInstance { get => _log; set => _log = value; }    
+        
         public static void SerializeXml()
         {
             TextWriter writer = null;
+
             try
             {
                 XmlSerializer xsSubmit = new XmlSerializer(typeof(Logs));

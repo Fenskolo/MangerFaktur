@@ -28,59 +28,22 @@ namespace ManagerFaktur
                 }
                 return ins;
             }
-
-            set
-            {
-                ins = value;
-            }
+            set => ins = value;
         }
 
         
-        public string Subject
-        {
-            get
-            {
-                return _subject;
-            }
-
-            set
-            {
-                _subject = value;
-            }
-        }
-
-       [XmlIgnore]
-        [Browsable(false)]
-        public MailSettings MyInstance
-        {
-            get
-            {
-                return ins;
-            }
-            set
-            {
-                ins = value;
-            }
-        }
-
-        [Editor(typeof(MultiLineTextEditor), typeof(UITypeEditor))]
-        public string Message
-        {
-            get
-            {
-                return _message;
-            }
-
-            set
-            {
-                _message = value;
-            }
-        }
-
+        public string Subject { get => _subject; set => _subject = value; }
+         
         [XmlIgnore]
-        [Editor(@"System.Windows.Forms.Design.StringCollectionEditor," +
-       "System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
-      typeof(UITypeEditor))]
+        [Browsable(false)]
+        public MailSettings MyInstance { get => ins; set => ins = value; }
+        
+        [Editor(typeof(MultiLineTextEditor), typeof(UITypeEditor))]
+        public string Message { get => _message; set => _message = value; }
+        
+        [XmlIgnore]
+        [Editor(@"System.Windows.Forms.Design.StringCollectionEditor," + "System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+         typeof(UITypeEditor))]
         public List<string> ListMail
         {
             get
@@ -89,35 +52,20 @@ namespace ManagerFaktur
                 {
                     _listMail = Settings.Instance.ListMail;
                 }
-
                 return _listMail;
             }
-
             set
             {
                 _listMail = value;
                 Settings.Instance.ListMail = value;
             }
         }
-
-        
+                
         [DisplayName("Mail Do")]
         [DefaultValue("")]
         [TypeConverter(typeof(FormatStringConverter))]
-        public string MailTo
-        {
-            get
-            {
-                return _mailTo;
-            }
-
-            set
-            {
-                _mailTo = value;
-            }
-        }
-
-
+        public string MailTo { get => _mailTo; set => _mailTo = value; }
+        
         [Browsable(false)]
         public List<string> ListAtach
         {
@@ -130,11 +78,7 @@ namespace ManagerFaktur
 
                 return _listAtach;
             }
-
-            set
-            {
-                _listAtach = value;
-            }
+            set => _listAtach = value;
         }
     }
 
@@ -143,8 +87,7 @@ namespace ManagerFaktur
         public override Boolean GetStandardValuesSupported(ITypeDescriptorContext context) { return true; }
         public override Boolean GetStandardValuesExclusive(ITypeDescriptorContext context) { return true; }
         public override TypeConverter.StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
-        {
-           
+        {           
             return new StandardValuesCollection(MailSettings.Ins.ListMail);
         }
     }
