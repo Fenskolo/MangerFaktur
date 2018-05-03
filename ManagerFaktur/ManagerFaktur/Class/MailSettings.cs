@@ -157,8 +157,7 @@ namespace ManagerFaktur
         private Logs() { }
         private MailSettings _ms;
         private DateTime _timeSent;
-
-        //[XmlIgnore]
+        
         public MailSettings Ms
         {
             get

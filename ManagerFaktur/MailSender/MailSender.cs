@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MailSender
@@ -21,7 +18,7 @@ namespace MailSender
                 {
                     using (SmtpClient smtp = new SmtpClient())
                     {
-                        mail.From = new System.Net.Mail.MailAddress(from);
+                        mail.From = new MailAddress(from);
                         smtp.Port = 587;
                         smtp.EnableSsl = true;
                         smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
@@ -34,6 +31,7 @@ namespace MailSender
                         mail.IsBodyHtml = true;
                         mail.Subject = subject;
                         mail.Body = message;
+
                         if (atach != null && atach.Count > 0)
                         {
                             foreach (var at in atach)

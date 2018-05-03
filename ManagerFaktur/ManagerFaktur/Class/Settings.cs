@@ -215,7 +215,7 @@ namespace ManagerFaktur
             SerializeXml();
         }
 
-        [Editor(typeof(SymbolCollectionEditor), typeof(System.Drawing.Design.UITypeEditor))]
+        [Editor(typeof(SymbolCollectionEditor), typeof(UITypeEditor))]
         public SymbolCollection Symbole
         {
             get {
@@ -371,8 +371,6 @@ namespace ManagerFaktur
         {
             return destinationType == typeof(string) ? "********" :
                 base.ConvertTo(context, culture, value, destinationType);
-
-
         }
     }
 
@@ -393,11 +391,9 @@ namespace ManagerFaktur
                 Form frm = new Form
                 {
                     Controls = {
-                 (tb = new TextBox { PasswordChar = '*', Dock = DockStyle.Top,
-                     Text = (string)value}),
-                 (btn = new Button { Text = "OK", Dock = DockStyle.Bottom, DialogResult = DialogResult.OK})
-            },
-                    AcceptButton = btn
+                        (tb = new TextBox { PasswordChar = '*', Dock = DockStyle.Top, Text = (string)value}),
+                        (btn = new Button { Text = "OK", Dock = DockStyle.Bottom, DialogResult = DialogResult.OK})
+                    }, AcceptButton = btn
                 };
 
                 if (frm.ShowDialog() == DialogResult.OK)

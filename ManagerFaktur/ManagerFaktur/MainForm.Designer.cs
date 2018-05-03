@@ -86,8 +86,8 @@
             this.uListView.Text = "ultraListView1";
             this.uListView.View = Infragistics.Win.UltraWinListView.UltraListViewStyle.Details;
             this.uListView.ViewSettingsDetails.CheckBoxStyle = Infragistics.Win.UltraWinListView.CheckBoxStyle.CheckBox;
-            this.uListView.ItemActivated += new Infragistics.Win.UltraWinListView.ItemActivatedEventHandler(this.uListView_ItemActivated);
-            this.uListView.ItemDoubleClick += new Infragistics.Win.UltraWinListView.ItemDoubleClickEventHandler(this.uListView_ItemDoubleClick);
+            this.uListView.ItemActivated += new Infragistics.Win.UltraWinListView.ItemActivatedEventHandler(this.UListView_ItemActivated);
+            this.uListView.ItemDoubleClick += new Infragistics.Win.UltraWinListView.ItemDoubleClickEventHandler(this.UListView_ItemDoubleClick);
             // 
             // splitContainer1
             // 
@@ -124,7 +124,7 @@
             this.btnRefresh.TabIndex = 4;
             this.btnRefresh.Text = "Refresh";
             this.btnRefresh.UseVisualStyleBackColor = true;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            this.btnRefresh.Click += new System.EventHandler(this.BtnRefresh_Click);
             // 
             // uTxt
             // 
@@ -142,7 +142,7 @@
             this.uTxt.NullText = "Mail do";
             this.uTxt.Size = new System.Drawing.Size(206, 21);
             this.uTxt.TabIndex = 5;
-            this.uTxt.EditorButtonClick += new Infragistics.Win.UltraWinEditors.EditorButtonEventHandler(this.uTxt_EditorButtonClick);
+            this.uTxt.EditorButtonClick += new Infragistics.Win.UltraWinEditors.EditorButtonEventHandler(this.UTxt_EditorButtonClick);
             // 
             // MF
             // 
