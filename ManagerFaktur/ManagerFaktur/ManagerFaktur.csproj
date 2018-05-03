@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Image\ManagerFaktur.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Infragistics4.Shared.v15.1, Version=15.1.20151.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
     <Reference Include="Infragistics4.Win.UltraWinEditors.v15.1, Version=15.1.20151.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL" />
@@ -124,9 +127,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Image\folder.png" />
+    <Content Include="Image\ManagerFaktur.ico" />
+    <Content Include="Image\ManagerFaktur.png" />
     <Content Include="Image\pdf.png" />
     <Content Include="Image\right-button.png" />
     <Content Include="Image\word.png" />
+    <None Include="Image\settingsMail.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MailSender\MailSender.csproj">

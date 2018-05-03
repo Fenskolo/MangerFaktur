@@ -73,6 +73,26 @@ namespace ManagerFaktur.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ManagerFaktur {
+            get {
+                object obj = ResourceManager.GetObject("ManagerFaktur", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon ManagerFaktur1 {
+            get {
+                object obj = ResourceManager.GetObject("ManagerFaktur1", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap pdf {
             get {
                 object obj = ResourceManager.GetObject("pdf", resourceCulture);
@@ -86,6 +106,16 @@ namespace ManagerFaktur.Properties {
         internal static System.Drawing.Bitmap right_button {
             get {
                 object obj = ResourceManager.GetObject("right_button", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap settingsMail {
+            get {
+                object obj = ResourceManager.GetObject("settingsMail", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
