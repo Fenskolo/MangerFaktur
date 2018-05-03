@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
 namespace ManagerFaktur
@@ -12,6 +15,7 @@ namespace ManagerFaktur
         private Logs() { }
         private MailSettings _ms;
         private DateTime _timeSent;
+        private List<PairFiles> _fileOperation;
         
         public MailSettings Ms
         {
@@ -33,7 +37,6 @@ namespace ManagerFaktur
                 if(_log==null)
                 {
                     _log = new Logs();
-                    SerializeXml();
                 }                
                 return _log;
             }           
@@ -43,8 +46,23 @@ namespace ManagerFaktur
 
         [XmlIgnore]
         [Browsable(false)]
-        public Logs MyInstance { get => _log; set => _log = value; }    
-        
+        public Logs MyInstance { get => _log; set => _log = value; }
+
+
+        [Browsable(false)]
+        public List<PairFiles> FileOperation
+        {
+            get
+            {
+                if(_fileOperation == null)
+                {
+                    _fileOperation = new List<PairFiles>();
+                }
+                return _fileOperation;
+            }
+            set => _fileOperation = value;
+        }
+
         public static void SerializeXml()
         {
             TextWriter writer = null;
@@ -67,5 +85,23 @@ namespace ManagerFaktur
                 }
             }
         }
+
+        public void SerializeLog()
+        {
+            SerializeXml();
+        }
+    }
+
+    [Serializable]
+    [DataContract]
+    public class PairFiles
+    {
+        [XmlElement(Order = 2)]
+        [DataMember]
+        public string News { get ; set ; }
+
+        [XmlElement(Order = 1)]
+        [DataMember]
+        public string Old { get ; set ; }
     }
 }

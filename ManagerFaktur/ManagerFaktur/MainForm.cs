@@ -164,6 +164,7 @@ namespace ManagerFaktur
                 uTxt.ButtonsLeft[0].Enabled = false;
                 if (ms.SendMail(Settings.Instance.Login, Settings.Instance.Password, Settings.Instance.From, MailTo, atach, message, subject))
                 {
+                    Logs.Log.SerializeLog();
                     Logs.Log.MyInstance = null;
                     MailSettings.Ins.MyInstance = null;
                     MessageBox.Show("Wysyłka maila powiodła się");
@@ -180,16 +181,17 @@ namespace ManagerFaktur
         {
             foreach(var x in uListView.Items)
             {
-                if(x.CheckState == CheckState.Checked && x.SubItems["Okres"]?.Value!=null && (DateTime)x.SubItems["Okres"].Value != new DateTime())
+                if (x.CheckState == CheckState.Checked && x.SubItems["Okres"]?.Value != null)
                 {
                     DateTime dt = (DateTime)x.SubItems["Okres"].Value;
+                    dt = (DateTime)x.SubItems["Okres"].Value == new DateTime() ? DateTime.Now : dt;
                     string month = dt.Month.ToString();
                     month = month.Length == 1 ? "0" + month : month;
                     string year = dt.Year.ToString();
                     string MonthYear = month + "-" + year;
                     string destDirectory = System.IO.Path.Combine(Settings.Instance.DestPath, MonthYear);
 
-                    if(!Directory.Exists(destDirectory))
+                    if (!Directory.Exists(destDirectory))
                     {
                         Directory.CreateDirectory(destDirectory);
                     }
@@ -202,7 +204,7 @@ namespace ManagerFaktur
 
 
                     string fileName = Settings.Instance.FileNameDest + " " + symbol + " " + MonthYear + ".pdf";
-                    if(symbol == "Faktura")
+                    if (symbol == "Faktura")
                     {
                         fileName = Settings.Instance.FileNameDest + " " + symbol + nrFaktury.ToString() + " " + MonthYear + ".pdf";
                         nrFaktury++;
@@ -213,7 +215,7 @@ namespace ManagerFaktur
                     {
                         if (File.Exists(System.IO.Path.Combine(destDirectory, fileName)))
                         {
-                            fileName = Settings.Instance.FileNameDest + " " + symbol +nrFaktury.ToString()+ " " + MonthYear + ".pdf";
+                            fileName = Settings.Instance.FileNameDest + " " + symbol + nrFaktury.ToString() + " " + MonthYear + ".pdf";
                             nrFaktury++;
                         }
                         else
@@ -228,10 +230,21 @@ namespace ManagerFaktur
                         Application.DoEvents();
                         System.Threading.Thread.Sleep(100);
                     }
+
+                    PairFiles pf = new PairFiles()
+                    {
+                        Old = x.Key.ToString(),
+                        News = System.IO.Path.Combine(destDirectory, fileName)
+                    };
+                    
+                    Logs.Log.FileOperation.Add(pf);
                     File.Move(x.Key.ToString(), System.IO.Path.Combine(destDirectory, fileName));
                 }
             }
 
+            Logs.Log.SerializeLog();
+            Logs.Log.MyInstance = null;
+            MailSettings.Ins.MyInstance = null;
             RefreshExplorer();
         }
 
