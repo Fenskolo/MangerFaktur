@@ -38,22 +38,28 @@ namespace ManagerFaktur
 
         private void PropertyListView()
         {
-            uListView.SubItemColumns.Add("FileSize").DataType = typeof(int);
-            uListView.SubItemColumns.Add("FileSize").Format = "#,###,##0 KB";
-            uListView.SubItemColumns.Add("FileSize").SubItemAppearance.TextHAlign = HAlign.Right;
-            uListView.SubItemColumns.Add("FileType").DataType = typeof(string);
-            uListView.SubItemColumns.Add("DateModified").DataType = typeof(DateTime);
-            uListView.SubItemColumns.Add("FileType").Text = "Type";
-            uListView.SubItemColumns.Add("DateModified").Text = "Date Modified";
-            uListView.SubItemColumns.Add("DateModified").Format = string.Format("{0} {1}", CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern, CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern);
+            UltraListViewSubItemColumn colFileSize = this.uListView.SubItemColumns.Add("FileSize");
+            UltraListViewSubItemColumn colFileType = this.uListView.SubItemColumns.Add("FileType");
+            UltraListViewSubItemColumn colDateModified = this.uListView.SubItemColumns.Add("DateModified");
+            colFileSize.DataType = typeof(int);
+            colFileSize.Format = "#,###,##0 KB";
+            colFileSize.SubItemAppearance.TextHAlign = HAlign.Right;
+            colFileType.DataType = typeof(string);
+            colDateModified.DataType = typeof(DateTime);
+            colFileType.Text = "Type";
+            colDateModified.Text = "Date Modified";
+            string shortDateFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+            string shortTimeFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern;
+            colDateModified.Format = string.Format("{0} {1}", shortDateFormat, shortTimeFormat);
+            this.uListView.MainColumn.DataType = typeof(string);
+            this.uListView.MainColumn.Text = "Name";
 
-            uListView.MainColumn.DataType = typeof(string);
-            uListView.MainColumn.Text = "Name";
-
-            uListView.SubItemColumns.Add("Okres").DataType = typeof(DateTime);
-            uListView.SubItemColumns.Add("Symbol").DataType = typeof(string);
-            uListView.SubItemColumns.Add("Symbol").Text = "Symbol";
-            uListView.SubItemColumns.Add("Okres").Text = "Okres";
+            UltraListViewSubItemColumn colOkres = this.uListView.SubItemColumns.Add("Okres");
+            UltraListViewSubItemColumn colSymbol = this.uListView.SubItemColumns.Add("Symbol");
+            colOkres.DataType = typeof(DateTime);
+            colSymbol.DataType = typeof(string);
+            colSymbol.Text = "Symbol";
+            colOkres.Text = "Okres";
         }
 
         private void Ustawienia_Click(object sender, EventArgs e)

@@ -126,9 +126,7 @@ namespace ManagerFaktur
                 MessageBox.Show(ex.Message + Environment.NewLine + ex.StackTrace);
             }
         }
-
-
-
+        
         private DateTime BuildDate(string yearS, string monthS, string dayS)
         {
             if (string.IsNullOrEmpty(yearS)|| string.IsNullOrEmpty(monthS))

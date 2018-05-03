@@ -62,7 +62,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class\ExplorerHelper.cs" />
+    <Compile Include="Class\Logs.cs" />
     <Compile Include="Class\MailSettings.cs" />
+    <Compile Include="Class\PasswordEditor.cs" />
     <Compile Include="MailProperty.cs">
       <SubType>Form</SubType>
     </Compile>
