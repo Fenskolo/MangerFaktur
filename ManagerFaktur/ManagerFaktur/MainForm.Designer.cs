@@ -136,7 +136,7 @@
             editorButton2.ButtonStyle = Infragistics.Win.UIElementButtonStyle.Button;
             editorButton2.Key = "rightB";
             this.uTxt.ButtonsRight.Add(editorButton2);
-            this.uTxt.DisplayStyle = Infragistics.Win.EmbeddableElementDisplayStyle.WindowsVista;
+            this.uTxt.DisplayStyle = Infragistics.Win.EmbeddableElementDisplayStyle.Office2010;
             this.uTxt.Location = new System.Drawing.Point(730, 0);
             this.uTxt.Name = "uTxt";
             this.uTxt.NullText = "Mail do";
@@ -155,6 +155,7 @@
             this.Controls.Add(this.mainMenu);
             this.Name = "MF";
             this.Text = "Manager Faktur";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MF_FormClosing);
             this.Load += new System.EventHandler(this.MF_Load);
             this.mainMenu.ResumeLayout(false);
