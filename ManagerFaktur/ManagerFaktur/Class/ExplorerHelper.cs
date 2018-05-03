@@ -104,7 +104,7 @@ namespace ManagerFaktur
                 {
                     okresD = BuildDate(okres.Split('M')[0], okres.Split('M')[1], null);
                 }
-                else if (okres.Contains("-") && okres[2] == '-' && okres[5] == '-' && okres.Length == 10)
+                else if ((okres.Contains("-") && okres[2] == '-' && okres[5] == '-') || (okres.Contains(".") && okres[2] == '.' && okres[5] == '.') && okres.Length == 10)
                 {
                     okresD = BuildDate(okres.Substring(6, 4), okres.Substring(3, 2), okres.Substring(0, 2));
                 }
