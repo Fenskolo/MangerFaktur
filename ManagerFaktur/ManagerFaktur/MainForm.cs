@@ -10,6 +10,7 @@ using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Infragistics.Win.UltraWinEditors;
 
 namespace ManagerFaktur
 {
@@ -84,12 +85,7 @@ namespace ManagerFaktur
         {
             Process.Start(e.Item.Key);
         }
-
-        private void BtnRefresh_Click(object sender, EventArgs e)
-        {
-            RefreshExplorer();
-        }
-
+            
         private void UListView_ItemActivated(object sender, ItemActivatedEventArgs e)
         {
             if(e.Item?.Key == null)
@@ -254,6 +250,22 @@ namespace ManagerFaktur
             TxtFromPdf txt = new TxtFromPdf(tekst);
             txt.ShowDialog();
             
+        }
+
+        private void uDTEditor_EditorButtonClick(object sender, EditorButtonEventArgs e)
+        {
+            foreach(var x in uListView.Items)
+            {
+                if(x.CheckState==CheckState.Checked)
+                {
+                    x.SubItems["Okres"].Value = (DateTime)uDTEditor.Value;
+                }
+            }
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            RefreshExplorer();
         }
     }
 }

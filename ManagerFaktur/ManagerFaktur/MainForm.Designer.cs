@@ -33,16 +33,19 @@
             Infragistics.Win.Appearance appearance1 = new Infragistics.Win.Appearance();
             Infragistics.Win.UltraWinEditors.EditorButton editorButton2 = new Infragistics.Win.UltraWinEditors.EditorButton("rightB");
             Infragistics.Win.Appearance appearance2 = new Infragistics.Win.Appearance();
+            Infragistics.Win.UltraWinEditors.EditorButton editorButton3 = new Infragistics.Win.UltraWinEditors.EditorButton();
+            Infragistics.Win.Appearance appearance3 = new Infragistics.Win.Appearance();
             this.mainMenu = new System.Windows.Forms.ToolStrip();
             this.Ustawienia = new System.Windows.Forms.ToolStripButton();
             this.tCB = new System.Windows.Forms.ToolStripComboBox();
             this.uListView = new Infragistics.Win.UltraWinListView.UltraListView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.uBtnShowTxt = new Infragistics.Win.Misc.UltraButton();
             this.WBrowser = new System.Windows.Forms.WebBrowser();
-            this.btnRefresh = new System.Windows.Forms.Button();
             this.uTxt = new Infragistics.Win.UltraWinEditors.UltraTextEditor();
             this.uBtnMove = new Infragistics.Win.Misc.UltraButton();
-            this.uBtnShowTxt = new Infragistics.Win.Misc.UltraButton();
+            this.uDTEditor = new Infragistics.Win.UltraWinEditors.UltraDateTimeEditor();
+            this.btnRefresh = new Infragistics.Win.Misc.UltraButton();
             this.mainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uListView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -50,6 +53,7 @@
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uTxt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.uDTEditor)).BeginInit();
             this.SuspendLayout();
             // 
             // mainMenu
@@ -110,6 +114,18 @@
             this.splitContainer1.SplitterDistance = 587;
             this.splitContainer1.TabIndex = 3;
             // 
+            // uBtnShowTxt
+            // 
+            this.uBtnShowTxt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.uBtnShowTxt.ButtonStyle = Infragistics.Win.UIElementButtonStyle.Office2013Button;
+            this.uBtnShowTxt.Location = new System.Drawing.Point(0, 320);
+            this.uBtnShowTxt.Name = "uBtnShowTxt";
+            this.uBtnShowTxt.Size = new System.Drawing.Size(354, 23);
+            this.uBtnShowTxt.TabIndex = 2;
+            this.uBtnShowTxt.Text = "Zobacz Tekst";
+            this.uBtnShowTxt.Click += new System.EventHandler(this.uBtnShowTxt_Click);
+            // 
             // WBrowser
             // 
             this.WBrowser.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -121,16 +137,6 @@
             this.WBrowser.Size = new System.Drawing.Size(357, 320);
             this.WBrowser.TabIndex = 1;
             this.WBrowser.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.WBrowser_DocumentCompleted);
-            // 
-            // btnRefresh
-            // 
-            this.btnRefresh.Location = new System.Drawing.Point(201, 2);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(75, 23);
-            this.btnRefresh.TabIndex = 4;
-            this.btnRefresh.Text = "Refresh";
-            this.btnRefresh.UseVisualStyleBackColor = true;
-            this.btnRefresh.Click += new System.EventHandler(this.BtnRefresh_Click);
             // 
             // uTxt
             // 
@@ -154,32 +160,46 @@
             // 
             // uBtnMove
             // 
-            this.uBtnMove.Location = new System.Drawing.Point(282, 2);
+            this.uBtnMove.ButtonStyle = Infragistics.Win.UIElementButtonStyle.Office2013Button;
+            this.uBtnMove.Location = new System.Drawing.Point(307, 2);
             this.uBtnMove.Name = "uBtnMove";
             this.uBtnMove.Size = new System.Drawing.Size(86, 23);
             this.uBtnMove.TabIndex = 6;
             this.uBtnMove.Text = "Przenieś Pliki";
             this.uBtnMove.Click += new System.EventHandler(this.uBtnMove_Click);
             // 
-            // uBtnShowTxt
+            // uDTEditor
             // 
-            this.uBtnShowTxt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.uBtnShowTxt.Location = new System.Drawing.Point(0, 320);
-            this.uBtnShowTxt.Name = "uBtnShowTxt";
-            this.uBtnShowTxt.Size = new System.Drawing.Size(354, 23);
-            this.uBtnShowTxt.TabIndex = 2;
-            this.uBtnShowTxt.Text = "Zobacz Tekst";
-            this.uBtnShowTxt.Click += new System.EventHandler(this.uBtnShowTxt_Click);
+            appearance3.Image = global::ManagerFaktur.Properties.Resources.right_button;
+            editorButton3.Appearance = appearance3;
+            this.uDTEditor.ButtonsLeft.Add(editorButton3);
+            this.uDTEditor.DisplayStyle = Infragistics.Win.EmbeddableElementDisplayStyle.Office2013;
+            this.uDTEditor.FormatProvider = new System.Globalization.CultureInfo("pl-PL");
+            this.uDTEditor.Location = new System.Drawing.Point(399, 2);
+            this.uDTEditor.Name = "uDTEditor";
+            this.uDTEditor.Size = new System.Drawing.Size(144, 21);
+            this.uDTEditor.TabIndex = 7;
+            this.uDTEditor.EditorButtonClick += new Infragistics.Win.UltraWinEditors.EditorButtonEventHandler(this.uDTEditor_EditorButtonClick);
+            // 
+            // btnRefresh
+            // 
+            this.btnRefresh.ButtonStyle = Infragistics.Win.UIElementButtonStyle.Office2013Button;
+            this.btnRefresh.Location = new System.Drawing.Point(215, 2);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(86, 23);
+            this.btnRefresh.TabIndex = 8;
+            this.btnRefresh.Text = "Odśwież";
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // MF
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(948, 371);
+            this.Controls.Add(this.btnRefresh);
+            this.Controls.Add(this.uDTEditor);
             this.Controls.Add(this.uBtnMove);
             this.Controls.Add(this.uTxt);
-            this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.mainMenu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -196,6 +216,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.uTxt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.uDTEditor)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -207,12 +228,13 @@
         private System.Windows.Forms.ToolStripButton Ustawienia;
         private Infragistics.Win.UltraWinListView.UltraListView uListView;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.Button btnRefresh;
         public System.Windows.Forms.WebBrowser WBrowser;
         private System.Windows.Forms.ToolStripComboBox tCB;
         private Infragistics.Win.UltraWinEditors.UltraTextEditor uTxt;
         private Infragistics.Win.Misc.UltraButton uBtnMove;
         private Infragistics.Win.Misc.UltraButton uBtnShowTxt;
+        private Infragistics.Win.UltraWinEditors.UltraDateTimeEditor uDTEditor;
+        private Infragistics.Win.Misc.UltraButton btnRefresh;
     }
 }
 
