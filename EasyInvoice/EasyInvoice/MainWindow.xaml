@@ -1,0 +1,22 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EasyInvoice"
+        xmlns:Custom="http://infragistics.com/Windows" xmlns:ig="http://schemas.infragistics.com/xaml" xmlns:Custom1="http://infragistics.com/Themes" x:Class="EasyInvoice.MainWindow"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+    <Custom:XamTabControl HorizontalAlignment="Left" Margin="0,0,-6,-1" VerticalAlignment="Top" Height="313" Width="515">
+        <Custom:TabItemEx x:Name="tabItemEx1" Header="tabItemEx1">
+            <Grid/>
+        </Custom:TabItemEx>
+        <TabItem Header="TabItem" HorizontalAlignment="Left" Height="28" Width="71" Margin="-2,0">
+            <Grid Background="#FFE5E5E5">
+            </Grid>
+        </TabItem>
+        <TabItem Header="TabItem" HorizontalAlignment="Left" Height="27" Width="71" Margin="-2,0">
+            <Grid Background="#FFE5E5E5"/>
+        </TabItem>
+    </Custom:XamTabControl>
+</Window>
