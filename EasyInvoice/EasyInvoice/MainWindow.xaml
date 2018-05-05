@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyInvoice"
-        xmlns:Custom="http://infragistics.com/Windows" xmlns:ig="http://schemas.infragistics.com/xaml" xmlns:Custom1="http://infragistics.com/Themes" x:Class="EasyInvoice.MainWindow"
+        xmlns:Custom="http://infragistics.com/Windows" xmlns:ig="http://schemas.infragistics.com/xaml" xmlns:Custom1="http://infragistics.com/Themes" xmlns:Custom2="http://infragistics.com/DataPresenter" x:Class="EasyInvoice.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="700" Width="1000">
 
@@ -166,6 +166,36 @@
                             <TextBox Grid.Column="3" Margin="0" TextWrapping="Wrap" Text="TextBox"/>
                             <TextBox Grid.Column="3" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="TextBox"/>
                         </Grid>
+                    </Grid>
+                    <Grid Height="200" Margin="0,315,0,0" VerticalAlignment="Top">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="80*"/>
+                            <RowDefinition Height="20*"/>
+                        </Grid.RowDefinitions>
+                        <Custom2:XamDataGrid x:Name="xDG" Theme="Office2k7Blue" >
+                            <Custom2:XamDataGrid.FieldLayouts>
+                                <Custom2:FieldLayout>
+                                    <Custom2:Field Name="Lp."/>
+                                    <Custom2:Field Name="Towar / usługa"/>
+                                    <Custom2:Field Name="J.m."/>
+                                    <Custom2:Field Name="Ilość"/>
+                                    <Custom2:Field Name="Cena Netto"/>
+                                    <Custom2:Field Name="Wartość netto"/>
+                                    <Custom2:Field Name="Stawka VAT"/>
+                                    <Custom2:Field Name="Kwota VAT"/>
+                                    <Custom2:Field Name="Wartość Brutto"/>
+                                </Custom2:FieldLayout>
+                            </Custom2:XamDataGrid.FieldLayouts>
+                            <Custom2:XamDataGrid.FieldLayoutSettings>
+                                <Custom2:FieldLayoutSettings/>
+                            </Custom2:XamDataGrid.FieldLayoutSettings>
+                            <Custom2:XamDataGrid.FieldSettings>
+                                <Custom2:FieldSettings/>
+                            </Custom2:XamDataGrid.FieldSettings>
+                            <Custom2:XamDataGrid.ViewSettings>
+                                <Custom2:GridViewSettings/>
+                            </Custom2:XamDataGrid.ViewSettings>
+                        </Custom2:XamDataGrid>
                     </Grid>
 
 

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Infragistics.Windows.DataPresenter;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +24,35 @@ namespace EasyInvoice
     {
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent();            
+            DataTable dt = new DataTable();
+            dt.Columns.Add("Lp.");
+            dt.Columns.Add("Towar / usługa");
+            dt.Columns.Add("J.m.");
+            dt.Columns.Add("Ilość");
+            dt.Columns.Add("Cena Netto");
+            dt.Columns.Add("Wartość netto");
+            dt.Columns.Add("Stawka VAT");
+            dt.Columns.Add("Kwota VAT");
+            dt.Columns.Add("Wartość Brutto");
+            DataRow row = dt.NewRow();
+
+            for (int i = 0; i<dt.Columns.Count; i++)
+            {
+                row[i] = i;
+            }
+            dt.Rows.Add(row);
+           // dt.Rows.Add();
+
+            xDG.DataSource = dt.DefaultView;
+         //   xDG.DataItems.Add(new ComboBox());
         }
+    }
+
+    public enum D
+    {
+        a=0,
+        b=1,
+            c=2
     }
 }
