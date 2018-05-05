@@ -45,6 +45,7 @@ namespace EasyInvoice
            // dt.Rows.Add();
 
             xDG.DataSource = dt.DefaultView;
+            
          //   xDG.DataItems.Add(new ComboBox());
         }
     }
@@ -53,6 +54,6 @@ namespace EasyInvoice
     {
         a=0,
         b=1,
-            c=2
+        c=2
     }
 }

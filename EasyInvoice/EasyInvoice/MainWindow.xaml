@@ -175,15 +175,15 @@
                         <Custom2:XamDataGrid x:Name="xDG" Theme="Office2k7Blue" >
                             <Custom2:XamDataGrid.FieldLayouts>
                                 <Custom2:FieldLayout>
-                                    <Custom2:Field Name="Lp."/>
-                                    <Custom2:Field Name="Towar / usługa"/>
-                                    <Custom2:Field Name="J.m."/>
-                                    <Custom2:Field Name="Ilość"/>
-                                    <Custom2:Field Name="Cena Netto"/>
-                                    <Custom2:Field Name="Wartość netto"/>
-                                    <Custom2:Field Name="Stawka VAT"/>
-                                    <Custom2:Field Name="Kwota VAT"/>
-                                    <Custom2:Field Name="Wartość Brutto"/>
+                                    <Custom2:Field Name="Lp." Width="3*"/>
+                                    <Custom2:Field Name="Towar / usługa" Width="35*"/>
+                                    <Custom2:Field Name="J.m." Width="3*"/>
+                                    <Custom2:Field Name="Ilość" Width="4*"/>
+                                    <Custom2:Field Name="Cena Netto" Width="9*"/>
+                                    <Custom2:Field Name="Wartość netto" Width="11*"/>
+                                    <Custom2:Field Name="Stawka VAT" Width="11*"/>
+                                    <Custom2:Field Name="Kwota VAT" Width="11*"/>
+                                    <Custom2:Field Name="Wartość Brutto" Width="13*"/>
                                 </Custom2:FieldLayout>
                             </Custom2:XamDataGrid.FieldLayouts>
                             <Custom2:XamDataGrid.FieldLayoutSettings>
