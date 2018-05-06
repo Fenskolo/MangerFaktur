@@ -20,7 +20,7 @@
 
                     </LinearGradientBrush>
                 </ToolBar.Background>
-                <Button Content="Button" Height="35" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.347,0.629">
+                <Button Content="Button" Height="35" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.347,0.629" Click="Button_Click">
                     <Button.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FF595353" Offset="0"/>
@@ -172,29 +172,24 @@
                             <RowDefinition Height="80*"/>
                             <RowDefinition Height="20*"/>
                         </Grid.RowDefinitions>
-                        <Custom2:XamDataGrid x:Name="xDG" Theme="Office2k7Blue" >
-                            <Custom2:XamDataGrid.FieldLayouts>
+                        <Custom2:XamDataGrid x:Name="xDG"  DataSource="{Binding}" Theme="Office2k7Blue" Loaded="XDG1_Loaded">
+                        
+                        <Custom2:XamDataGrid.FieldLayouts>
                                 <Custom2:FieldLayout>
                                     <Custom2:Field Name="Lp." Width="3*"/>
                                     <Custom2:Field Name="Towar / usługa" Width="35*"/>
-                                    <Custom2:Field Name="J.m." Width="3*"/>
+                                    <Custom2:ComboBoxField Name="J.m." ItemsSource="{Binding}" Width="3*"/>
                                     <Custom2:Field Name="Ilość" Width="4*"/>
                                     <Custom2:Field Name="Cena Netto" Width="9*"/>
                                     <Custom2:Field Name="Wartość netto" Width="11*"/>
-                                    <Custom2:Field Name="Stawka VAT" Width="11*"/>
+                                    <Custom2:ComboBoxField Name="Stawka VAT" ItemsSource="{Binding}" Width="11*"/>
                                     <Custom2:Field Name="Kwota VAT" Width="11*"/>
                                     <Custom2:Field Name="Wartość Brutto" Width="13*"/>
                                 </Custom2:FieldLayout>
                             </Custom2:XamDataGrid.FieldLayouts>
                             <Custom2:XamDataGrid.FieldLayoutSettings>
-                                <Custom2:FieldLayoutSettings/>
-                            </Custom2:XamDataGrid.FieldLayoutSettings>
-                            <Custom2:XamDataGrid.FieldSettings>
-                                <Custom2:FieldSettings/>
-                            </Custom2:XamDataGrid.FieldSettings>
-                            <Custom2:XamDataGrid.ViewSettings>
-                                <Custom2:GridViewSettings/>
-                            </Custom2:XamDataGrid.ViewSettings>
+                                <Custom2:FieldLayoutSettings AllowAddNew="True" AddNewRecordLocation="OnBottom"/>
+                            </Custom2:XamDataGrid.FieldLayoutSettings>                         
                         </Custom2:XamDataGrid>
                     </Grid>
 
