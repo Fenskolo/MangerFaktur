@@ -38,7 +38,7 @@
                         <GradientStop Color="White" Offset="1"/>
                     </LinearGradientBrush>
                 </TabItem.Background>
-                <Grid>
+                <Grid x:Name="MainGrid">
                     <Grid Height="150" Margin="0,105,0,0" VerticalAlignment="Top">
 
                         <Grid.ColumnDefinitions>
@@ -167,31 +167,32 @@
                             <TextBox Grid.Column="3" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="TextBox"/>
                         </Grid>
                     </Grid>
-                    <Grid Height="200" Margin="0,315,0,0" VerticalAlignment="Top">
+                    <Grid x:Name="GridWithDataGrid" Margin="0,315,0,0" VerticalAlignment="Top">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="80*"/>
                             <RowDefinition Height="20*"/>
                         </Grid.RowDefinitions>
-                        <Custom2:XamDataGrid x:Name="xDG"  DataSource="{Binding}" Theme="Office2k7Blue" Loaded="XDG1_Loaded">
-                        
-                        <Custom2:XamDataGrid.FieldLayouts>
+                        <Custom2:XamDataGrid x:Name="xDG"  DataSource="{Binding}" Theme="Office2k7Blue" Loaded="XDG1_Loaded" InitializeRecord="xDG_InitializeRecord" RecordAdded="xDG_RecordAdded" SortRecordsByDataType="True" UpdateMode="OnCellChangeOrLostFocus">
+
+                            <Custom2:XamDataGrid.FieldLayouts>
                                 <Custom2:FieldLayout>
-                                    <Custom2:Field Name="Lp." Width="3*"/>
+                                    <!--<Custom2:Field Name="Lp." Width="3*" Visibility="Hidden"/>-->
                                     <Custom2:Field Name="Towar / usługa" Width="35*"/>
-                                    <Custom2:ComboBoxField Name="J.m." ItemsSource="{Binding}" Width="3*"/>
-                                    <Custom2:Field Name="Ilość" Width="4*"/>
+                                    <Custom2:ComboBoxField Name="J.m." ItemsSource="{Binding}" Width="5*"/>
+                                    <Custom2:Field Name="Ilość" Width="5*"/>
                                     <Custom2:Field Name="Cena Netto" Width="9*"/>
                                     <Custom2:Field Name="Wartość netto" Width="11*"/>
-                                    <Custom2:ComboBoxField Name="Stawka VAT" ItemsSource="{Binding}" Width="11*"/>
+                                    <Custom2:ComboBoxField Name="Stawka VAT" ItemsSource="{Binding}" Width="8*"/>
                                     <Custom2:Field Name="Kwota VAT" Width="11*"/>
                                     <Custom2:Field Name="Wartość Brutto" Width="13*"/>
                                 </Custom2:FieldLayout>
                             </Custom2:XamDataGrid.FieldLayouts>
                             <Custom2:XamDataGrid.FieldLayoutSettings>
-                                <Custom2:FieldLayoutSettings AllowAddNew="True" AddNewRecordLocation="OnBottom"/>
-                            </Custom2:XamDataGrid.FieldLayoutSettings>                         
-                        </Custom2:XamDataGrid>
+                                <Custom2:FieldLayoutSettings AllowAddNew="True" AddNewRecordLocation="OnBottom" RecordSelectorNumberType="RecordIndex" RecordSelectorNumberFormat="RecordNumberOnly"/>
+                            </Custom2:XamDataGrid.FieldLayoutSettings>
+                        </Custom2:XamDataGrid>                        
                     </Grid>
+                   
 
 
                 </Grid>

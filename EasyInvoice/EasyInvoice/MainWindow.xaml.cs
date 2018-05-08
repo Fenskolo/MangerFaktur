@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
+using System.IO.Packaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,17 +27,17 @@ namespace EasyInvoice
         private DataTable xcv;
         public MainWindow()
         {
-            InitializeComponent();            
+            InitializeComponent();
             DataTable dt = new DataTable();
-            dt.Columns.Add("Lp.");
-            dt.Columns.Add("Towar / usługa");
+            // dt.Columns.Add("Lp.");
+            dt.Columns.Add("Towar / usługa", typeof(string));
             dt.Columns.Add("J.m.");
-            dt.Columns.Add("Ilość");
-            dt.Columns.Add("Cena Netto");
-            dt.Columns.Add("Wartość netto");
+            dt.Columns.Add("Ilość", typeof(Int32));
+            dt.Columns.Add("Cena Netto", typeof(double));
+            dt.Columns.Add("Wartość netto", typeof(double));
             dt.Columns.Add("Stawka VAT");
-            dt.Columns.Add("Kwota VAT");
-            dt.Columns.Add("Wartość Brutto");
+            dt.Columns.Add("Kwota VAT", typeof(double));
+            dt.Columns.Add("Wartość Brutto", typeof(double));
             //DataRow row = dt.NewRow();
 
             //for (int i = 0; i<dt.Columns.Count; i++)
@@ -43,17 +45,17 @@ namespace EasyInvoice
             //    row[i] = i;
             //}
             //dt.Rows.Add(row);
-           // dt.Rows.Add();
+            // dt.Rows.Add();
 
             xDG.DataContext = dt.DefaultView;
             xcv = dt;
-         //   xDG.DataItems.Add(new ComboBox());
+            //   xDG.DataItems.Add(new ComboBox());
         }
 
         private void XDG1_Loaded(object sender, RoutedEventArgs e)
         {
             PopulateCombo(xDG);
-           // this.xDG.AddNewRowSettings.AllowAddNewRow = Infragistics.Controls.Grids.AddNewRowLocation.b;
+            // this.xDG.AddNewRowSettings.AllowAddNewRow = Infragistics.Controls.Grids.AddNewRowLocation.b;
         }
 
         public void PopulateCombo(XamDataGrid grid)
@@ -86,16 +88,25 @@ namespace EasyInvoice
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-          //  xDG.DefaultFieldLayout.ac
-            var x =xcv.Rows.Count;
+            //  xDG.DefaultFieldLayout.ac
+            var x = xcv.Rows.Count;
+
+           
+            MessageBox.Show(GridWithDataGrid.Height.ToString());
+
+            
         }
-    }
 
+        private void xDG_InitializeRecord(object sender, Infragistics.Windows.DataPresenter.Events.InitializeRecordEventArgs e)
+        {
 
-    public enum D
-    {
-        a=0,
-        b=1,
-        c=2
+        }
+
+        private void xDG_RecordAdded(object sender, Infragistics.Windows.DataPresenter.Events.RecordAddedEventArgs e)
+        {
+            
+        }
+
     }
+    
 }
