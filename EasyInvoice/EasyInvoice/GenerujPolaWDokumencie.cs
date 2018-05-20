@@ -61,6 +61,7 @@ namespace EasyInvoice
 
         public GenerujPolaWDokumencie(string FileName)
         {
+            double position;
             bool landscape = false;
             document = new PdfDocument(PaperType.A4, landscape, UnitOfMeasure.cm, FileName)
             {
@@ -81,12 +82,11 @@ namespace EasyInvoice
 
             FirstTable(d.GetNaglowekL(), 1.3, 10, 8, 27, 24, false);
 
-            FirstTable(d.GetNaglowekR(), 10.3, 16, 8, 27, 25.5, false);
+            position = FirstTable(d.GetNaglowekR(), 10.3, 16, 8, 27, 25.5, false);
 
-            FirstTable(h.GetSprzeNaby(), 1.3, 30, 8, 24.8, 20, true);
+            position = FirstTable(h.GetSprzeNaby(), 1.3, 30, 8, position - 1.4, 20, true);
 
-            TabelaDaneFaktura();
-
+            position=TabelaDaneFaktura(1.3, position-1.4, 10.3, 19.7, 9);
             document.CreateFile();
 
             return;
@@ -128,8 +128,9 @@ namespace EasyInvoice
             return;
         }
 
-        private static void FirstTable(List<DaneTabela> dt, double left, double right, double fontSize, double top, double bottom, bool withHeader)
+        private double FirstTable(List<DaneTabela> dt, double left, double right, double fontSize, double top, double bottom, bool withHeader)
         {
+            double LastRowPosition;
             Double LEFT = left;
             Double TOP = top;
             Double BOTTOM = bottom;
@@ -201,22 +202,19 @@ namespace EasyInvoice
 
             //    Table.DrawRow();
             //}
+            LastRowPosition = Table.RowPosition[Table.RowNumber];
 
             Table.Close();
             
             Contents.SaveGraphicsState();
             
             Contents.RestoreGraphicsState();
-            return;
+            return LastRowPosition;
         }
 
-        private void TabelaDaneFaktura()
+        private double TabelaDaneFaktura(double LEFT, double TOP, double BOTTOM, double RIGHT, double FONT_SIZE)
         {
-            const Double LEFT = 1.3;
-            const Double TOP = 20;
-            const Double BOTTOM = 10.3;
-            const Double RIGHT = 1.3 + 18.39;
-            const Double FONT_SIZE = 9;
+            double positionLast;
             const Double MARGIN_HOR = 0.04;
             const Double MARGIN_VER = 0.04;
             const Double FRAME_WIDTH = 0.015;
@@ -281,12 +279,13 @@ namespace EasyInvoice
                 Table.DrawRow();
             }
 
-            var x = Table.TableArea.Height;
+            positionLast = Table.RowPosition[Table.RowNumber]- Table.RowHeight; ;
+            
             Table.Close();
 
             Contents.SaveGraphicsState();            
             Contents.RestoreGraphicsState();
-            return;
+            return positionLast;
         }
     }    
 }
