@@ -29,7 +29,6 @@ namespace EasyInvoice
         {
             InitializeComponent();
             DataTable dt = new DataTable();
-            // dt.Columns.Add("Lp.");
             dt.Columns.Add("Towar / usługa", typeof(string));
             dt.Columns.Add("J.m.");
             dt.Columns.Add("Ilość", typeof(Int32));
@@ -38,24 +37,14 @@ namespace EasyInvoice
             dt.Columns.Add("Stawka VAT");
             dt.Columns.Add("Kwota VAT", typeof(double));
             dt.Columns.Add("Wartość Brutto", typeof(double));
-            //DataRow row = dt.NewRow();
-
-            //for (int i = 0; i<dt.Columns.Count; i++)
-            //{
-            //    row[i] = i;
-            //}
-            //dt.Rows.Add(row);
-            // dt.Rows.Add();
-
+            
             xDG.DataContext = dt.DefaultView;
             xcv = dt;
-            //   xDG.DataItems.Add(new ComboBox());
         }
 
         private void XDG1_Loaded(object sender, RoutedEventArgs e)
         {
             PopulateCombo(xDG);
-            // this.xDG.AddNewRowSettings.AllowAddNewRow = Infragistics.Controls.Grids.AddNewRowLocation.b;
         }
 
         public void PopulateCombo(XamDataGrid grid)
@@ -88,25 +77,7 @@ namespace EasyInvoice
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            //  xDG.DefaultFieldLayout.ac
-            var x = xcv.Rows.Count;
-
-           
-            MessageBox.Show(GridWithDataGrid.Height.ToString());
-
-            
+            MakePdf a = new MakePdf();                      
         }
-
-        private void xDG_InitializeRecord(object sender, Infragistics.Windows.DataPresenter.Events.InitializeRecordEventArgs e)
-        {
-
-        }
-
-        private void xDG_RecordAdded(object sender, Infragistics.Windows.DataPresenter.Events.RecordAddedEventArgs e)
-        {
-            
-        }
-
-    }
-    
+    }    
 }
