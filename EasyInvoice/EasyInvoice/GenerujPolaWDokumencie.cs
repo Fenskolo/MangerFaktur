@@ -87,6 +87,7 @@ namespace EasyInvoice
             position = FirstTable(h.GetSprzeNaby(), 1.3, 30, 8, position - 1.4, 20, true);
 
             position=TabelaDaneFaktura(1.3, position-1.4, 10.3, 19.7, 9);
+            SUM(12.03, position-0.01, 10.3, 19.7, 9);
             document.CreateFile();
 
             return;
@@ -245,7 +246,6 @@ namespace EasyInvoice
            
             Table.Header[0].Value = "Lp.";
             Table.Header[1].Value = "Towar/ usługa";
-            Table.Header[1].Style.Alignment = ContentAlignment.TopCenter;
             Table.Header[2].Value = "J.m.";
             Table.Header[3].Value = "Ilość";
             Table.Header[4].Value = "Cena Netto";
@@ -256,7 +256,7 @@ namespace EasyInvoice
             
             Table.DefaultCellStyle.Margin = Margin;
             
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 9; i++)
             {
                 Table.Cell[i].Style = Table.CellStyle;
                 Table.Cell[i].Style.MultiLineText = false;
@@ -284,6 +284,73 @@ namespace EasyInvoice
             Table.Close();
 
             Contents.SaveGraphicsState();            
+            Contents.RestoreGraphicsState();
+            return positionLast;
+        }
+
+        private double SUM(double LEFT, double TOP, double BOTTOM, double RIGHT, double FONT_SIZE)
+        {
+            double positionLast;
+            const Double MARGIN_HOR = 0.04;
+            const Double MARGIN_VER = 0.04;
+            const Double FRAME_WIDTH = 0.015;
+
+            Double colWidthType = ArialNormal.TextWidth(FONT_SIZE, "Overseas Student Account") + 2.0 * MARGIN_HOR;
+            Double colWidthCcy = ArialNormal.TextWidth(FONT_SIZE, "AUD") + 2.0 * MARGIN_HOR;
+            Double colWidthLongNumber = ArialNormal.TextWidth(FONT_SIZE, "  International Transfer  ") + 2.0 * MARGIN_HOR;
+            Double colWidthShortNumber = ArialNormal.TextWidth(FONT_SIZE, "  Domestic Transfer  ") + 2.0 * MARGIN_HOR;
+            Double asasa = ArialNormal.TextWidth(FONT_SIZE, "  assadsa  ") + 2.0 * MARGIN_HOR;
+
+            PdfTable Table = new PdfTable(Page, Contents, ArialNormal, FONT_SIZE)
+            {
+                TableArea = new PdfRectangle(LEFT, BOTTOM, RIGHT, TOP)
+            };
+            Table.SetColumnWidth(new Double[] { 3.5, 3, 3, 3 });
+
+            Table.Borders.ClearAllBorders();
+            Table.Borders.SetAllBorders(FRAME_WIDTH, FRAME_WIDTH);
+
+
+            PdfRectangle Margin = new PdfRectangle(MARGIN_HOR, MARGIN_VER);
+
+            Table.DefaultHeaderStyle.Margin = Margin;
+            Table.DefaultHeaderStyle.BackgroundColor = Color.LightGray;
+            Table.DefaultHeaderStyle.Font = ArialBold;
+            Table.DefaultHeaderStyle.MultiLineText = true;
+            Table.DefaultHeaderStyle.Alignment = ContentAlignment.TopCenter;
+
+            Table.Header[0].Value = "1";
+            Table.Header[1].Value = "2";
+            Table.Header[2].Value = "3";
+            Table.Header[3].Value = "4";
+            
+
+            Table.DefaultCellStyle.Margin = Margin;
+
+            for (int i = 0; i < 4; i++)
+            {
+                Table.Cell[i].Style = Table.CellStyle;
+                Table.Cell[i].Style.MultiLineText = false;
+                Table.Cell[i].Style.Alignment = ContentAlignment.MiddleCenter;
+                Table.CellStyle.TextDrawStyle = DrawStyle.Superscript;
+            }
+
+            foreach (var item in GetListTable())
+            {
+                
+
+                Table.Cell[0].Value = item.WartoscN;
+                Table.Cell[1].Value = item.StawkaV;
+                Table.Cell[2].Value = item.KwotaV;
+                Table.Cell[3].Value = item.WartoscB;
+                Table.DrawRow();
+            }
+
+            positionLast = Table.RowPosition[Table.RowNumber] - Table.RowHeight; ;
+
+            Table.Close();
+
+            Contents.SaveGraphicsState();
             Contents.RestoreGraphicsState();
             return positionLast;
         }

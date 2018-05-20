@@ -63,8 +63,7 @@ namespace EasyInvoice
             {
                 new DaneTabela(){Lewa = lMiejsce, Prawa = miejsce},
                 new DaneTabela(){Lewa = lDataWys, Prawa = dataWyst},
-                new DaneTabela(){Lewa = lDataSprz, Prawa = dataSprzed},
-                new DaneTabela(){Lewa = terminZap, Prawa = formaPlat}
+                new DaneTabela(){Lewa = lDataSprz, Prawa = dataSprzed}
             };
 
             return dt;
