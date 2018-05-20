@@ -61,21 +61,18 @@ namespace EasyInvoice
 
         public GenerujPolaWDokumencie(string FileName)
         {
-            // Create an empty pdf document in A4 and measured in cm
             bool landscape = false;
             document = new PdfDocument(PaperType.A4, landscape, UnitOfMeasure.cm, FileName)
             {
                 Debug = false
             };
-
-            // Write Pdf info
+            
             PdfInfo Info = PdfInfo.CreatePdfInfo(document);
             Info.Title("Faktura");
             Info.Author("TZ");
             Info.Keywords("keyword");
             Info.Subject("Temat");
-
-            // define font resources
+            
             DefineFontResources();
             Page = new PdfPage(document);
             Contents = new PdfContents(Page);
@@ -112,13 +109,10 @@ namespace EasyInvoice
 
         private static void IdFaktury()
         {
-            // save graphics state
             Contents.SaveGraphicsState();
-
-            // set coordinate
+            
             Contents.Translate(1.3, 21.0);
-
-            // Define constants
+            
             const Double Width = 60;
             const Double Height = 8;
             const Double FontSize = 40;
@@ -143,25 +137,20 @@ namespace EasyInvoice
             Double FONT_SIZE = fontSize;
             const Double MARGIN_HOR = 0.04;
             const Double MARGIN_VER = 0.04;
-
-            // column widths
+            
             Double colWidthTitle = ArialNormal.TextWidth(FONT_SIZE, dt[0].Lewa) + 2.0 * MARGIN_HOR;
             Double colWidthDetail = ArialNormal.TextWidth(FONT_SIZE, dt[0].Prawa) + 2.0 * MARGIN_HOR;
-
-            // define table
+            
             PdfTable Table = new PdfTable(Page, Contents, ArialNormal, FONT_SIZE)
             {
                 TableArea = new PdfRectangle(LEFT, BOTTOM, RIGHT, TOP)
             };
             Table.SetColumnWidth(new Double[] { colWidthTitle, colWidthDetail });
-
-            // define borders
+            
             Table.Borders.ClearAllBorders();
-
-            // margin
+            
             PdfRectangle Margin = new PdfRectangle(MARGIN_HOR, MARGIN_VER);
-
-            // default header style
+            
             Table.DefaultHeaderStyle.Margin = Margin;
             Table.DefaultHeaderStyle.BackgroundColor = Color.White;
             Table.DefaultHeaderStyle.Alignment = ContentAlignment.MiddleLeft;
@@ -214,18 +203,15 @@ namespace EasyInvoice
             //}
 
             Table.Close();
-
-            // save graphics state
+            
             Contents.SaveGraphicsState();
-
-            // restore graphics state
+            
             Contents.RestoreGraphicsState();
             return;
         }
 
         private void TabelaDaneFaktura()
         {
-            // Define constants to make the code readable
             const Double LEFT = 1.3;
             const Double TOP = 20;
             const Double BOTTOM = 10.3;
@@ -234,45 +220,31 @@ namespace EasyInvoice
             const Double MARGIN_HOR = 0.04;
             const Double MARGIN_VER = 0.04;
             const Double FRAME_WIDTH = 0.015;
-
-            // column widths
+            
             Double colWidthType = ArialNormal.TextWidth(FONT_SIZE, "Overseas Student Account") + 2.0 * MARGIN_HOR;
             Double colWidthCcy = ArialNormal.TextWidth(FONT_SIZE, "AUD") + 2.0 * MARGIN_HOR;
             Double colWidthLongNumber = ArialNormal.TextWidth(FONT_SIZE, "  International Transfer  ") + 2.0 * MARGIN_HOR;
             Double colWidthShortNumber = ArialNormal.TextWidth(FONT_SIZE, "  Domestic Transfer  ") + 2.0 * MARGIN_HOR;
             Double asasa = ArialNormal.TextWidth(FONT_SIZE, "  assadsa  ") + 2.0 * MARGIN_HOR;
-
-
-            // define table
+            
             PdfTable Table = new PdfTable(Page, Contents, ArialNormal, FONT_SIZE)
             {
                 TableArea = new PdfRectangle(LEFT, BOTTOM, RIGHT, TOP)
             };
             Table.SetColumnWidth(new Double[] { 1, 10, 1.5, 2.5, 2.5, 3.5, 3, 3, 3 });
-
-            // define borders
+            
             Table.Borders.ClearAllBorders();
-            // Table.Borders.SetCellHorBorder(FRAME_WIDTH);
             Table.Borders.SetAllBorders(FRAME_WIDTH, FRAME_WIDTH);
-            //   Table.Borders.SetFrame(FRAME_WIDTH);
-            //   Table.Borders.SetHeaderHorBorder(FRAME_WIDTH);
-            //  Table.Borders.SetTopBorder(FRAME_WIDTH);
-            //  Table.Borders.SetBottomBorder(FRAME_WIDTH);
 
-
-            // margin
+           
             PdfRectangle Margin = new PdfRectangle(MARGIN_HOR, MARGIN_VER);
-
-            // default header style
+            
             Table.DefaultHeaderStyle.Margin = Margin;
             Table.DefaultHeaderStyle.BackgroundColor = Color.LightGray;
-            //  Table.DefaultHeaderStyle.Alignment = ContentAlignment.MiddleCenter;
             Table.DefaultHeaderStyle.Font = ArialBold;
             Table.DefaultHeaderStyle.MultiLineText = true;
             Table.DefaultHeaderStyle.Alignment = ContentAlignment.TopCenter;
-            //  Table.DefaultCellStyle.
-
-            // table heading
+           
             Table.Header[0].Value = "Lp.";
             Table.Header[1].Value = "Towar/ usługa";
             Table.Header[1].Style.Alignment = ContentAlignment.TopCenter;
@@ -283,11 +255,9 @@ namespace EasyInvoice
             Table.Header[6].Value = "Stawka VAT";
             Table.Header[7].Value = "Kwota VAT";
             Table.Header[8].Value = "Wartość brutto";
-
-            // account type style
+            
             Table.DefaultCellStyle.Margin = Margin;
-
-            // description column style
+            
             for (int i = 0; i < 4; i++)
             {
                 Table.Cell[i].Style = Table.CellStyle;
@@ -295,13 +265,9 @@ namespace EasyInvoice
                 Table.Cell[i].Style.Alignment = ContentAlignment.MiddleCenter;
                 Table.CellStyle.TextDrawStyle = DrawStyle.Superscript;
             }
-
-            List<DaneUsluga> l = GetListTable();
-            // loop for all items
-            // foreach (Account account in accountList)
-            foreach (var item in l)
+            
+            foreach (var item in GetListTable())
             {
-                //int i = 0;
                 Table.Cell[0].Value = item.LpTabela;
                 Table.Cell[1].Value = item.OpisTabela;
                 Table.Cell[2].Value = item.Rodzajilosc;
@@ -318,10 +284,7 @@ namespace EasyInvoice
             var x = Table.TableArea.Height;
             Table.Close();
 
-            // save graphics state
-            Contents.SaveGraphicsState();
-
-            // restore graphics state
+            Contents.SaveGraphicsState();            
             Contents.RestoreGraphicsState();
             return;
         }
