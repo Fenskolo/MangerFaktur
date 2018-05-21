@@ -36,6 +36,123 @@ namespace EasyInvoice
 
             return dt;
         }
+
+        public List<DaneTabela> NrBankowy()
+        {
+            List<DaneTabela> dt = new List<DaneTabela>()
+            {
+                new DaneTabela{ Lewa= "Numer rachunku bankowego: ", Prawa= "12 4444 3333 5555 3333 7777 9999 mBank" }
+            };
+
+            return dt;
+        }
+
+        public List<DaneTabela> GetZapDoZap()
+        {
+            List<DaneTabela> dt = new List<DaneTabela>()
+            {
+                new DaneTabela{ Lewa= "Zapłacono:", Prawa= "0,00 PLN" },
+                new DaneTabela{ Lewa= "Do zapłaty", Prawa= getSum()[0].WartoscB.ToString() + " PLN"}
+            };
+
+            return dt;
+        }
+
+        public List<DaneTabela> Razem()
+        {
+            List<DaneTabela> dt = new List<DaneTabela>()
+            {
+                new DaneTabela{ Lewa= "Razem:", Prawa= getSum()[0].WartoscB.ToString() + " PLN" }
+            };
+
+            return dt;
+        }
+
+        public List<DaneTabela> RazemSlownie()
+        {
+            LiczbyNaSlowaNET.NumberToTextOptions nTTO = new LiczbyNaSlowaNET.NumberToTextOptions()
+            {
+                Currency = LiczbyNaSlowaNET.Currency.PLN,
+                Stems = true
+            };
+
+            string Slowo = LiczbyNaSlowaNET.NumberToText.Convert(Convert.ToDecimal(getSum()[0].WartoscB), nTTO);
+            List<DaneTabela> dt = new List<DaneTabela>()
+            {
+                new DaneTabela{ Lewa= "Słownie:", Prawa= Slowo }
+            };
+
+            return dt;
+        }
+
+        public List<DaneUsluga> getSum()
+        {
+            List<DaneUsluga> du = new List<DaneUsluga>();
+            var x = GetListTable().Select(z => z.StawkaV).Distinct().ToList();
+
+            DaneUsluga d1 = new DaneUsluga();
+            foreach(var item in GetListTable())
+            {
+                d1.WartoscN += item.WartoscN;
+                d1.KwotaV += item.KwotaV;
+                d1.WartoscB += item.WartoscB;
+                d1.StawkaV = "-";
+            }
+            du.Add(d1);
+
+            foreach(var stri in x)
+            {
+                DaneUsluga d2 = new DaneUsluga();
+                foreach (var item in GetListTable())
+                {
+                    if(stri==item.StawkaV)
+                    {
+                        d2.WartoscN += item.WartoscN;
+                        d2.KwotaV += item.KwotaV;
+                        d2.WartoscB += item.WartoscB;
+                        d2.StawkaV = stri;
+                    }
+                }
+                du.Add(d2);
+            }
+            
+            return du;
+        }
+        
+
+        public List<DaneUsluga> GetListTable()
+        {
+            List<DaneUsluga> list = new List<DaneUsluga>();
+            DaneUsluga d = new DaneUsluga()
+            {
+                LpTabela = 1,
+                OpisTabela = "Usługi Programistyczne",
+                Rodzajilosc = "szt.",
+                Ilosc = 160,
+                CenaN = 10
+            };
+            d.WartoscN = d.Ilosc * d.CenaN;
+            d.StawkaV = "23%";
+            d.KwotaV = d.WartoscN * 0.23;
+            d.WartoscB = d.KwotaV + d.WartoscN;
+            list.Add(d);
+            DaneUsluga d1 = new DaneUsluga()
+            {
+                LpTabela = 2,
+                OpisTabela = "konsultacje",
+                Rodzajilosc = "szt.",
+                Ilosc = 10,
+                CenaN = 10
+            };
+            d1.WartoscN = d1.Ilosc * d1.CenaN;
+            d1.StawkaV = "7%";
+            d1.KwotaV = d1.WartoscN * 0.7;
+            d1.WartoscB = d1.KwotaV + d1.WartoscN;
+
+            list.Add(d1);
+
+            return list;
+        }
     }
 
     public class DaneNaglowek
@@ -79,7 +196,6 @@ namespace EasyInvoice
 
             return dt;
         }
-
     }
 
     [DataContract]
