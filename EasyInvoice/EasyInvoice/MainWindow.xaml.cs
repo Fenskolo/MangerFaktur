@@ -28,18 +28,10 @@ namespace EasyInvoice
         public MainWindow()
         {
             InitializeComponent();
-            DataTable dt = new DataTable();
-            dt.Columns.Add("Towar / usługa", typeof(string));
-            dt.Columns.Add("J.m.");
-            dt.Columns.Add("Ilość", typeof(Int32));
-            dt.Columns.Add("Cena Netto", typeof(double));
-            dt.Columns.Add("Wartość netto", typeof(double));
-            dt.Columns.Add("Stawka VAT");
-            dt.Columns.Add("Kwota VAT", typeof(double));
-            dt.Columns.Add("Wartość Brutto", typeof(double));
+            SingleFakturaProperty sf = new SingleFakturaProperty();          
             
-            xDG.DataContext = dt.DefaultView;
-            xcv = dt;
+            xDG.DataContext = sf.Dt.DefaultView;
+            xcv = sf.Dt;
         }
 
         private void XDG1_Loaded(object sender, RoutedEventArgs e)
@@ -49,29 +41,11 @@ namespace EasyInvoice
 
         public void PopulateCombo(XamDataGrid grid)
         {
-            ComboBoxField cbJ = grid.DefaultFieldLayout.Fields["J.m."] as ComboBoxField;
-            //  DataView dv = grid.DataContext as DataView;
-
-            List<string> nameList = new List<string>
-            {
-                "szt.",
-                "godz.",
-                "m2",
-                "op.",
-                "mc.",
-                "ton",
-                "km.",
-                "m3."
-            };
+            ComboBoxField cbJ = grid.DefaultFieldLayout.Fields["J.m."] as ComboBoxField;            
             ComboBoxField cbV = grid.DefaultFieldLayout.Fields["Stawka VAT"] as ComboBoxField;
-
-
-            List<string> stawkaList = new List<string>
-            {
-                "23%"
-            };
-            cbJ.ItemsSource = nameList;
-            cbV.ItemsSource = stawkaList;
+            
+            cbJ.ItemsSource = Property.Instance.NameList;
+            cbV.ItemsSource = Property.Instance.StawkaList;
 
         }
 
