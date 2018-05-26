@@ -24,12 +24,11 @@ namespace EasyInvoice
     /// </summary>
     public partial class MainWindow : Window
     {
+        private SingleFakturaProperty sf;
         public MainWindow()
         {
             InitializeComponent();
-            SingleFakturaProperty sf = new SingleFakturaProperty();          
-            
-            xDG.DataContext = sf.Dt.DefaultView;
+           
 
             lblFaktura.Content = DictionaryMain.labelNrFaktury;
             lblMiejsceWystawienia.Content = DictionaryMain.labelMiejsceWystawienia;
@@ -50,11 +49,23 @@ namespace EasyInvoice
 
         public void PopulateCombo(XamDataGrid grid)
         {
-            ComboBoxField cbJ = grid.DefaultFieldLayout.Fields[DictionaryMain.kolumnaJM] as ComboBoxField;            
-            ComboBoxField cbV = grid.DefaultFieldLayout.Fields[DictionaryMain.kolumnaStawkaVat] as ComboBoxField;
-            
-            cbJ.ItemsSource = Property.Instance.NameList;
-            cbV.ItemsSource = Property.Instance.StawkaList;
+            try
+            {
+
+                SingleFakturaProperty sf = new SingleFakturaProperty();
+                xDG.DataContext = sf.Dt.DefaultView;
+                ComboBoxField cbJ = (ComboBoxField)grid.DefaultFieldLayout.Fields[DictionaryMain.kolumnaJM];
+                ComboBoxField cbV = grid.DefaultFieldLayout.Fields[DictionaryMain.kolumnaStawkaVat] as ComboBoxField;
+
+                cbJ.ItemsSource = Property.Instance.NameList;
+                cbV.ItemsSource = Property.Instance.StawkaList;
+
+                
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message + Environment.NewLine + ex.StackTrace);
+            }
 
         }
 
