@@ -80,7 +80,7 @@ namespace EasyInvoice
         public const string labelHeaderNabywca = "Nabywca i płatnik";
         public const string labelNazwaSprzedawcaNabywca = "Nazwa firmy:";
         public const string labelUlicaSprzedawcaNabywca = "Ulica:";
-        public const string labelKodMiejsowoscSprzedawcaNabywca = "Kod poczt. i miejscowość:";
+        public const string labelKodMiejsowoscSprzedawcaNabywca = "Kod p. i miejscowość:";
         public const string labelNIPSprzedawcaNabywca = "NIP:";
         public const string labelInnerSprzedawcaNabywca = "Inne:";
         public const string labelNumerRachunku = "Numer rachunku bankowego: ";
@@ -95,14 +95,14 @@ namespace EasyInvoice
         ///Tabela
         ///
         public const string kolumnaLp= "Lp.";
-        public const string kolumnaTowar= "Towar/ usługa";
+        public const string kolumnaTowar= "Towar / usługa";
         public const string kolumnaJM= "J.m.";
         public const string kolumnaIlosc= "Ilość";
         public const string kolumnaCenaNetto= "Cena Netto";
         public const string kolumnaWartoscNetto= "Wartość netto";
         public const string kolumnaStawkaVat= "Stawka VAT";
         public const string kolumnaKwotaVat= "Kwota VAT";
-        public const string kolumnaWartoscBrutto= "Wartość brutto";
+        public const string kolumnaWartoscBrutto= "Wartość Brutto";
 
 
         public const string summaRazem = "Razem";

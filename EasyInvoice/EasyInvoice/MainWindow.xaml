@@ -48,11 +48,11 @@
                         </Grid.ColumnDefinitions>
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="15*"/>
+                                <RowDefinition Height="17*"/>
                                 <RowDefinition Height="85*"/>
                             </Grid.RowDefinitions>
                             <Label x:Name="lblSprzedawca" Content="Label" Margin="0" HorizontalContentAlignment="Center" HorizontalAlignment="Center"/>
-                            <Grid Margin="0" Grid.Row="1">
+                            <Grid x:Name="Sprzedawca" Margin="0" Grid.Row="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                     <RowDefinition/>
@@ -61,28 +61,28 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="10*"/>
+                                    <ColumnDefinition Width="40*"/>
                                     <ColumnDefinition Width="90*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label x:Name="lblSprzedawcaNazwa" Content="Label" Margin="0" Grid.ColumnSpan="2"/>
-                                <Label Content="Label" Margin="0"  Grid.Row="1" Grid.ColumnSpan="2" />
-                                <Label Content="Label" Margin="0"  Grid.Row="2" Grid.ColumnSpan="2" />
-                                <Label Content="Label" Margin="0" Grid.Row="3" Grid.ColumnSpan="2"/>
-                                <Label Content="Label" Margin="0" Grid.Row="4" Grid.ColumnSpan="2"/>
-                                <TextBox Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="TextBox"/>
-                                <TextBox Grid.Column="2" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="TextBox"/>
-                                <TextBox Grid.Column="2" Margin="0" Grid.Row="2" TextWrapping="Wrap" Text="TextBox"/>
-                                <TextBox Grid.Column="2" Margin="0" Grid.Row="3" TextWrapping="Wrap" Text="TextBox"/>
-                                <TextBox Grid.Column="2" Margin="0" Grid.Row="4" TextWrapping="Wrap" Text="TextBox"/>
+                                <Label x:Name="lblSprzedawcaUlica" Content="Label" Margin="0"  Grid.Row="1" Grid.ColumnSpan="2" />
+                                <Label x:Name="lblSprzedawcaKodMiasto" Content="Label" Margin="0"  Grid.Row="2" Grid.ColumnSpan="2" />
+                                <Label x:Name="lblSprzedawcaNip" Content="Label" Margin="0" Grid.Row="3" Grid.ColumnSpan="2"/>
+                                <Label x:Name="lblSprzedawcaInne" Content="Label" Margin="0" Grid.Row="4" Grid.ColumnSpan="2"/>
+                                <TextBox Name="txtSprzedawcaNazwa" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding NazwaFirmy}"/>
+                                <TextBox Name="txtSprzedawcaUlica" Grid.Column="2" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding UlicaFirmy}"/>
+                                <TextBox Name="txtSprzedawcaKodMiasto" Grid.Column="2" Margin="0" Grid.Row="2" TextWrapping="Wrap" Text="{Binding MiastoFirmy}"/>
+                                <TextBox Name="txtSprzedawcaNip" Grid.Column="2" Margin="0" Grid.Row="3" TextWrapping="Wrap" Text="{Binding NipFirmy}"/>
+                                <TextBox Name="txtSprzedawcaInne" Grid.Column="2" Margin="0" Grid.Row="4" TextWrapping="Wrap" Text="{Binding InneFirmy}"/>
                             </Grid>
                         </Grid>
                         <Grid Grid.Column="1" Margin="0">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="15*"/>
+                                <RowDefinition Height="17*"/>
                                 <RowDefinition Height="85*"/>
                             </Grid.RowDefinitions>
                             <Label x:Name="lblNabywca" Content="Label" Margin="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center"/>
-                            <Grid Margin="0" Grid.Row="1">
+                            <Grid x:Name="Nabywca" Margin="0" Grid.Row="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                     <RowDefinition/>
@@ -91,19 +91,19 @@
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="10*"/>
+                                    <ColumnDefinition Width="40*"/>
                                     <ColumnDefinition Width="90*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label x:Name="lblNabywcaNazwa" Content="Label" Margin="0" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
-                                <Label Content="Label" Margin="0"  Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" />
-                                <Label Content="Label" Margin="0"  Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="2" />
-                                <Label Content="Label" Margin="0" Grid.Row="3" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
-                                <Label Content="Label" Margin="0" Grid.Row="4" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
-                                <TextBox Grid.Column="1" Margin="0" TextWrapping="Wrap" Text="TextBox"/>
-                                <TextBox Grid.Column="1" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="TextBox"/>
-                                <TextBox Grid.Column="1" Margin="0" Grid.Row="2" TextWrapping="Wrap" Text="TextBox"/>
-                                <TextBox Grid.Column="1" Margin="0" Grid.Row="3" TextWrapping="Wrap" Text="TextBox"/>
-                                <TextBox Grid.Column="1" Margin="0" Grid.Row="4" TextWrapping="Wrap" Text="TextBox"/>
+                                <Label x:Name="lblNabywcaUlica" Content="Label" Margin="0"  Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" />
+                                <Label x:Name="lblNabywcaKodMiasto" Content="Label" Margin="0"  Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="2" />
+                                <Label x:Name="lblNabywcaNip" Content="Label" Margin="0" Grid.Row="3" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+                                <Label x:Name="lblNabywcaInne" Content="Label" Margin="0" Grid.Row="4" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+                                <TextBox Name="txtNabywcaNazwa" Grid.Column="1" Margin="0" TextWrapping="Wrap" Text="{Binding NazwaFirmy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Name="txtNabywcaUlica" Grid.Column="1" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding UlicaFirmy}"/>
+                                <TextBox Name="txtNabywcaKodMiasto" Grid.Column="1" Margin="0" Grid.Row="2" TextWrapping="Wrap" Text="{Binding MiastoFirmy}"/>
+                                <TextBox Name="txtNabywcaNip" Grid.Column="1" Margin="0" Grid.Row="3" TextWrapping="Wrap" Text="{Binding NipFirmy}"/>
+                                <TextBox Name="txtNabywcaInne" Grid.Column="1" Margin="0" Grid.Row="4" TextWrapping="Wrap" Text="{Binding InneFirmy}"/>
                             </Grid>
                         </Grid>
 
@@ -149,22 +149,22 @@
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="10*"/>
+                                <ColumnDefinition Width="18*"/>
                                 <ColumnDefinition Width="20*"/>
-                                <ColumnDefinition Width="10*"/>
+                                <ColumnDefinition Width="18*"/>
                                 <ColumnDefinition Width="20*"/>
-                                <ColumnDefinition Width="40*"/>
+                                <ColumnDefinition Width="30*"/>
                             </Grid.ColumnDefinitions>
                             <Label x:Name="lblMiejsceWystawienia" Content="Label" Margin="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
                             <Label x:Name="lblDataWystawienia" Content="Label" Margin="0" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
                             <Label x:Name="lblDataSprzedazy" Content="Label" Margin="0" Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
                             <Label x:Name="lblTerminZaplaty" Content="Label" Grid.Column="2" Margin="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
                             <Label x:Name="lblFormaPlatnosc" Content="Label" Grid.Column="2" Margin="0" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-                            <TextBox Grid.Column="1" Margin="0" TextWrapping="Wrap" Text="TextBox"/>
-                            <TextBox Grid.Column="1" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="TextBox"/>
-                            <TextBox Grid.Column="1" Margin="0" Grid.Row="2" TextWrapping="Wrap" Text="TextBox"/>
-                            <TextBox Grid.Column="3" Margin="0" TextWrapping="Wrap" Text="TextBox"/>
-                            <TextBox Grid.Column="3" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="TextBox"/>
+                            <TextBox Grid.Column="1" Margin="0" TextWrapping="Wrap" Text="{Binding Mode=OneTime}"/>
+                            <TextBox Grid.Column="1" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding Mode=OneWay}"/>
+                            <TextBox Grid.Column="1" Margin="0" Grid.Row="2" TextWrapping="Wrap" Text="{Binding Mode=OneWay}"/>
+                            <TextBox Grid.Column="3" Margin="0" TextWrapping="Wrap" Text="{Binding Mode=OneWay}"/>
+                            <TextBox Grid.Column="3" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding Mode=OneWay}"/>
                         </Grid>
                     </Grid>
                     <Grid x:Name="GridWithDataGrid" Margin="0,315,0,0" VerticalAlignment="Top">

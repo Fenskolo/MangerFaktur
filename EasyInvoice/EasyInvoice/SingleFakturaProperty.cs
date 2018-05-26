@@ -10,6 +10,8 @@ namespace EasyInvoice
     class SingleFakturaProperty
     {
         private DataTable _dt;
+        private FirmaData _sprzedawca;
+        private FirmaData _nabywca;
 
 
         public DataTable Dt
@@ -33,6 +35,35 @@ namespace EasyInvoice
             }
             
             set => _dt = value;
+        }
+
+        public FirmaData Sprzedawca
+        {
+            get
+            {
+                if(_sprzedawca ==null)
+                {
+                    _sprzedawca = new FirmaData();
+                }
+
+                return _sprzedawca;
+            }
+            
+            set => _sprzedawca = value;
+        }
+        public FirmaData Nabywca
+        {
+            get
+            {
+                if (_nabywca == null)
+                {
+                    _nabywca = new FirmaData();
+                }
+
+                return _nabywca;
+            }
+
+            set => _nabywca = value;
         }
     }
 }

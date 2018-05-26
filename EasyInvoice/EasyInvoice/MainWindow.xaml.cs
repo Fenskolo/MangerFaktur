@@ -24,11 +24,14 @@ namespace EasyInvoice
     /// </summary>
     public partial class MainWindow : Window
     {
-        private SingleFakturaProperty sf;
+        private SingleFakturaProperty sf;        
+
         public MainWindow()
         {
             InitializeComponent();
-           
+
+            sf= new SingleFakturaProperty();
+            xDG.DataContext = sf.Dt.DefaultView;
 
             lblFaktura.Content = DictionaryMain.labelNrFaktury;
             lblMiejsceWystawienia.Content = DictionaryMain.labelMiejsceWystawienia;
@@ -40,6 +43,19 @@ namespace EasyInvoice
             lblNabywca.Content = DictionaryMain.labelHeaderNabywca;
             lblSprzedawcaNazwa.Content = DictionaryMain.labelNazwaSprzedawcaNabywca;
             lblNabywcaNazwa.Content = DictionaryMain.labelNazwaSprzedawcaNabywca;
+
+            lblSprzedawcaUlica.Content = DictionaryMain.labelUlicaSprzedawcaNabywca;
+            lblSprzedawcaKodMiasto.Content = DictionaryMain.labelKodMiejsowoscSprzedawcaNabywca;
+            lblSprzedawcaNip.Content = DictionaryMain.labelNIPSprzedawcaNabywca;
+            lblSprzedawcaInne.Content = DictionaryMain.labelInnerSprzedawcaNabywca;
+            lblNabywcaUlica.Content = DictionaryMain.labelUlicaSprzedawcaNabywca;
+            lblNabywcaKodMiasto.Content = DictionaryMain.labelKodMiejsowoscSprzedawcaNabywca;
+            lblNabywcaNip.Content = DictionaryMain.labelNIPSprzedawcaNabywca;
+            lblNabywcaInne.Content = DictionaryMain.labelInnerSprzedawcaNabywca;
+
+            Nabywca.DataContext = sf.Nabywca;
+            Sprzedawca.DataContext = sf.Sprzedawca;
+
         }
 
         private void XDG1_Loaded(object sender, RoutedEventArgs e)
@@ -52,10 +68,9 @@ namespace EasyInvoice
             try
             {
 
-                SingleFakturaProperty sf = new SingleFakturaProperty();
-                xDG.DataContext = sf.Dt.DefaultView;
+                
                 ComboBoxField cbJ = (ComboBoxField)grid.DefaultFieldLayout.Fields[DictionaryMain.kolumnaJM];
-                ComboBoxField cbV = grid.DefaultFieldLayout.Fields[DictionaryMain.kolumnaStawkaVat] as ComboBoxField;
+                ComboBoxField cbV = (ComboBoxField)grid.DefaultFieldLayout.Fields[DictionaryMain.kolumnaStawkaVat];
 
                 cbJ.ItemsSource = Property.Instance.NameList;
                 cbV.ItemsSource = Property.Instance.StawkaList;
@@ -71,7 +86,10 @@ namespace EasyInvoice
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            MakePdf a = new MakePdf();                      
+           sf.Nabywca.NazwaFirmy = "|dsaads";
+         //   Nabywca.DataContext = sf.Nabywca;
+            MessageBox.Show(sf.Nabywca.NazwaFirmy+sf.Sprzedawca.NazwaFirmy);
+          //  MakePdf a = new MakePdf();                      
         }
     }    
 }
