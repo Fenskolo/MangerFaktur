@@ -70,9 +70,9 @@ namespace EasyInvoice
             WidthRow = ArialNormal.TextWidth(8, hData.RazemSlownie()[0].Lewa + hData.RazemSlownie()[0].Prawa);
             lastPosition = CreateTable(hData.RazemSlownie(), 19.7 - WidthRow, 19.7, 8, lastPosition, lastPosition - 10, false, ContentAlignment.MiddleRight);
 
-            RamkiEnd(1.3, lastPosition - 1.4, lastPosition - 5, 9, 7, "Podpis osoby upoważnionej do wystawienia faktury");
+            RamkiEnd(1.3, lastPosition - 1.4, lastPosition - 5, 9, 7, DictionaryMain.labelPodpisWystawiania);
 
-            RamkiEnd(12, lastPosition - 1.4, lastPosition - 5, 19.7, 7,"Podpis osoby upoważnionej do odebrania faktury");
+            RamkiEnd(12, lastPosition - 1.4, lastPosition - 5, 19.7, 7, DictionaryMain.labelPodpisOdbierania);
 
             document.CreateFile();
 
@@ -104,13 +104,13 @@ namespace EasyInvoice
             TextBox txtF = new TextBox(Width, 0);
             TextBox txtNr = new TextBox(Width, 0);
 
-            txtF.AddText(ArialNormal, FontSize, "Faktura");
+            txtF.AddText(ArialNormal, FontSize, DictionaryMain.labelNrFaktury);
             txtNr.AddText(ArialBold, FontSize, "0001/04/2018");
             
             Double PosY =  Height;
             Contents.DrawText(0.0, ref PosY, 0, 0, 0.015, 0.05, TextBoxJustify.Left, txtF);
             PosY = Height;
-            Double sizeLabel = ArialNormal.TextWidth(FontSize, "Faktura") + 1;
+            Double sizeLabel = ArialNormal.TextWidth(FontSize, DictionaryMain.labelNrFaktury) + 1;
             Contents.DrawText(sizeLabel, ref PosY, 0, 0, 0.015, 0.05, TextBoxJustify.Left, txtNr);
 
             Contents.RestoreGraphicsState();
@@ -214,15 +214,15 @@ namespace EasyInvoice
             Table.DefaultHeaderStyle.MultiLineText = true;
             Table.DefaultHeaderStyle.Alignment = ContentAlignment.TopCenter;
            
-            Table.Header[0].Value = "Lp.";
-            Table.Header[1].Value = "Towar/ usługa";
-            Table.Header[2].Value = "J.m.";
-            Table.Header[3].Value = "Ilość";
-            Table.Header[4].Value = "Cena Netto";
-            Table.Header[5].Value = "Wartość netto";
-            Table.Header[6].Value = "Stawka VAT";
-            Table.Header[7].Value = "Kwota VAT";
-            Table.Header[8].Value = "Wartość brutto";
+            Table.Header[0].Value = DictionaryMain.kolumnaLp;
+            Table.Header[1].Value = DictionaryMain.kolumnaTowar;
+            Table.Header[2].Value = DictionaryMain.kolumnaJM;
+            Table.Header[3].Value = DictionaryMain.kolumnaIlosc;
+            Table.Header[4].Value = DictionaryMain.kolumnaCenaNetto;
+            Table.Header[5].Value = DictionaryMain.kolumnaWartoscNetto;
+            Table.Header[6].Value = DictionaryMain.kolumnaStawkaVat;
+            Table.Header[7].Value = DictionaryMain.kolumnaKwotaVat;
+            Table.Header[8].Value = DictionaryMain.kolumnaWartoscBrutto;
             
             Table.DefaultCellStyle.Margin = Margin;
             
@@ -379,9 +379,9 @@ namespace EasyInvoice
             TableLeft.SetColumnWidth(new Double[] { 2.5 });
             TableLeft.DefaultHeaderStyle.Alignment = ContentAlignment.MiddleRight;
             TableLeft.DefaultHeaderStyle.BackgroundColor = Color.Transparent;
-            TableLeft.Header[0].Value = "Razem";
+            TableLeft.Header[0].Value = DictionaryMain.summaRazem;
             TableLeft.Cell[0].Style.Alignment = ContentAlignment.MiddleRight;
-            TableLeft.Cell[0].Value = "W tym";
+            TableLeft.Cell[0].Value = DictionaryMain.summaWTym;
             TableLeft.DrawRow();
             Contents.SaveGraphicsState();
             Contents.RestoreGraphicsState();

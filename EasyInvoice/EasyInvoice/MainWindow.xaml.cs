@@ -24,14 +24,23 @@ namespace EasyInvoice
     /// </summary>
     public partial class MainWindow : Window
     {
-        private DataTable xcv;
         public MainWindow()
         {
             InitializeComponent();
             SingleFakturaProperty sf = new SingleFakturaProperty();          
             
             xDG.DataContext = sf.Dt.DefaultView;
-            xcv = sf.Dt;
+
+            lblFaktura.Content = DictionaryMain.labelNrFaktury;
+            lblMiejsceWystawienia.Content = DictionaryMain.labelMiejsceWystawienia;
+            lblDataWystawienia  .Content = DictionaryMain.labelDataWystawienia;
+            lblDataSprzedazy  .Content = DictionaryMain.labelDataSprzedazy;
+            lblTerminZaplaty  .Content = DictionaryMain.labelTerminZaplaty;
+            lblFormaPlatnosc.Content = DictionaryMain.labelFormaPlatnosci;
+            lblSprzedawca.Content = DictionaryMain.labelHeaderSprzedawca;
+            lblNabywca.Content = DictionaryMain.labelHeaderNabywca;
+            lblSprzedawcaNazwa.Content = DictionaryMain.labelNazwaSprzedawcaNabywca;
+            lblNabywcaNazwa.Content = DictionaryMain.labelNazwaSprzedawcaNabywca;
         }
 
         private void XDG1_Loaded(object sender, RoutedEventArgs e)
@@ -41,8 +50,8 @@ namespace EasyInvoice
 
         public void PopulateCombo(XamDataGrid grid)
         {
-            ComboBoxField cbJ = grid.DefaultFieldLayout.Fields["J.m."] as ComboBoxField;            
-            ComboBoxField cbV = grid.DefaultFieldLayout.Fields["Stawka VAT"] as ComboBoxField;
+            ComboBoxField cbJ = grid.DefaultFieldLayout.Fields[DictionaryMain.kolumnaJM] as ComboBoxField;            
+            ComboBoxField cbV = grid.DefaultFieldLayout.Fields[DictionaryMain.kolumnaStawkaVat] as ComboBoxField;
             
             cbJ.ItemsSource = Property.Instance.NameList;
             cbV.ItemsSource = Property.Instance.StawkaList;

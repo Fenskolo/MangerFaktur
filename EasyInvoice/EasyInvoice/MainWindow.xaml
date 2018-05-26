@@ -51,7 +51,7 @@
                                 <RowDefinition Height="15*"/>
                                 <RowDefinition Height="85*"/>
                             </Grid.RowDefinitions>
-                            <Label Content="Label" Margin="0" HorizontalContentAlignment="Center" HorizontalAlignment="Center"/>
+                            <Label x:Name="lblSprzedawca" Content="Label" Margin="0" HorizontalContentAlignment="Center" HorizontalAlignment="Center"/>
                             <Grid Margin="0" Grid.Row="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
@@ -64,7 +64,7 @@
                                     <ColumnDefinition Width="10*"/>
                                     <ColumnDefinition Width="90*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Content="Label" Margin="0" Grid.ColumnSpan="2"/>
+                                <Label x:Name="lblSprzedawcaNazwa" Content="Label" Margin="0" Grid.ColumnSpan="2"/>
                                 <Label Content="Label" Margin="0"  Grid.Row="1" Grid.ColumnSpan="2" />
                                 <Label Content="Label" Margin="0"  Grid.Row="2" Grid.ColumnSpan="2" />
                                 <Label Content="Label" Margin="0" Grid.Row="3" Grid.ColumnSpan="2"/>
@@ -81,7 +81,7 @@
                                 <RowDefinition Height="15*"/>
                                 <RowDefinition Height="85*"/>
                             </Grid.RowDefinitions>
-                            <Label Content="Label" Margin="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center"/>
+                            <Label x:Name="lblNabywca" Content="Label" Margin="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center"/>
                             <Grid Margin="0" Grid.Row="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
@@ -94,7 +94,7 @@
                                     <ColumnDefinition Width="10*"/>
                                     <ColumnDefinition Width="90*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label Content="Label" Margin="0" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+                                <Label x:Name="lblNabywcaNazwa" Content="Label" Margin="0" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
                                 <Label Content="Label" Margin="0"  Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" />
                                 <Label Content="Label" Margin="0"  Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="2" />
                                 <Label Content="Label" Margin="0" Grid.Row="3" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
@@ -139,7 +139,7 @@
                                 <ColumnDefinition Width="20*"/>
                                 <ColumnDefinition Width="80*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Content="Label" Margin="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                            <Label x:Name="lblFaktura" Content="Label" Margin="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
                             <TextBox Grid.Column="1" Margin="0" TextWrapping="Wrap" Text="TextBox"/>
                         </Grid>
                         <Grid Margin="0" Grid.Row="1">
@@ -155,11 +155,11 @@
                                 <ColumnDefinition Width="20*"/>
                                 <ColumnDefinition Width="40*"/>
                             </Grid.ColumnDefinitions>
-                            <Label Content="Label" Margin="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-                            <Label Content="Label" Margin="0" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-                            <Label Content="Label" Margin="0" Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-                            <Label Content="Label" Grid.Column="2" Margin="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-                            <Label Content="Label" Grid.Column="2" Margin="0" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                            <Label x:Name="lblMiejsceWystawienia" Content="Label" Margin="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                            <Label x:Name="lblDataWystawienia" Content="Label" Margin="0" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                            <Label x:Name="lblDataSprzedazy" Content="Label" Margin="0" Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                            <Label x:Name="lblTerminZaplaty" Content="Label" Grid.Column="2" Margin="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+                            <Label x:Name="lblFormaPlatnosc" Content="Label" Grid.Column="2" Margin="0" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
                             <TextBox Grid.Column="1" Margin="0" TextWrapping="Wrap" Text="TextBox"/>
                             <TextBox Grid.Column="1" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="TextBox"/>
                             <TextBox Grid.Column="1" Margin="0" Grid.Row="2" TextWrapping="Wrap" Text="TextBox"/>

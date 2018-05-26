@@ -9,8 +9,6 @@ namespace EasyInvoice
 {
     class HelperData
     {
-        private static string lSprzed = "Sprzedawca";
-        private static string lNabyw = "Nabywca i płatnik";
         private static string SprzeNaz = "Tomasz Zysk";
         private static string NabyNaz = "Xyz";
         private static string SprzedUl = "Reja 5";
@@ -26,7 +24,7 @@ namespace EasyInvoice
         {
             List<DaneTabela> dt = new List<DaneTabela>()
             {
-                new DaneTabela{ Lewa= lSprzed, Prawa= lNabyw },
+                new DaneTabela{ Lewa= DictionaryMain.labelHeaderSprzedawca, Prawa= DictionaryMain.labelHeaderNabywca },
                 new DaneTabela{ Lewa= SprzeNaz, Prawa= NabyNaz },
                 new DaneTabela{ Lewa= SprzedUl, Prawa= NabywcaUl },
                 new DaneTabela{ Lewa= SprzedawcaKod, Prawa= NabywcaKod },
@@ -41,7 +39,7 @@ namespace EasyInvoice
         {
             List<DaneTabela> dt = new List<DaneTabela>()
             {
-                new DaneTabela{ Lewa= "Numer rachunku bankowego: ", Prawa= "12 4444 3333 5555 3333 7777 9999 mBank" }
+                new DaneTabela{ Lewa=DictionaryMain.labelNumerRachunku, Prawa= "12 4444 3333 5555 3333 7777 9999 mBank" }
             };
 
             return dt;
@@ -51,8 +49,8 @@ namespace EasyInvoice
         {
             List<DaneTabela> dt = new List<DaneTabela>()
             {
-                new DaneTabela{ Lewa= "Zapłacono:", Prawa= "0,00 PLN" },
-                new DaneTabela{ Lewa= "Do zapłaty", Prawa= getSum()[0].WartoscB.ToString() + " PLN"}
+                new DaneTabela{ Lewa= DictionaryMain.labelZaplacone, Prawa= "0,00 PLN" },
+                new DaneTabela{ Lewa= DictionaryMain.labelDoZaplaty, Prawa= getSum()[0].WartoscB.ToString() + " PLN"}
             };
 
             return dt;
@@ -62,7 +60,7 @@ namespace EasyInvoice
         {
             List<DaneTabela> dt = new List<DaneTabela>()
             {
-                new DaneTabela{ Lewa= "Razem:", Prawa= getSum()[0].WartoscB.ToString() + " PLN" }
+                new DaneTabela{ Lewa= DictionaryMain.labelRazem, Prawa= getSum()[0].WartoscB.ToString() + " PLN" }
             };
 
             return dt;
@@ -79,7 +77,7 @@ namespace EasyInvoice
             string Slowo = LiczbyNaSlowaNET.NumberToText.Convert(Convert.ToDecimal(getSum()[0].WartoscB), nTTO);
             List<DaneTabela> dt = new List<DaneTabela>()
             {
-                new DaneTabela{ Lewa= "Słownie:", Prawa= Slowo }
+                new DaneTabela{ Lewa= DictionaryMain.labelSlownie, Prawa= Slowo }
             };
 
             return dt;
@@ -157,11 +155,6 @@ namespace EasyInvoice
 
     public class DaneNaglowek
     {
-        private readonly string lMiejsce = "MIEJSCE WYSTAWIENIA:";
-        private readonly string lDataWys = "DATA WYSTAWIENIA";
-        private readonly string lDataSprz = "DATA SPRZEDAŻY";
-        private readonly string lTerminZap = "TERMIN ZAPŁATY:";
-        private readonly string lFormaPlatn = "FORMA PŁATNOŚĆ:";
         private string miejsce = "WYSOKIE MAZOWIECKIE";
         private string dataWyst = "30-04-2018";
         private string dataSprzed = "30-04-2018";
@@ -178,9 +171,9 @@ namespace EasyInvoice
         {
             List<DaneTabela> dt = new List<DaneTabela>
             {
-                new DaneTabela(){Lewa = lMiejsce, Prawa = miejsce},
-                new DaneTabela(){Lewa = lDataWys, Prawa = dataWyst},
-                new DaneTabela(){Lewa = lDataSprz, Prawa = dataSprzed}
+                new DaneTabela(){Lewa = DictionaryMain.labelMiejsceWystawienia, Prawa = miejsce},
+                new DaneTabela(){Lewa = DictionaryMain.labelDataWystawienia, Prawa = dataWyst},
+                new DaneTabela(){Lewa = DictionaryMain.labelDataSprzedazy, Prawa = dataSprzed}
             };
 
             return dt;
@@ -190,8 +183,8 @@ namespace EasyInvoice
         {
             List<DaneTabela> dt = new List<DaneTabela>
             {
-                new DaneTabela(){Lewa = lTerminZap, Prawa = terminZap},
-                new DaneTabela(){Lewa = lFormaPlatn, Prawa = formaPlat}
+                new DaneTabela(){Lewa = DictionaryMain.labelTerminZaplaty, Prawa = terminZap},
+                new DaneTabela(){Lewa = DictionaryMain.labelFormaPlatnosci, Prawa = formaPlat}
             };
 
             return dt;

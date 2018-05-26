@@ -11,6 +11,7 @@ namespace EasyInvoice
     {
         private DataTable _dt;
 
+
         public DataTable Dt
         {
             get
@@ -18,14 +19,14 @@ namespace EasyInvoice
                 if(_dt == null)
                 {
                     _dt = new DataTable();
-                    _dt.Columns.Add("Towar / usługa", typeof(string));
-                    _dt.Columns.Add("J.m.");
-                    _dt.Columns.Add("Ilość", typeof(Int32));
-                    _dt.Columns.Add("Cena Netto", typeof(double));
-                    _dt.Columns.Add("Wartość netto", typeof(double));
-                    _dt.Columns.Add("Stawka VAT");
-                    _dt.Columns.Add("Kwota VAT", typeof(double));
-                    _dt.Columns.Add("Wartość Brutto", typeof(double));
+                    _dt.Columns.Add(DictionaryMain.kolumnaTowar, typeof(string));
+                    _dt.Columns.Add(DictionaryMain.kolumnaJM);
+                    _dt.Columns.Add(DictionaryMain.kolumnaIlosc, typeof(Int32));
+                    _dt.Columns.Add(DictionaryMain.kolumnaCenaNetto, typeof(double));
+                    _dt.Columns.Add(DictionaryMain.kolumnaWartoscNetto, typeof(double));
+                    _dt.Columns.Add(DictionaryMain.kolumnaStawkaVat);
+                    _dt.Columns.Add(DictionaryMain.kolumnaKwotaVat, typeof(double));
+                    _dt.Columns.Add(DictionaryMain.kolumnaWartoscBrutto, typeof(double));
                 }
 
                 return _dt;
