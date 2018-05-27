@@ -52,7 +52,7 @@ namespace EasyInvoice
             lblNabywcaKodMiasto.Content = DictionaryMain.labelKodMiejsowoscSprzedawcaNabywca;
             lblNabywcaNip.Content = DictionaryMain.labelNIPSprzedawcaNabywca;
             lblNabywcaInne.Content = DictionaryMain.labelInnerSprzedawcaNabywca;
-            lblNumerRaczunku.Content = DictionaryMain.labelNumerRachunku;
+            lblNumerRachunku.Content = DictionaryMain.labelNumerRachunku;
             Gotowka.Content = "Gotówka";
             Przelew.Content = "Przelew";
 
@@ -60,6 +60,7 @@ namespace EasyInvoice
             Sprzedawca.DataContext = sf.Sprzedawca;
           //  PrzelewG.DataContext = sf;
             BankGotowka.DataContext = sf;
+            Naglowek.DataContext = sf.Naglowek;
 
         }
 
@@ -103,15 +104,15 @@ namespace EasyInvoice
         private void Gotowka_Click(object sender, RoutedEventArgs e)
         {
             Przelew.IsChecked = !Gotowka.IsChecked ?? Gotowka.IsChecked;
-            lblNumerRaczunku.Visibility = (bool)Przelew.IsChecked ? Visibility.Visible : Visibility.Hidden;
-            txtNumerRaczunku.Visibility = (bool)Przelew.IsChecked ? Visibility.Visible : Visibility.Hidden;
+            lblNumerRachunku.Visibility = (bool)Przelew.IsChecked ? Visibility.Visible : Visibility.Hidden;
+            txtNumerRachunku.Visibility = (bool)Przelew.IsChecked ? Visibility.Visible : Visibility.Hidden;
         }
 
         private void Przelew_Click(object sender, RoutedEventArgs e)
         {
             Gotowka.IsChecked = !Przelew.IsChecked ?? Przelew.IsChecked;
-            lblNumerRaczunku.Visibility = (bool)Przelew.IsChecked ? Visibility.Visible : Visibility.Hidden;
-            txtNumerRaczunku.Visibility = (bool)Przelew.IsChecked ? Visibility.Visible : Visibility.Hidden;
+            lblNumerRachunku.Visibility = (bool)Przelew.IsChecked ? Visibility.Visible : Visibility.Hidden;
+            txtNumerRachunku.Visibility = (bool)Przelew.IsChecked ? Visibility.Visible : Visibility.Hidden;
         }
     }    
 }

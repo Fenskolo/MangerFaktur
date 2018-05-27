@@ -12,6 +12,7 @@ namespace EasyInvoice
         private DataTable _dt;
         private FirmaData _sprzedawca;
         private FirmaData _nabywca;
+        private Naglowek _naglowek;
         private bool _gotowka;
         private bool _przelew;
         private string _numerRachunku;
@@ -54,6 +55,7 @@ namespace EasyInvoice
             
             set => _sprzedawca = value;
         }
+
         public FirmaData Nabywca
         {
             get
@@ -72,5 +74,28 @@ namespace EasyInvoice
         public bool Gotowka { get => _gotowka; set => _gotowka = value; }
         public bool Przelew { get => _przelew; set => _przelew = value; }
         public string NumerRachunku { get => _numerRachunku; set => _numerRachunku = value; }
+
+        public Naglowek Naglowek
+        {
+            get
+            {
+                if (_naglowek == null)
+                {
+                    
+                    int month = DateTime.Now.Month;
+                    int year = DateTime.Now.Year;
+                    int day = DateTime.DaysInMonth(year, month);
+                    _naglowek = new Naglowek();
+                    _naglowek.DataSprzedazy = new DateTime(year, month, day);
+                    _naglowek.DataWystawienia = new DateTime(year, month, day);
+                    _naglowek.TerminZaplaty = _naglowek.DataSprzedazy.AddDays(14);
+                    _naglowek.NumerFaktury = "0001/" + DateTime.Now.Month + "/" + DateTime.Now.Year;
+                }
+
+                return _naglowek;
+            }
+
+            set => _naglowek = value;
+        }
     }
 }

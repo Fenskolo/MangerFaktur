@@ -73,6 +73,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="FirmaData.cs" />
+    <Compile Include="Naglowek.cs" />
     <Compile Include="Property.cs" />
     <Compile Include="SingleFakturaProperty.cs" />
     <Page Include="MainWindow.xaml">
