@@ -69,11 +69,11 @@
                                 <Label x:Name="lblSprzedawcaKodMiasto" Content="Label" Margin="0"  Grid.Row="2" Grid.ColumnSpan="2" />
                                 <Label x:Name="lblSprzedawcaNip" Content="Label" Margin="0" Grid.Row="3" Grid.ColumnSpan="2"/>
                                 <Label x:Name="lblSprzedawcaInne" Content="Label" Margin="0" Grid.Row="4" Grid.ColumnSpan="2"/>
-                                <TextBox Name="txtSprzedawcaNazwa" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding NazwaFirmy}"/>
-                                <TextBox Name="txtSprzedawcaUlica" Grid.Column="2" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding UlicaFirmy}"/>
-                                <TextBox Name="txtSprzedawcaKodMiasto" Grid.Column="2" Margin="0" Grid.Row="2" TextWrapping="Wrap" Text="{Binding MiastoFirmy}"/>
-                                <TextBox Name="txtSprzedawcaNip" Grid.Column="2" Margin="0" Grid.Row="3" TextWrapping="Wrap" Text="{Binding NipFirmy}"/>
-                                <TextBox Name="txtSprzedawcaInne" Grid.Column="2" Margin="0" Grid.Row="4" TextWrapping="Wrap" Text="{Binding InneFirmy}"/>
+                                <TextBox Name="txtSprzedawcaNazwa" Grid.Column="2" Margin="0" TextWrapping="Wrap" Text="{Binding NazwaFirmy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Name="txtSprzedawcaUlica" Grid.Column="2" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding UlicaFirmy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Name="txtSprzedawcaKodMiasto" Grid.Column="2" Margin="0" Grid.Row="2" TextWrapping="Wrap" Text="{Binding MiastoFirmy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Name="txtSprzedawcaNip" Grid.Column="2" Margin="0" Grid.Row="3" TextWrapping="Wrap" Text="{Binding NipFirmy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Name="txtSprzedawcaInne" Grid.Column="2" Margin="0" Grid.Row="4" TextWrapping="Wrap" Text="{Binding InneFirmy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             </Grid>
                         </Grid>
                         <Grid Grid.Column="1" Margin="0">
@@ -100,15 +100,15 @@
                                 <Label x:Name="lblNabywcaNip" Content="Label" Margin="0" Grid.Row="3" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
                                 <Label x:Name="lblNabywcaInne" Content="Label" Margin="0" Grid.Row="4" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
                                 <TextBox Name="txtNabywcaNazwa" Grid.Column="1" Margin="0" TextWrapping="Wrap" Text="{Binding NazwaFirmy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                <TextBox Name="txtNabywcaUlica" Grid.Column="1" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding UlicaFirmy}"/>
-                                <TextBox Name="txtNabywcaKodMiasto" Grid.Column="1" Margin="0" Grid.Row="2" TextWrapping="Wrap" Text="{Binding MiastoFirmy}"/>
-                                <TextBox Name="txtNabywcaNip" Grid.Column="1" Margin="0" Grid.Row="3" TextWrapping="Wrap" Text="{Binding NipFirmy}"/>
-                                <TextBox Name="txtNabywcaInne" Grid.Column="1" Margin="0" Grid.Row="4" TextWrapping="Wrap" Text="{Binding InneFirmy}"/>
+                                <TextBox Name="txtNabywcaUlica" Grid.Column="1" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding UlicaFirmy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Name="txtNabywcaKodMiasto" Grid.Column="1" Margin="0" Grid.Row="2" TextWrapping="Wrap" Text="{Binding MiastoFirmy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Name="txtNabywcaNip" Grid.Column="1" Margin="0" Grid.Row="3" TextWrapping="Wrap" Text="{Binding NipFirmy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Name="txtNabywcaInne" Grid.Column="1" Margin="0" Grid.Row="4" TextWrapping="Wrap" Text="{Binding InneFirmy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             </Grid>
                         </Grid>
 
                     </Grid>
-                    <Grid Height="50" Margin="0,260,0,0" VerticalAlignment="Top">
+                    <Grid x:Name="BankGotowka" Height="50" Margin="0,260,0,0" VerticalAlignment="Top">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="15*"/>
                             <ColumnDefinition Width="50*"/>
@@ -118,15 +118,15 @@
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <CheckBox Content="CheckBox" Margin="0" VerticalContentAlignment="Center"/>
-                        <CheckBox Content="CheckBox" Grid.Row="1" VerticalContentAlignment="Center"/>
+                        <CheckBox x:Name="Gotowka" Content="CheckBox" Margin="0" VerticalContentAlignment="Center" Click="Gotowka_Click"/>
+                        <CheckBox x:Name="Przelew" Content="CheckBox" Grid.Row="1" VerticalContentAlignment="Center" Click="Przelew_Click"/>
                         <Grid Grid.Column="1" Margin="0" Grid.Row="1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="15*"/>
                                 <ColumnDefinition Width="85*"/>
                             </Grid.ColumnDefinitions>
                             <TextBox Grid.Column="1" Margin="0" TextWrapping="Wrap" Text="TextBox"/>
-                            <Label Content="Label" Margin="0"/>
+                            <Label x:Name="lblNumerRaczunku" Content="Label" Margin="0"/>
                         </Grid>
                     </Grid>
                     <Grid Height="100" Margin="0" VerticalAlignment="Top">
@@ -160,11 +160,11 @@
                             <Label x:Name="lblDataSprzedazy" Content="Label" Margin="0" Grid.Row="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
                             <Label x:Name="lblTerminZaplaty" Content="Label" Grid.Column="2" Margin="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
                             <Label x:Name="lblFormaPlatnosc" Content="Label" Grid.Column="2" Margin="0" Grid.Row="1" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
-                            <TextBox Grid.Column="1" Margin="0" TextWrapping="Wrap" Text="{Binding Mode=OneTime}"/>
-                            <TextBox Grid.Column="1" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding Mode=OneWay}"/>
-                            <TextBox Grid.Column="1" Margin="0" Grid.Row="2" TextWrapping="Wrap" Text="{Binding Mode=OneWay}"/>
-                            <TextBox Grid.Column="3" Margin="0" TextWrapping="Wrap" Text="{Binding Mode=OneWay}"/>
-                            <TextBox Grid.Column="3" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding Mode=OneWay}"/>
+                            <TextBox Grid.Column="1" Margin="0" TextWrapping="Wrap" Text="{Binding aa,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox Grid.Column="1" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding aa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox Grid.Column="1" Margin="0" Grid.Row="2" TextWrapping="Wrap" Text="{Binding aa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox Grid.Column="3" Margin="0" TextWrapping="Wrap" Text="{Binding aa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox Grid.Column="3" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding aa, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
                     </Grid>
                     <Grid x:Name="GridWithDataGrid" Margin="0,315,0,0" VerticalAlignment="Top">

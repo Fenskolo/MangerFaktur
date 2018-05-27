@@ -52,6 +52,9 @@ namespace EasyInvoice
             lblNabywcaKodMiasto.Content = DictionaryMain.labelKodMiejsowoscSprzedawcaNabywca;
             lblNabywcaNip.Content = DictionaryMain.labelNIPSprzedawcaNabywca;
             lblNabywcaInne.Content = DictionaryMain.labelInnerSprzedawcaNabywca;
+            lblNumerRaczunku.Content = DictionaryMain.labelNumerRachunku;
+            Gotowka.Content = "Gotówka";
+            Przelew.Content = "Przelew";
 
             Nabywca.DataContext = sf.Nabywca;
             Sprzedawca.DataContext = sf.Sprzedawca;
@@ -81,15 +84,28 @@ namespace EasyInvoice
             {
                 MessageBox.Show(ex.Message + Environment.NewLine + ex.StackTrace);
             }
-
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-           sf.Nabywca.NazwaFirmy = "|dsaads";
-         //   Nabywca.DataContext = sf.Nabywca;
+            var x =sf.Dt;
+           // Nabywca.DataContext = null;
+           //sf.Nabywca.NazwaFirmy = "hhdsaads";
+           // sf.Nabywca.InneFirmy = "sad";
+
+           //Nabywca.DataContext = sf.Nabywca;
             MessageBox.Show(sf.Nabywca.NazwaFirmy+sf.Sprzedawca.NazwaFirmy);
           //  MakePdf a = new MakePdf();                      
+        }
+
+        private void Gotowka_Click(object sender, RoutedEventArgs e)
+        {
+            Przelew.IsChecked = !Gotowka.IsChecked ?? Gotowka.IsChecked;           
+        }
+
+        private void Przelew_Click(object sender, RoutedEventArgs e)
+        {
+            Gotowka.IsChecked = !Przelew.IsChecked ?? Przelew.IsChecked;           
         }
     }    
 }
