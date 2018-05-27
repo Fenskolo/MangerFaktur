@@ -12,6 +12,9 @@ namespace EasyInvoice
         private DataTable _dt;
         private FirmaData _sprzedawca;
         private FirmaData _nabywca;
+        private bool _gotowka;
+        private bool _przelew;
+        private string _numerRachunku;
 
 
         public DataTable Dt
@@ -65,5 +68,9 @@ namespace EasyInvoice
 
             set => _nabywca = value;
         }
+
+        public bool Gotowka { get => _gotowka; set => _gotowka = value; }
+        public bool Przelew { get => _przelew; set => _przelew = value; }
+        public string NumerRachunku { get => _numerRachunku; set => _numerRachunku = value; }
     }
 }

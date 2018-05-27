@@ -118,14 +118,14 @@
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <CheckBox x:Name="Gotowka" Content="CheckBox" Margin="0" VerticalContentAlignment="Center" Click="Gotowka_Click"/>
-                        <CheckBox x:Name="Przelew" Content="CheckBox" Grid.Row="1" VerticalContentAlignment="Center" Click="Przelew_Click"/>
-                        <Grid Grid.Column="1" Margin="0" Grid.Row="1">
+                        <CheckBox x:Name="Gotowka" IsChecked="{Binding Gotowka}" Content="CheckBox" Margin="0" VerticalContentAlignment="Center" Click="Gotowka_Click"/>
+                        <CheckBox x:Name="Przelew" IsChecked="{Binding Przelew}" Content="CheckBox" Grid.Row="1" VerticalContentAlignment="Center" Click="Przelew_Click"/>
+                        <Grid x:Name="PrzelewG" Grid.Column="1" Margin="0" Grid.Row="1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="15*"/>
                                 <ColumnDefinition Width="85*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBox Grid.Column="1" Margin="0" TextWrapping="Wrap" Text="TextBox"/>
+                            <TextBox x:Name="txtNumerRaczunku" Grid.Column="1" Margin="0" TextWrapping="Wrap" Text="{Binding NumerRachunku, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             <Label x:Name="lblNumerRaczunku" Content="Label" Margin="0"/>
                         </Grid>
                     </Grid>

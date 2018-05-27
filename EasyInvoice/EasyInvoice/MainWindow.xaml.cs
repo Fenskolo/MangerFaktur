@@ -58,6 +58,8 @@ namespace EasyInvoice
 
             Nabywca.DataContext = sf.Nabywca;
             Sprzedawca.DataContext = sf.Sprzedawca;
+          //  PrzelewG.DataContext = sf;
+            BankGotowka.DataContext = sf;
 
         }
 
@@ -94,18 +96,22 @@ namespace EasyInvoice
            // sf.Nabywca.InneFirmy = "sad";
 
            //Nabywca.DataContext = sf.Nabywca;
-            MessageBox.Show(sf.Nabywca.NazwaFirmy+sf.Sprzedawca.NazwaFirmy);
+            MessageBox.Show(sf.Przelew.ToString()+sf.Gotowka.ToString());
           //  MakePdf a = new MakePdf();                      
         }
 
         private void Gotowka_Click(object sender, RoutedEventArgs e)
         {
-            Przelew.IsChecked = !Gotowka.IsChecked ?? Gotowka.IsChecked;           
+            Przelew.IsChecked = !Gotowka.IsChecked ?? Gotowka.IsChecked;
+            lblNumerRaczunku.Visibility = (bool)Przelew.IsChecked ? Visibility.Visible : Visibility.Hidden;
+            txtNumerRaczunku.Visibility = (bool)Przelew.IsChecked ? Visibility.Visible : Visibility.Hidden;
         }
 
         private void Przelew_Click(object sender, RoutedEventArgs e)
         {
-            Gotowka.IsChecked = !Przelew.IsChecked ?? Przelew.IsChecked;           
+            Gotowka.IsChecked = !Przelew.IsChecked ?? Przelew.IsChecked;
+            lblNumerRaczunku.Visibility = (bool)Przelew.IsChecked ? Visibility.Visible : Visibility.Hidden;
+            txtNumerRaczunku.Visibility = (bool)Przelew.IsChecked ? Visibility.Visible : Visibility.Hidden;
         }
     }    
 }
