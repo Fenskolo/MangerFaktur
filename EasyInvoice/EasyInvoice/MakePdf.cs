@@ -14,7 +14,9 @@ namespace EasyInvoice
             string fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "plik" + ".pdf";
             GenerujPolaWDokumencie p = new GenerujPolaWDokumencie(fileName);
 
-            System.Diagnostics.Process.Start(fileName);          
+            System.Diagnostics.Process.Start(fileName);
+
+            HelperXML.SerializeXml();
         }
     }
 }

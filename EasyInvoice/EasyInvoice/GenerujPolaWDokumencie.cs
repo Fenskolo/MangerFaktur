@@ -105,7 +105,7 @@ namespace EasyInvoice
             TextBox txtNr = new TextBox(Width, 0);
 
             txtF.AddText(ArialNormal, FontSize, DictionaryMain.labelNrFaktury);
-            txtNr.AddText(ArialBold, FontSize, "0001/04/2018");
+            txtNr.AddText(ArialBold, FontSize, SingleFakturaProperty.Singleton.Naglowek.NumerFaktury);
             
             Double PosY =  Height;
             Contents.DrawText(0.0, ref PosY, 0, 0, 0.015, 0.05, TextBoxJustify.Left, txtF);
@@ -234,18 +234,18 @@ namespace EasyInvoice
                 Table.CellStyle.TextDrawStyle = DrawStyle.Superscript;
             }
             
-            foreach (var item in hData.GetListTable())
+            foreach (var item in  SingleFakturaProperty.Singleton.GetListDt())// hData.GetListTable())
             {
                 Table.Cell[0].Value = item.LpTabela;
                 Table.Cell[1].Value = item.OpisTabela;
                 Table.Cell[2].Value = item.Rodzajilosc;
                 Table.Cell[3].Value = item.Ilosc;
-                Table.Cell[4].Value = item.CenaN;
+                Table.Cell[4].Value = item.CenaNetto;
 
-                Table.Cell[5].Value = item.WartoscN;
-                Table.Cell[6].Value = item.StawkaV;
-                Table.Cell[7].Value = item.KwotaV;
-                Table.Cell[8].Value = item.WartoscB;
+                Table.Cell[5].Value = item.WartoscNetto;
+                Table.Cell[6].Value = item.StawkaVat;
+                Table.Cell[7].Value = item.KwotaVat;
+                Table.Cell[8].Value = item.WartoscBrutto;
                 Table.DrawRow();
             }
 
@@ -330,10 +330,10 @@ namespace EasyInvoice
             Table.DefaultHeaderStyle.MultiLineText = true;
             Table.DefaultHeaderStyle.Alignment = ContentAlignment.TopCenter;
 
-            Table.Header[0].Value = hData.getSum()[0].WartoscN;
-            Table.Header[1].Value = hData.getSum()[0].StawkaV;
-            Table.Header[2].Value = hData.getSum()[0].KwotaV;
-            Table.Header[3].Value = hData.getSum()[0].WartoscB;
+            Table.Header[0].Value = hData.getSum()[0].WartoscNetto;
+            Table.Header[1].Value = hData.getSum()[0].StawkaVat;
+            Table.Header[2].Value = hData.getSum()[0].KwotaVat;
+            Table.Header[3].Value = hData.getSum()[0].WartoscBrutto;
 
             Table.DefaultCellStyle.Margin = Margin;
 
@@ -353,10 +353,10 @@ namespace EasyInvoice
                     z++;
                     continue;
                 }
-                Table.Cell[0].Value = item.WartoscN;
-                Table.Cell[1].Value = item.StawkaV;
-                Table.Cell[2].Value = item.KwotaV;
-                Table.Cell[3].Value = item.WartoscB;
+                Table.Cell[0].Value = item.WartoscNetto;
+                Table.Cell[1].Value = item.StawkaVat;
+                Table.Cell[2].Value = item.KwotaVat;
+                Table.Cell[3].Value = item.WartoscBrutto;
                 Table.DrawRow();
             }
 

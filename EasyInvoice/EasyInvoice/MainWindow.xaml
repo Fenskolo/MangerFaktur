@@ -110,9 +110,9 @@
                     </Grid>
                     <Grid x:Name="BankGotowka" Height="50" Margin="0,260,0,0" VerticalAlignment="Top">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="15*"/>
-                            <ColumnDefinition Width="50*"/>
-                            <ColumnDefinition Width="35*"/>
+                            <ColumnDefinition Width="146*"/>
+                            <ColumnDefinition Width="569*"/>
+                            <ColumnDefinition Width="259*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
@@ -122,8 +122,8 @@
                         <CheckBox x:Name="Przelew" IsChecked="{Binding Przelew}" Content="CheckBox" Grid.Row="1" VerticalContentAlignment="Center" Click="Przelew_Click"/>
                         <Grid x:Name="PrzelewG" Grid.Column="1" Margin="0" Grid.Row="1">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="15*"/>
-                                <ColumnDefinition Width="85*"/>
+                                <ColumnDefinition Width="150*"/>
+                                <ColumnDefinition Width="350*"/>
                             </Grid.ColumnDefinitions>
                             <TextBox x:Name="txtNumerRachunku" Grid.Column="1" Margin="0" TextWrapping="Wrap" Text="{Binding NumerRachunku, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             <Label x:Name="lblNumerRachunku" Content="Label" Margin="0"/>
@@ -190,9 +190,9 @@
                             <Custom2:XamDataGrid.FieldLayoutSettings>
                                 <Custom2:FieldLayoutSettings AllowAddNew="True" AddNewRecordLocation="OnBottom" RecordSelectorNumberType="RecordIndex" RecordSelectorNumberFormat="RecordNumberOnly"/>
                             </Custom2:XamDataGrid.FieldLayoutSettings>
-                        </Custom2:XamDataGrid>                        
+                        </Custom2:XamDataGrid>
                     </Grid>
-                   
+
 
 
                 </Grid>

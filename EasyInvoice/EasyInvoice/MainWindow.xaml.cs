@@ -23,15 +23,14 @@ namespace EasyInvoice
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {
-        private SingleFakturaProperty sf;        
+    {       
 
         public MainWindow()
         {
+            SingleFakturaProperty.Singleton.MySingleton = HelperXML.Deserialize();
             InitializeComponent();
 
-            sf= new SingleFakturaProperty();
-            xDG.DataContext = sf.Dt.DefaultView;
+            xDG.DataContext = SingleFakturaProperty.Singleton.Dt.DefaultView;
 
             lblFaktura.Content = DictionaryMain.labelNrFaktury;
             lblMiejsceWystawienia.Content = DictionaryMain.labelMiejsceWystawienia;
@@ -56,11 +55,11 @@ namespace EasyInvoice
             Gotowka.Content = "Gotówka";
             Przelew.Content = "Przelew";
 
-            Nabywca.DataContext = sf.Nabywca;
-            Sprzedawca.DataContext = sf.Sprzedawca;
+            Nabywca.DataContext = SingleFakturaProperty.Singleton.Nabywca;
+            Sprzedawca.DataContext = SingleFakturaProperty.Singleton.Sprzedawca;
           //  PrzelewG.DataContext = sf;
-            BankGotowka.DataContext = sf;
-            Naglowek.DataContext = sf.Naglowek;
+            BankGotowka.DataContext = SingleFakturaProperty.Singleton;
+            Naglowek.DataContext = SingleFakturaProperty.Singleton.Naglowek;
 
         }
 
@@ -72,16 +71,12 @@ namespace EasyInvoice
         public void PopulateCombo(XamDataGrid grid)
         {
             try
-            {
-
-                
+            {                
                 ComboBoxField cbJ = (ComboBoxField)grid.DefaultFieldLayout.Fields[DictionaryMain.kolumnaJM];
                 ComboBoxField cbV = (ComboBoxField)grid.DefaultFieldLayout.Fields[DictionaryMain.kolumnaStawkaVat];
 
                 cbJ.ItemsSource = Property.Instance.NameList;
-                cbV.ItemsSource = Property.Instance.StawkaList;
-
-                
+                cbV.ItemsSource = Property.Instance.StawkaList;                
             }
             catch(Exception ex)
             {
@@ -90,15 +85,8 @@ namespace EasyInvoice
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            var x =sf.Dt;
-           // Nabywca.DataContext = null;
-           //sf.Nabywca.NazwaFirmy = "hhdsaads";
-           // sf.Nabywca.InneFirmy = "sad";
-
-           //Nabywca.DataContext = sf.Nabywca;
-            MessageBox.Show(sf.Przelew.ToString()+sf.Gotowka.ToString());
-          //  MakePdf a = new MakePdf();                      
+        {         
+            MakePdf a = new MakePdf();                      
         }
 
         private void Gotowka_Click(object sender, RoutedEventArgs e)

@@ -72,8 +72,8 @@ namespace EasyInvoice
     {
         public const string labelNrFaktury = "Faktura";
         public const string labelMiejsceWystawienia = "MIEJSCE WYSTAWIENIA:";
-        public const string labelDataWystawienia = "DATA WYSTAWIENIA";
-        public const string labelDataSprzedazy = "DATA SPRZEDAŻY";
+        public const string labelDataWystawienia = "DATA WYSTAWIENIA:";
+        public const string labelDataSprzedazy = "DATA SPRZEDAŻY:";
         public const string labelTerminZaplaty = "TERMIN ZAPŁATY:";
         public const string labelFormaPlatnosci = "FORMA PŁATNOŚĆ:";
         public const string labelHeaderSprzedawca = "Sprzedawca";
