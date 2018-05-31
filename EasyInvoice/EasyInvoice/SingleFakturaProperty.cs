@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -20,39 +21,42 @@ namespace EasyInvoice
         private bool _gotowka;
         private bool _przelew;
         private string _numerRachunku;
+        private List<DaneUsluga> _ld;
 
         [XmlIgnore]
         public SingleFakturaProperty MySingleton
-            {
+        {
             get => _singleton;
             set
             {
                 _singleton = value;
-                
+
             }
 
         }
 
 
         public static SingleFakturaProperty Singleton
-        { get
+        {
+            get
             {
-                if(_singleton==null)
+                if (_singleton == null)
                 {
                     _singleton = new SingleFakturaProperty();
                 }
                 return _singleton;
             }
-            
 
-            set => _singleton = value; }
+
+            set => _singleton = value;
+        }
 
         [XmlIgnore]
         public DataTable Dt
         {
             get
             {
-                if(_dt == null)
+                if (_dt == null)
                 {
                     _dt = new DataTable();
                     _dt.Columns.Add(DictionaryMain.kolumnaTowar, typeof(string));
@@ -67,17 +71,17 @@ namespace EasyInvoice
 
                 return _dt;
             }
-            
+
             set => _dt = value;
         }
 
-     //   [XmlIgnore]
+        //   [XmlIgnore]
         public List<DaneUsluga> GetListDt()
         {
             List<DaneUsluga> list = new List<DaneUsluga>();
 
             int i = 1;
-            foreach(DataRow dr in Dt.Rows)
+            foreach (DataRow dr in Dt.Rows)
             {
                 DaneUsluga dat = new DaneUsluga
                 {
@@ -102,14 +106,14 @@ namespace EasyInvoice
         {
             get
             {
-                if(_sprzedawca ==null)
+                if (_sprzedawca == null)
                 {
                     _sprzedawca = new FirmaData();
                 }
 
                 return _sprzedawca;
             }
-            
+
             set => _sprzedawca = value;
         }
 
@@ -138,7 +142,7 @@ namespace EasyInvoice
             {
                 if (_naglowek == null)
                 {
-                    
+
                     int month = DateTime.Now.Month;
                     int year = DateTime.Now.Year;
                     int day = DateTime.DaysInMonth(year, month);
@@ -156,5 +160,38 @@ namespace EasyInvoice
 
             set => _naglowek = value;
         }
+
+        public List<DaneUsluga> Ld
+        {
+            get
+            {
+                if (_ld == null)
+                {
+                    _ld = new List<DaneUsluga>();// GetListDt();
+                }
+                return _ld;
+            }
+            set
+            {
+                _ld = value;
+
+                foreach (var item in _ld)
+                {
+                    DataRow dr = Dt.NewRow();
+                    dr[DictionaryMain.kolumnaTowar] = item.OpisTabela;
+                    dr[DictionaryMain.kolumnaJM] = item.Rodzajilosc;
+                    dr[DictionaryMain.kolumnaIlosc] = item.Ilosc;
+                    dr[DictionaryMain.kolumnaCenaNetto] = item.CenaNetto;
+                    dr[DictionaryMain.kolumnaWartoscNetto] = item.WartoscNetto;
+                    dr[DictionaryMain.kolumnaStawkaVat] = item.StawkaVat;
+                    dr[DictionaryMain.kolumnaKwotaVat] = item.KwotaVat;
+                    dr[DictionaryMain.kolumnaWartoscBrutto] = item.WartoscBrutto;
+                    Dt.Rows.Add(dr);
+                }
+            }
+
+        }
     }
+
 }
+

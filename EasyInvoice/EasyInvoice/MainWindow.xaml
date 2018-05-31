@@ -172,7 +172,7 @@
                             <RowDefinition Height="80*"/>
                             <RowDefinition Height="20*"/>
                         </Grid.RowDefinitions>
-                        <Custom2:XamDataGrid x:Name="xDG"  DataSource="{Binding}" Theme="Office2k7Blue" Loaded="XDG1_Loaded" SortRecordsByDataType="True" UpdateMode="OnCellChangeOrLostFocus">
+                        <Custom2:XamDataGrid x:Name="xDG"  DataSource="{Binding}" Theme="Office2k7Blue" Loaded="XDG1_Loaded" SortRecordsByDataType="True" UpdateMode="OnCellChangeOrLostFocus" CellUpdated="xDG_CellUpdated">
 
                             <Custom2:XamDataGrid.FieldLayouts>
                                 <Custom2:FieldLayout>

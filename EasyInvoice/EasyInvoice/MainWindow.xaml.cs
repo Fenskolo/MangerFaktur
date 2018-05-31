@@ -28,6 +28,7 @@ namespace EasyInvoice
         public MainWindow()
         {
             SingleFakturaProperty.Singleton.MySingleton = HelperXML.Deserialize();
+            SingleFakturaProperty.Singleton.Ld = SingleFakturaProperty.Singleton.Ld;
             InitializeComponent();
 
             xDG.DataContext = SingleFakturaProperty.Singleton.Dt.DefaultView;
@@ -101,6 +102,81 @@ namespace EasyInvoice
             Gotowka.IsChecked = !Przelew.IsChecked ?? Przelew.IsChecked;
             lblNumerRachunku.Visibility = (bool)Przelew.IsChecked ? Visibility.Visible : Visibility.Hidden;
             txtNumerRachunku.Visibility = (bool)Przelew.IsChecked ? Visibility.Visible : Visibility.Hidden;
+        }
+
+        private void xDG_CellUpdated(object sender, Infragistics.Windows.DataPresenter.Events.CellUpdatedEventArgs e)
+        {
+            //if(e.Cell.Field.Name == DictionaryMain.kolumnaCenaNetto && e.Record.Cells[DictionaryMain.kolumnaIlosc].Value !=null)
+            //{
+            //    e.Record.Cells[DictionaryMain.kolumnaWartoscNetto].Value = GetValueIloraz(e.Record.Cells[DictionaryMain.kolumnaIlosc], e.Record.Cells[DictionaryMain.kolumnaCenaNetto]);
+            //    if(!string.IsNullOrEmpty(e.Record.Cells[DictionaryMain.kolumnaStawkaVat].Value.ToString()))
+            //    {
+            //        decimal stawkaVat = getDecimalVatStawka(e);
+
+            //        e.Record.Cells[DictionaryMain.kolumnaWartoscBrutto].Value = (decimal)e.Record.Cells[DictionaryMain.kolumnaWartoscNetto].Value * stawkaVat;
+            //        e.Record.Cells[DictionaryMain.kolumnaKwotaVat].Value = (decimal)e.Record.Cells[DictionaryMain.kolumnaWartoscBrutto].Value - (decimal)e.Record.Cells[DictionaryMain.kolumnaWartoscNetto].Value;
+            //    }
+            //}
+
+            DataRecord row = e.Record;
+            Cell stawkaVat = row.Cells[DictionaryMain.kolumnaStawkaVat];
+            Cell ilosc = row.Cells[DictionaryMain.kolumnaIlosc];
+            Cell wartoscNetto = row.Cells[DictionaryMain.kolumnaWartoscNetto];
+            Cell cenaNetto = row.Cells[DictionaryMain.kolumnaCenaNetto];
+            Cell kwotaVat = row.Cells[DictionaryMain.kolumnaKwotaVat];
+            Cell wartoscBrutto = row.Cells[DictionaryMain.kolumnaWartoscBrutto];
+
+            switch (e.Cell.Field.Name)
+            {
+                case DictionaryMain.kolumnaCenaNetto:
+                    if (ilosc.Value != null
+                        && Convert.ToDecimal(wartoscNetto.Value) != GetValueIloraz(ilosc, cenaNetto))
+                    {
+                        wartoscNetto.Value = GetValueIloraz(ilosc, cenaNetto);
+                    }
+
+                    if (!string.IsNullOrEmpty(stawkaVat.Value.ToString())
+                        && wartoscNetto != null && (decimal)wartoscBrutto.Value != GetValueIloraz(wartoscNetto, stawkaVat))
+                    {
+                        wartoscBrutto.Value = GetValueIloraz(wartoscNetto, stawkaVat);
+                    }
+
+                    if(wartoscBrutto.Value !=null && wartoscNetto.Value!=null
+                        && (decimal)kwotaVat.Value != (decimal)wartoscBrutto.Value - (decimal)wartoscNetto.Value)
+                    {
+                        kwotaVat.Value = (decimal)wartoscBrutto.Value - (decimal)wartoscNetto.Value;
+                    }
+
+                        break;
+                case DictionaryMain.kolumnaStawkaVat:
+
+                    break;
+                case DictionaryMain.kolumnaWartoscNetto:
+
+                    break;
+                case DictionaryMain.kolumnaKwotaVat:
+
+                    break;
+                case DictionaryMain.kolumnaWartoscBrutto:
+
+                    break;
+                case DictionaryMain.kolumnaIlosc:
+
+                    break;
+            }
+        }
+
+        private static decimal getDecimalVatStawka(DataRecord row)
+        {
+            return 1 + Convert.ToDecimal(row.Cells[DictionaryMain.kolumnaStawkaVat].Value.ToString().Split('%')[0]) / 100;
+        }
+
+        private decimal GetValueIloraz(Cell first, Cell second)
+        {
+            decimal sec = second.Field.Name == DictionaryMain.kolumnaStawkaVat ? getDecimalVatStawka(second.Record) : Convert.ToDecimal(second.Value);
+            decimal myDec = Convert.ToDecimal(first.Value) *  sec;
+
+            return myDec;
         }
     }    
 }
