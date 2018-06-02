@@ -55,14 +55,15 @@ namespace EasyInvoice
 
         public static DataTable ToDataTable<T>(this IList<T> data)
         {
-            PropertyDescriptorCollection props =
-                TypeDescriptor.GetProperties(typeof(T));
+            PropertyDescriptorCollection props = TypeDescriptor.GetProperties(typeof(T));
             DataTable table = new DataTable();
+
             for (int i = 0; i < props.Count; i++)
             {
                 PropertyDescriptor prop = props[i];
                 table.Columns.Add(prop.Name, prop.PropertyType);
             }
+
             object[] values = new object[props.Count];
             foreach (T item in data)
             {

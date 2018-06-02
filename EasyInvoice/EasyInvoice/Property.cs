@@ -58,7 +58,10 @@ namespace EasyInvoice
                 {
                     _stawkaList = new List<string>()
                     {
-                        "23%"
+                        "23%",
+                        "0%",
+                        "7%"
+
                     };
                 }
                 return _stawkaList;

@@ -17,6 +17,7 @@ namespace EasyInvoice
             System.Diagnostics.Process.Start(fileName);
 
             HelperXML.SerializeXml();
+            SingleFakturaProperty.Singleton.Dt.WriteXml("dt.xml");
         }
     }
 }

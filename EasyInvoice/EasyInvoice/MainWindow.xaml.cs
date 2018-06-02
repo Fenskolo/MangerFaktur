@@ -28,7 +28,7 @@ namespace EasyInvoice
         public MainWindow()
         {
             SingleFakturaProperty.Singleton.MySingleton = HelperXML.Deserialize();
-            SingleFakturaProperty.Singleton.Ld = SingleFakturaProperty.Singleton.Ld;
+            
             InitializeComponent();
 
             xDG.DataContext = SingleFakturaProperty.Singleton.Dt.DefaultView;
@@ -77,7 +77,7 @@ namespace EasyInvoice
                 ComboBoxField cbV = (ComboBoxField)grid.DefaultFieldLayout.Fields[DictionaryMain.kolumnaStawkaVat];
 
                 cbJ.ItemsSource = Property.Instance.NameList;
-                cbV.ItemsSource = Property.Instance.StawkaList;                
+                cbV.ItemsSource = Property.Instance.StawkaList;  
             }
             catch(Exception ex)
             {
@@ -86,7 +86,8 @@ namespace EasyInvoice
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
-        {         
+        {     
+            xDG.ActiveRecord =null;
             MakePdf a = new MakePdf();                      
         }
 
@@ -106,18 +107,6 @@ namespace EasyInvoice
 
         private void xDG_CellUpdated(object sender, Infragistics.Windows.DataPresenter.Events.CellUpdatedEventArgs e)
         {
-            //if(e.Cell.Field.Name == DictionaryMain.kolumnaCenaNetto && e.Record.Cells[DictionaryMain.kolumnaIlosc].Value !=null)
-            //{
-            //    e.Record.Cells[DictionaryMain.kolumnaWartoscNetto].Value = GetValueIloraz(e.Record.Cells[DictionaryMain.kolumnaIlosc], e.Record.Cells[DictionaryMain.kolumnaCenaNetto]);
-            //    if(!string.IsNullOrEmpty(e.Record.Cells[DictionaryMain.kolumnaStawkaVat].Value.ToString()))
-            //    {
-            //        decimal stawkaVat = getDecimalVatStawka(e);
-
-            //        e.Record.Cells[DictionaryMain.kolumnaWartoscBrutto].Value = (decimal)e.Record.Cells[DictionaryMain.kolumnaWartoscNetto].Value * stawkaVat;
-            //        e.Record.Cells[DictionaryMain.kolumnaKwotaVat].Value = (decimal)e.Record.Cells[DictionaryMain.kolumnaWartoscBrutto].Value - (decimal)e.Record.Cells[DictionaryMain.kolumnaWartoscNetto].Value;
-            //    }
-            //}
-
             DataRecord row = e.Record;
             Cell stawkaVat = row.Cells[DictionaryMain.kolumnaStawkaVat];
             Cell ilosc = row.Cells[DictionaryMain.kolumnaIlosc];
@@ -126,44 +115,26 @@ namespace EasyInvoice
             Cell kwotaVat = row.Cells[DictionaryMain.kolumnaKwotaVat];
             Cell wartoscBrutto = row.Cells[DictionaryMain.kolumnaWartoscBrutto];
 
-            switch (e.Cell.Field.Name)
-            {
-                case DictionaryMain.kolumnaCenaNetto:
-                    if (ilosc.Value != null
-                        && Convert.ToDecimal(wartoscNetto.Value) != GetValueIloraz(ilosc, cenaNetto))
+                    if (ilosc.Value != DBNull.Value && ilosc.Value != null 
+                    && cenaNetto.Value !=DBNull.Value &&
+                        (wartoscNetto.Value == DBNull.Value || Convert.ToDecimal(wartoscNetto.Value) != GetValueIloraz(ilosc, cenaNetto)))
                     {
                         wartoscNetto.Value = GetValueIloraz(ilosc, cenaNetto);
                     }
 
-                    if (!string.IsNullOrEmpty(stawkaVat.Value.ToString())
-                        && wartoscNetto != null && (decimal)wartoscBrutto.Value != GetValueIloraz(wartoscNetto, stawkaVat))
+                    if (!string.IsNullOrEmpty(stawkaVat.Value.ToString()) 
+                     && wartoscNetto.Value != DBNull.Value && wartoscNetto.Value != null 
+                     && (wartoscBrutto.Value == DBNull.Value || (decimal)wartoscBrutto.Value != GetValueIloraz(wartoscNetto, stawkaVat)))
                     {
                         wartoscBrutto.Value = GetValueIloraz(wartoscNetto, stawkaVat);
                     }
 
-                    if(wartoscBrutto.Value !=null && wartoscNetto.Value!=null
-                        && (decimal)kwotaVat.Value != (decimal)wartoscBrutto.Value - (decimal)wartoscNetto.Value)
+                    if (wartoscBrutto.Value != DBNull.Value && wartoscBrutto.Value != null 
+                     && wartoscNetto.Value != null
+                        && (kwotaVat.Value == DBNull.Value || (decimal)kwotaVat.Value != (decimal)wartoscBrutto.Value - (decimal)wartoscNetto.Value))
                     {
                         kwotaVat.Value = (decimal)wartoscBrutto.Value - (decimal)wartoscNetto.Value;
                     }
-
-                        break;
-                case DictionaryMain.kolumnaStawkaVat:
-
-                    break;
-                case DictionaryMain.kolumnaWartoscNetto:
-
-                    break;
-                case DictionaryMain.kolumnaKwotaVat:
-
-                    break;
-                case DictionaryMain.kolumnaWartoscBrutto:
-
-                    break;
-                case DictionaryMain.kolumnaIlosc:
-
-                    break;
-            }
         }
 
         private static decimal getDecimalVatStawka(DataRecord row)

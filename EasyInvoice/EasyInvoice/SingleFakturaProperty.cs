@@ -21,7 +21,6 @@ namespace EasyInvoice
         private bool _gotowka;
         private bool _przelew;
         private string _numerRachunku;
-        private List<DaneUsluga> _ld;
 
         [XmlIgnore]
         public SingleFakturaProperty MySingleton
@@ -58,15 +57,21 @@ namespace EasyInvoice
             {
                 if (_dt == null)
                 {
-                    _dt = new DataTable();
-                    _dt.Columns.Add(DictionaryMain.kolumnaTowar, typeof(string));
-                    _dt.Columns.Add(DictionaryMain.kolumnaJM);
-                    _dt.Columns.Add(DictionaryMain.kolumnaIlosc, typeof(Int32));
-                    _dt.Columns.Add(DictionaryMain.kolumnaCenaNetto, typeof(decimal));
-                    _dt.Columns.Add(DictionaryMain.kolumnaWartoscNetto, typeof(decimal));
-                    _dt.Columns.Add(DictionaryMain.kolumnaStawkaVat);
-                    _dt.Columns.Add(DictionaryMain.kolumnaKwotaVat, typeof(decimal));
-                    _dt.Columns.Add(DictionaryMain.kolumnaWartoscBrutto, typeof(decimal));
+                                       
+                        _dt = new DataTable();
+                        _dt.TableName = "TabelaFaktura";
+                        _dt.Columns.Add(DictionaryMain.kolumnaTowar, typeof(string));
+                        _dt.Columns.Add(DictionaryMain.kolumnaJM);
+                        _dt.Columns.Add(DictionaryMain.kolumnaIlosc, typeof(Int32));
+                        _dt.Columns.Add(DictionaryMain.kolumnaCenaNetto, typeof(decimal));
+                        _dt.Columns.Add(DictionaryMain.kolumnaWartoscNetto, typeof(decimal));
+                        _dt.Columns.Add(DictionaryMain.kolumnaStawkaVat);
+                        _dt.Columns.Add(DictionaryMain.kolumnaKwotaVat, typeof(decimal));
+                        _dt.Columns.Add(DictionaryMain.kolumnaWartoscBrutto, typeof(decimal));
+                    if (System.IO.File.Exists("dt.xml"))
+                    {
+                        _dt.ReadXml("dt.xml");
+                    }
                 }
 
                 return _dt;
@@ -89,11 +94,11 @@ namespace EasyInvoice
                     OpisTabela = dr[DictionaryMain.kolumnaTowar].ToString(),
                     Rodzajilosc = dr[DictionaryMain.kolumnaJM].ToString(),
                     Ilosc = Convert.ToInt32(dr[DictionaryMain.kolumnaIlosc]),
-                    CenaNetto = (decimal)dr[DictionaryMain.kolumnaCenaNetto],
-                    WartoscNetto = (decimal)dr[DictionaryMain.kolumnaWartoscNetto],
+                    CenaNetto = Decimal.Round((decimal)dr[DictionaryMain.kolumnaCenaNetto],2),
+                    WartoscNetto = Decimal.Round((decimal)dr[DictionaryMain.kolumnaWartoscNetto],2),
                     StawkaVat = dr[DictionaryMain.kolumnaStawkaVat].ToString(),
-                    KwotaVat = (decimal)dr[DictionaryMain.kolumnaKwotaVat],
-                    WartoscBrutto = (decimal)dr[DictionaryMain.kolumnaWartoscBrutto]
+                    KwotaVat = Decimal.Round((decimal)dr[DictionaryMain.kolumnaKwotaVat],2),
+                    WartoscBrutto = Decimal.Round((decimal)dr[DictionaryMain.kolumnaWartoscBrutto],2)
                 };
                 list.Add(dat);
                 i++;
@@ -159,38 +164,7 @@ namespace EasyInvoice
             }
 
             set => _naglowek = value;
-        }
-
-        public List<DaneUsluga> Ld
-        {
-            get
-            {
-                if (_ld == null)
-                {
-                    _ld = new List<DaneUsluga>();// GetListDt();
-                }
-                return _ld;
-            }
-            set
-            {
-                _ld = value;
-
-                foreach (var item in _ld)
-                {
-                    DataRow dr = Dt.NewRow();
-                    dr[DictionaryMain.kolumnaTowar] = item.OpisTabela;
-                    dr[DictionaryMain.kolumnaJM] = item.Rodzajilosc;
-                    dr[DictionaryMain.kolumnaIlosc] = item.Ilosc;
-                    dr[DictionaryMain.kolumnaCenaNetto] = item.CenaNetto;
-                    dr[DictionaryMain.kolumnaWartoscNetto] = item.WartoscNetto;
-                    dr[DictionaryMain.kolumnaStawkaVat] = item.StawkaVat;
-                    dr[DictionaryMain.kolumnaKwotaVat] = item.KwotaVat;
-                    dr[DictionaryMain.kolumnaWartoscBrutto] = item.WartoscBrutto;
-                    Dt.Rows.Add(dr);
-                }
-            }
-
-        }
+        }     
     }
 
 }

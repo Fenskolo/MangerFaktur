@@ -330,10 +330,10 @@ namespace EasyInvoice
             Table.DefaultHeaderStyle.MultiLineText = true;
             Table.DefaultHeaderStyle.Alignment = ContentAlignment.TopCenter;
 
-            Table.Header[0].Value = hData.getSum()[0].WartoscNetto;
-            Table.Header[1].Value = hData.getSum()[0].StawkaVat;
-            Table.Header[2].Value = hData.getSum()[0].KwotaVat;
-            Table.Header[3].Value = hData.getSum()[0].WartoscBrutto;
+            Table.Header[0].Value = hData.GetSum()[0].WartoscNetto;
+            Table.Header[1].Value = hData.GetSum()[0].StawkaVat;
+            Table.Header[2].Value = hData.GetSum()[0].KwotaVat;
+            Table.Header[3].Value = hData.GetSum()[0].WartoscBrutto;
 
             Table.DefaultCellStyle.Margin = Margin;
 
@@ -346,7 +346,7 @@ namespace EasyInvoice
             }
 
             int z = 0;
-            foreach (var item in hData.getSum())
+            foreach (var item in hData.GetSum())
             {
                 if(z==0)
                 {
