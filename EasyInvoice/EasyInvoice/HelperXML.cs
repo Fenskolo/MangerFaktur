@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace EasyInvoice
@@ -74,6 +75,67 @@ namespace EasyInvoice
                 table.Rows.Add(values);
             }
             return table;
+        }
+
+        public static DataTable Stam(string data)
+        {
+            StringReader theReader = new StringReader(data);
+            DataTable table = new DataTable();
+            table.TableName = "TabelaFaktura";
+            table.Columns.Add(DictionaryMain.kolumnaTowar, typeof(string));
+            table.Columns.Add(DictionaryMain.kolumnaJM);
+            table.Columns.Add(DictionaryMain.kolumnaIlosc, typeof(Int32));
+            table.Columns.Add(DictionaryMain.kolumnaCenaNetto, typeof(decimal));
+            table.Columns.Add(DictionaryMain.kolumnaWartoscNetto, typeof(decimal));
+            table.Columns.Add(DictionaryMain.kolumnaStawkaVat);
+            table.Columns.Add(DictionaryMain.kolumnaKwotaVat, typeof(decimal));
+            table.Columns.Add(DictionaryMain.kolumnaWartoscBrutto, typeof(decimal));
+            table.ReadXml(theReader);
+
+            return table;
+        }
+
+        public static string Serialize<T>(this T value)
+        {
+            if (value == null)
+            {
+                return string.Empty;
+            }
+            try
+            {
+                var xmlserializer = new XmlSerializer(typeof(T));
+                var stringWriter = new StringWriter();
+                using (var writer = XmlWriter.Create(stringWriter))
+                {
+                    xmlserializer.Serialize(writer, value);
+                    return stringWriter.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred", ex);
+            }
+        }
+
+        public static T DeserializeObject<T>(string xml)
+        where T : new()
+        {
+            if (string.IsNullOrEmpty(xml))
+            {
+                return new T();
+            }
+            try
+            {
+                using (var stringReader = new StringReader(xml))
+                {
+                    var serializer = new XmlSerializer(typeof(T));
+                    return (T)serializer.Deserialize(stringReader);
+                }
+            }
+            catch (Exception)
+            {
+                return new T();
+            }
         }
     }
 }

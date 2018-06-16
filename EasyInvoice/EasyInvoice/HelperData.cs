@@ -14,11 +14,11 @@ namespace EasyInvoice
             List<DaneTabela> dt = new List<DaneTabela>()
             {
                 new DaneTabela{ Lewa= DictionaryMain.labelHeaderSprzedawca, Prawa= DictionaryMain.labelHeaderNabywca },
-                new DaneTabela{ Lewa= SingleFakturaProperty.Singleton.Sprzedawca.NazwaFirmy, Prawa= SingleFakturaProperty.Singleton.Nabywca.NazwaFirmy },
-                new DaneTabela{ Lewa= SingleFakturaProperty.Singleton.Sprzedawca.UlicaFirmy, Prawa= SingleFakturaProperty.Singleton.Nabywca.UlicaFirmy },
-                new DaneTabela{ Lewa= SingleFakturaProperty.Singleton.Sprzedawca.MiastoFirmy, Prawa= SingleFakturaProperty.Singleton.Nabywca.MiastoFirmy },
-                new DaneTabela{ Lewa= SingleFakturaProperty.Singleton.Sprzedawca.NipFirmy, Prawa= SingleFakturaProperty.Singleton.Nabywca.NipFirmy },
-                new DaneTabela{ Lewa= SingleFakturaProperty.Singleton.Sprzedawca.InneFirmy, Prawa= SingleFakturaProperty.Singleton.Nabywca.InneFirmy },
+                new DaneTabela{ Lewa= SingleFakturaProperty.Singleton.Work.Sprzedawca.NazwaFirmy, Prawa= SingleFakturaProperty.Singleton.Work.Nabywca.NazwaFirmy },
+                new DaneTabela{ Lewa= SingleFakturaProperty.Singleton.Work.Sprzedawca.UlicaFirmy, Prawa= SingleFakturaProperty.Singleton.Work.Nabywca.UlicaFirmy },
+                new DaneTabela{ Lewa= SingleFakturaProperty.Singleton.Work.Sprzedawca.MiastoFirmy, Prawa= SingleFakturaProperty.Singleton.Work.Nabywca.MiastoFirmy },
+                new DaneTabela{ Lewa= SingleFakturaProperty.Singleton.Work.Sprzedawca.NipFirmy, Prawa= SingleFakturaProperty.Singleton.Work.Nabywca.NipFirmy },
+                new DaneTabela{ Lewa= SingleFakturaProperty.Singleton.Work.Sprzedawca.InneFirmy, Prawa= SingleFakturaProperty.Singleton.Work.Nabywca.InneFirmy },
             };
 
             return dt;
@@ -28,7 +28,7 @@ namespace EasyInvoice
         {
             List<DaneTabela> dt = new List<DaneTabela>()
             {
-                new DaneTabela{ Lewa=DictionaryMain.labelNumerRachunku, Prawa= SingleFakturaProperty.Singleton.NumerRachunku}
+                new DaneTabela{ Lewa=DictionaryMain.labelNumerRachunku, Prawa= SingleFakturaProperty.Singleton.Work.NumerRachunku}
             };
 
             return dt;
@@ -113,9 +113,9 @@ namespace EasyInvoice
         {
             List<DaneTabela> dt = new List<DaneTabela>
             {
-                new DaneTabela(){Lewa = DictionaryMain.labelMiejsceWystawienia, Prawa = SingleFakturaProperty.Singleton.Naglowek.MiejsceWystawienia},
-                new DaneTabela(){Lewa = DictionaryMain.labelDataWystawienia, Prawa = SingleFakturaProperty.Singleton.Naglowek.DataWystawienia.ToShortDateString()},
-                new DaneTabela(){Lewa = DictionaryMain.labelDataSprzedazy, Prawa = SingleFakturaProperty.Singleton.Naglowek.DataSprzedazy.ToShortDateString()}
+                new DaneTabela(){Lewa = DictionaryMain.labelMiejsceWystawienia, Prawa = SingleFakturaProperty.Singleton.Work.Naglowek.MiejsceWystawienia},
+                new DaneTabela(){Lewa = DictionaryMain.labelDataWystawienia, Prawa = SingleFakturaProperty.Singleton.Work.Naglowek.DataWystawienia.ToShortDateString()},
+                new DaneTabela(){Lewa = DictionaryMain.labelDataSprzedazy, Prawa = SingleFakturaProperty.Singleton.Work.Naglowek.DataSprzedazy.ToShortDateString()}
             };
 
             return dt;
@@ -125,8 +125,8 @@ namespace EasyInvoice
         {
             List<DaneTabela> dt = new List<DaneTabela>
             {
-                new DaneTabela(){Lewa = DictionaryMain.labelTerminZaplaty, Prawa = SingleFakturaProperty.Singleton.Naglowek.TerminZaplaty.ToShortDateString()},
-                new DaneTabela(){Lewa = DictionaryMain.labelFormaPlatnosci, Prawa = SingleFakturaProperty.Singleton.Naglowek.FormaPlatnosci}
+                new DaneTabela(){Lewa = DictionaryMain.labelTerminZaplaty, Prawa = SingleFakturaProperty.Singleton.Work.Naglowek.TerminZaplaty.ToShortDateString()},
+                new DaneTabela(){Lewa = DictionaryMain.labelFormaPlatnosci, Prawa = SingleFakturaProperty.Singleton.Work.Naglowek.FormaPlatnosci}
             };
 
             return dt;

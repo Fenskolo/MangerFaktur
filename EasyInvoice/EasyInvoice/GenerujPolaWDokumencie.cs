@@ -57,9 +57,9 @@ namespace EasyInvoice
 
             lastPosition =TabelaDaneFaktura(1.3, lastPosition-1, lastPosition-11, 19.7, 9);
 
-            RazemWTym(12.03, lastPosition - 0.01, lastPosition - 11, 9);
+            RazemWTym(12.03, lastPosition - 0.018, lastPosition - 11, 9);
 
-            lastPosition = Summary(12.03, lastPosition-0.01, lastPosition-11, 19.7, 9);
+            lastPosition = Summary(12.03, lastPosition-0.018, lastPosition-11, 19.7, 9);
 
             WidthRow = ArialNormal.TextWidth(8, hData.GetZapDoZap()[1].Lewa + hData.GetZapDoZap()[1].Prawa)+0.25; 
             CreateTable(hData.GetZapDoZap(), 1.3, 1.3+ WidthRow, 8, lastPosition - 1, lastPosition - 10, false, ContentAlignment.MiddleLeft);
@@ -105,7 +105,7 @@ namespace EasyInvoice
             TextBox txtNr = new TextBox(Width, 0);
 
             txtF.AddText(ArialNormal, FontSize, DictionaryMain.labelNrFaktury);
-            txtNr.AddText(ArialBold, FontSize, SingleFakturaProperty.Singleton.Naglowek.NumerFaktury);
+            txtNr.AddText(ArialBold, FontSize, SingleFakturaProperty.Singleton.Work.Naglowek.NumerFaktury);
             
             Double PosY =  Height;
             Contents.DrawText(0.0, ref PosY, 0, 0, 0.015, 0.05, TextBoxJustify.Left, txtF);

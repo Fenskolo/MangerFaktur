@@ -14,13 +14,8 @@ namespace EasyInvoice
     {
         private static SingleFakturaProperty _singleton;
         public SingleFakturaProperty() { }
-        private DataTable _dt;
-        private FirmaData _sprzedawca;
-        private FirmaData _nabywca;
-        private Naglowek _naglowek;
-        private bool _gotowka;
-        private bool _przelew;
-        private string _numerRachunku;
+        private WorkClass _work;
+      
 
         [XmlIgnore]
         public SingleFakturaProperty MySingleton
@@ -29,9 +24,7 @@ namespace EasyInvoice
             set
             {
                 _singleton = value;
-
             }
-
         }
 
 
@@ -50,34 +43,18 @@ namespace EasyInvoice
             set => _singleton = value;
         }
 
-        [XmlIgnore]
-        public DataTable Dt
+        public WorkClass Work
         {
             get
             {
-                if (_dt == null)
+                if(_work ==null)
                 {
-                                       
-                        _dt = new DataTable();
-                        _dt.TableName = "TabelaFaktura";
-                        _dt.Columns.Add(DictionaryMain.kolumnaTowar, typeof(string));
-                        _dt.Columns.Add(DictionaryMain.kolumnaJM);
-                        _dt.Columns.Add(DictionaryMain.kolumnaIlosc, typeof(Int32));
-                        _dt.Columns.Add(DictionaryMain.kolumnaCenaNetto, typeof(decimal));
-                        _dt.Columns.Add(DictionaryMain.kolumnaWartoscNetto, typeof(decimal));
-                        _dt.Columns.Add(DictionaryMain.kolumnaStawkaVat);
-                        _dt.Columns.Add(DictionaryMain.kolumnaKwotaVat, typeof(decimal));
-                        _dt.Columns.Add(DictionaryMain.kolumnaWartoscBrutto, typeof(decimal));
-                    if (System.IO.File.Exists("dt.xml"))
-                    {
-                        _dt.ReadXml("dt.xml");
-                    }
+                    _work = new WorkClass();
                 }
 
-                return _dt;
+                return _work;
             }
-
-            set => _dt = value;
+            set => _work = value;
         }
 
         //   [XmlIgnore]
@@ -86,7 +63,7 @@ namespace EasyInvoice
             List<DaneUsluga> list = new List<DaneUsluga>();
 
             int i = 1;
-            foreach (DataRow dr in Dt.Rows)
+            foreach (DataRow dr in Work.Dt.Rows)
             {
                 DaneUsluga dat = new DaneUsluga
                 {
@@ -105,67 +82,7 @@ namespace EasyInvoice
 
             }
             return list;
-        }
-
-        public FirmaData Sprzedawca
-        {
-            get
-            {
-                if (_sprzedawca == null)
-                {
-                    _sprzedawca = new FirmaData();
-                }
-
-                return _sprzedawca;
-            }
-
-            set => _sprzedawca = value;
-        }
-
-        public FirmaData Nabywca
-        {
-            get
-            {
-                if (_nabywca == null)
-                {
-                    _nabywca = new FirmaData();
-                }
-
-                return _nabywca;
-            }
-
-            set => _nabywca = value;
-        }
-
-        public bool Gotowka { get => _gotowka; set => _gotowka = value; }
-        public bool Przelew { get => _przelew; set => _przelew = value; }
-        public string NumerRachunku { get => _numerRachunku; set => _numerRachunku = value; }
-
-        public Naglowek Naglowek
-        {
-            get
-            {
-                if (_naglowek == null)
-                {
-
-                    int month = DateTime.Now.Month;
-                    int year = DateTime.Now.Year;
-                    int day = DateTime.DaysInMonth(year, month);
-                    _naglowek = new Naglowek
-                    {
-                        DataSprzedazy = new DateTime(year, month, day),
-                        DataWystawienia = new DateTime(year, month, day)
-                    };
-                    _naglowek.TerminZaplaty = _naglowek.DataSprzedazy.AddDays(14);
-                    _naglowek.NumerFaktury = "0001/" + DateTime.Now.Month + "/" + DateTime.Now.Year;
-                }
-
-                return _naglowek;
-            }
-
-            set => _naglowek = value;
-        }     
+        }         
     }
-
 }
 

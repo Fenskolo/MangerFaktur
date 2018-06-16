@@ -27,12 +27,19 @@ namespace EasyInvoice
 
         public MainWindow()
         {
-            SingleFakturaProperty.Singleton.MySingleton = HelperXML.Deserialize();
+           // SingleFakturaProperty.Singleton.MySingleton = HelperXML.Deserialize();
             
             InitializeComponent();
-
-            xDG.DataContext = SingleFakturaProperty.Singleton.Dt.DefaultView;
-
+            if (Property.Instance.Works.Count > 0)
+            {
+                var x = (WorkClass)Property.Instance.Works[Property.Instance.Works.Count - 1];
+                SingleFakturaProperty.Singleton.MySingleton.Work = (WorkClass)x.Clone();
+                SingleFakturaProperty.Singleton.MySingleton.Work.Naglowek = (Naglowek)x.Naglowek.Clone();
+                SingleFakturaProperty.Singleton.MySingleton.Work.Sprzedawca = (FirmaData)x.Sprzedawca.Clone();
+                SingleFakturaProperty.Singleton.MySingleton.Work.Nabywca = (FirmaData)x.Nabywca.Clone();
+            }
+            xDG.DataContext = SingleFakturaProperty.Singleton.MySingleton.Work.Dt.DefaultView;
+        //    xamComboEditor.DataContext = Property.Instance.Works.Select(f => f.Naglowek.Id).ToList();
             lblFaktura.Content = DictionaryMain.labelNrFaktury;
             lblMiejsceWystawienia.Content = DictionaryMain.labelMiejsceWystawienia;
             lblDataWystawienia  .Content = DictionaryMain.labelDataWystawienia;
@@ -56,11 +63,11 @@ namespace EasyInvoice
             Gotowka.Content = "Gotówka";
             Przelew.Content = "Przelew";
 
-            Nabywca.DataContext = SingleFakturaProperty.Singleton.Nabywca;
-            Sprzedawca.DataContext = SingleFakturaProperty.Singleton.Sprzedawca;
+            Nabywca.DataContext = SingleFakturaProperty.Singleton.MySingleton.Work.Nabywca;
+            Sprzedawca.DataContext = SingleFakturaProperty.Singleton.MySingleton.Work.Sprzedawca;
           //  PrzelewG.DataContext = sf;
-            BankGotowka.DataContext = SingleFakturaProperty.Singleton;
-            Naglowek.DataContext = SingleFakturaProperty.Singleton.Naglowek;
+            BankGotowka.DataContext = SingleFakturaProperty.Singleton.MySingleton.Work;
+            Naglowek.DataContext = SingleFakturaProperty.Singleton.MySingleton.Work.Naglowek;
 
         }
 

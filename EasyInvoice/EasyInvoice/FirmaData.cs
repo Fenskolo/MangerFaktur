@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace EasyInvoice
 {
     [DataContract]
-    public class FirmaData
+    public class FirmaData : ICloneable
     {
         [DataMember]
         public string NazwaFirmy { get; set; }
@@ -21,5 +21,9 @@ namespace EasyInvoice
         [DataMember]
         public string InneFirmy { get; set; }
 
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }

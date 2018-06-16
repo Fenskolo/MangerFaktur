@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace EasyInvoice
 {
-    public class Property
+    [Serializable]
+    public class Property 
     {
         private static Property _instance;
+        private static readonly string xmlPath = "xmlProperty.xml";
         List<string> _nameList;
         List<string> _stawkaList;
+        List<WorkClass> _works;
         public Property() { }
 
         public static Property Instance
@@ -19,7 +24,14 @@ namespace EasyInvoice
             {
                 if (_instance == null)
                 {
-                    _instance = new Property();
+                    if (File.Exists(xmlPath))
+                    {
+                        _instance=Deserialize();
+                    }
+                    else
+                    {
+                        _instance = new Property();
+                    }
                 }
                 return _instance;
             }
@@ -46,8 +58,11 @@ namespace EasyInvoice
                 }
                 return _nameList;
             }
-
-            set => _nameList = value;
+            set
+            {
+                value.Where(f => NameList.Contains(f)).ToList().ForEach(a => value.Remove(a));
+                _nameList = value;
+            }
         }
 
         public List<string> StawkaList
@@ -61,13 +76,67 @@ namespace EasyInvoice
                         "23%",
                         "0%",
                         "7%"
-
                     };
                 }
                 return _stawkaList;
             }
+            set
+            {
+                value.Where(f => StawkaList.Contains(f)).ToList().ForEach(a => value.Remove(a));
+                _stawkaList = value;
+            }
+        }
 
-            set => _stawkaList = value;
+        public List<WorkClass> Works
+        { get
+            {
+                if(_works == null)
+                {
+                    _works = new List<WorkClass>();
+                }
+                return _works;
+            }
+           
+            set => _works = value; }
+
+        public static Property Deserialize()
+        {
+            TextReader reader = null;
+            try
+            {
+                var serializer = new XmlSerializer(typeof(Property));
+                reader = new StreamReader(xmlPath);
+                return (Property)serializer.Deserialize(reader);
+            }
+            finally
+            {
+                if (reader != null)
+                {
+                    reader.Close();
+                }
+            }
+        }
+
+        public static void SerializeXml()
+        {
+            TextWriter writer = null;
+            try
+            {
+                XmlSerializer xsSubmit = new XmlSerializer(typeof(Property));
+                writer = new StreamWriter(xmlPath, false);
+                xsSubmit.Serialize(writer, Property.Instance);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                if (writer != null)
+                {
+                    writer.Close();
+                }
+            }
         }
     }
 
@@ -111,5 +180,6 @@ namespace EasyInvoice
         public const string summaRazem = "Razem";
         public const string summaWTym = "W tym";
     }
+
 
 }

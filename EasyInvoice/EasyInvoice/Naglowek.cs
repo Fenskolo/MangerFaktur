@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace EasyInvoice
 {
     [DataContract]
-    public class Naglowek
+    public class Naglowek : ICloneable
     {
         [DataMember]
         public string NumerFaktury { get; set; }
@@ -22,5 +22,14 @@ namespace EasyInvoice
         public DateTime TerminZaplaty { get; set; }
         [DataMember]
         public string FormaPlatnosci { get; set; }
+        [DataMember]
+        public DateTime DataUtworzenia { get; set; }
+        [DataMember]
+        public int Id{ get; set; }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }

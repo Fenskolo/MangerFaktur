@@ -72,11 +72,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Enums.cs" />
     <Compile Include="FirmaData.cs" />
     <Compile Include="HelperXML.cs" />
     <Compile Include="Naglowek.cs" />
     <Compile Include="Property.cs" />
     <Compile Include="SingleFakturaProperty.cs" />
+    <Compile Include="WorkClass.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
