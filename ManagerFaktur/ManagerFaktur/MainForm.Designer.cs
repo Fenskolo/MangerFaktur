@@ -35,6 +35,18 @@
             Infragistics.Win.Appearance appearance2 = new Infragistics.Win.Appearance();
             Infragistics.Win.UltraWinEditors.EditorButton editorButton3 = new Infragistics.Win.UltraWinEditors.EditorButton();
             Infragistics.Win.Appearance appearance3 = new Infragistics.Win.Appearance();
+            Infragistics.Win.Appearance appearance4 = new Infragistics.Win.Appearance();
+            Infragistics.Win.Appearance appearance5 = new Infragistics.Win.Appearance();
+            Infragistics.Win.Appearance appearance6 = new Infragistics.Win.Appearance();
+            Infragistics.Win.Appearance appearance7 = new Infragistics.Win.Appearance();
+            Infragistics.Win.Appearance appearance8 = new Infragistics.Win.Appearance();
+            Infragistics.Win.Appearance appearance9 = new Infragistics.Win.Appearance();
+            Infragistics.Win.Appearance appearance10 = new Infragistics.Win.Appearance();
+            Infragistics.Win.Appearance appearance11 = new Infragistics.Win.Appearance();
+            Infragistics.Win.Appearance appearance12 = new Infragistics.Win.Appearance();
+            Infragistics.Win.Appearance appearance13 = new Infragistics.Win.Appearance();
+            Infragistics.Win.Appearance appearance14 = new Infragistics.Win.Appearance();
+            Infragistics.Win.Appearance appearance15 = new Infragistics.Win.Appearance();
             this.mainMenu = new System.Windows.Forms.ToolStrip();
             this.Ustawienia = new System.Windows.Forms.ToolStripButton();
             this.tCB = new System.Windows.Forms.ToolStripComboBox();
@@ -46,6 +58,7 @@
             this.uBtnMove = new Infragistics.Win.Misc.UltraButton();
             this.uDTEditor = new Infragistics.Win.UltraWinEditors.UltraDateTimeEditor();
             this.btnRefresh = new Infragistics.Win.Misc.UltraButton();
+            this.uComboPath = new Infragistics.Win.UltraWinGrid.UltraCombo();
             this.mainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uListView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -54,6 +67,7 @@
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.uTxt)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.uDTEditor)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.uComboPath)).BeginInit();
             this.SuspendLayout();
             // 
             // mainMenu
@@ -191,11 +205,75 @@
             this.btnRefresh.Text = "Odśwież";
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
+            // uComboPath
+            // 
+            appearance4.BackColor = System.Drawing.SystemColors.Window;
+            appearance4.BorderColor = System.Drawing.SystemColors.InactiveCaption;
+            this.uComboPath.DisplayLayout.Appearance = appearance4;
+            this.uComboPath.DisplayLayout.AutoFitStyle = Infragistics.Win.UltraWinGrid.AutoFitStyle.ResizeAllColumns;
+            this.uComboPath.DisplayLayout.BorderStyle = Infragistics.Win.UIElementBorderStyle.Solid;
+            this.uComboPath.DisplayLayout.CaptionVisible = Infragistics.Win.DefaultableBoolean.False;
+            appearance5.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            appearance5.BackColor2 = System.Drawing.SystemColors.ControlDark;
+            appearance5.BackGradientStyle = Infragistics.Win.GradientStyle.Vertical;
+            appearance5.BorderColor = System.Drawing.SystemColors.Window;
+            this.uComboPath.DisplayLayout.GroupByBox.Appearance = appearance5;
+            appearance6.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.uComboPath.DisplayLayout.GroupByBox.BandLabelAppearance = appearance6;
+            this.uComboPath.DisplayLayout.GroupByBox.BorderStyle = Infragistics.Win.UIElementBorderStyle.Solid;
+            appearance7.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            appearance7.BackColor2 = System.Drawing.SystemColors.Control;
+            appearance7.BackGradientStyle = Infragistics.Win.GradientStyle.Horizontal;
+            appearance7.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.uComboPath.DisplayLayout.GroupByBox.PromptAppearance = appearance7;
+            this.uComboPath.DisplayLayout.MaxColScrollRegions = 1;
+            this.uComboPath.DisplayLayout.MaxRowScrollRegions = 1;
+            appearance8.BackColor = System.Drawing.SystemColors.Window;
+            appearance8.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.uComboPath.DisplayLayout.Override.ActiveCellAppearance = appearance8;
+            appearance9.BackColor = System.Drawing.SystemColors.Highlight;
+            appearance9.ForeColor = System.Drawing.SystemColors.HighlightText;
+            this.uComboPath.DisplayLayout.Override.ActiveRowAppearance = appearance9;
+            this.uComboPath.DisplayLayout.Override.BorderStyleCell = Infragistics.Win.UIElementBorderStyle.Dotted;
+            this.uComboPath.DisplayLayout.Override.BorderStyleRow = Infragistics.Win.UIElementBorderStyle.Dotted;
+            appearance10.BackColor = System.Drawing.SystemColors.Window;
+            this.uComboPath.DisplayLayout.Override.CardAreaAppearance = appearance10;
+            appearance11.BorderColor = System.Drawing.Color.Silver;
+            appearance11.TextTrimming = Infragistics.Win.TextTrimming.EllipsisCharacter;
+            this.uComboPath.DisplayLayout.Override.CellAppearance = appearance11;
+            this.uComboPath.DisplayLayout.Override.CellClickAction = Infragistics.Win.UltraWinGrid.CellClickAction.EditAndSelectText;
+            this.uComboPath.DisplayLayout.Override.CellPadding = 0;
+            appearance12.BackColor = System.Drawing.SystemColors.Control;
+            appearance12.BackColor2 = System.Drawing.SystemColors.ControlDark;
+            appearance12.BackGradientAlignment = Infragistics.Win.GradientAlignment.Element;
+            appearance12.BackGradientStyle = Infragistics.Win.GradientStyle.Horizontal;
+            appearance12.BorderColor = System.Drawing.SystemColors.Window;
+            this.uComboPath.DisplayLayout.Override.GroupByRowAppearance = appearance12;
+            appearance13.TextHAlignAsString = "Left";
+            this.uComboPath.DisplayLayout.Override.HeaderAppearance = appearance13;
+            this.uComboPath.DisplayLayout.Override.HeaderClickAction = Infragistics.Win.UltraWinGrid.HeaderClickAction.SortMulti;
+            this.uComboPath.DisplayLayout.Override.HeaderStyle = Infragistics.Win.HeaderStyle.WindowsXPCommand;
+            appearance14.BackColor = System.Drawing.SystemColors.Window;
+            appearance14.BorderColor = System.Drawing.Color.Silver;
+            this.uComboPath.DisplayLayout.Override.RowAppearance = appearance14;
+            this.uComboPath.DisplayLayout.Override.RowSelectors = Infragistics.Win.DefaultableBoolean.False;
+            appearance15.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.uComboPath.DisplayLayout.Override.TemplateAddRowAppearance = appearance15;
+            this.uComboPath.DisplayLayout.ScrollBounds = Infragistics.Win.UltraWinGrid.ScrollBounds.ScrollToFill;
+            this.uComboPath.DisplayLayout.ScrollStyle = Infragistics.Win.UltraWinGrid.ScrollStyle.Immediate;
+            this.uComboPath.DisplayLayout.ViewStyleBand = Infragistics.Win.UltraWinGrid.ViewStyleBand.OutlookGroupBy;
+            this.uComboPath.Location = new System.Drawing.Point(550, 0);
+            this.uComboPath.Name = "uComboPath";
+            this.uComboPath.Size = new System.Drawing.Size(174, 22);
+            this.uComboPath.TabIndex = 9;
+            this.uComboPath.ValueChanged += new System.EventHandler(this.uComboPath_ValueChanged);
+            // 
             // MF
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(948, 371);
+            this.Controls.Add(this.uComboPath);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.uDTEditor);
             this.Controls.Add(this.uBtnMove);
@@ -217,6 +295,7 @@
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.uTxt)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.uDTEditor)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.uComboPath)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -235,6 +314,7 @@
         private Infragistics.Win.Misc.UltraButton uBtnShowTxt;
         private Infragistics.Win.UltraWinEditors.UltraDateTimeEditor uDTEditor;
         private Infragistics.Win.Misc.UltraButton btnRefresh;
+        private Infragistics.Win.UltraWinGrid.UltraCombo uComboPath;
     }
 }
 

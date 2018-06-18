@@ -11,6 +11,7 @@ using iTextSharp.text.pdf.parser;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Infragistics.Win.UltraWinEditors;
+using System.Linq;
 
 namespace ManagerFaktur
 {
@@ -32,9 +33,13 @@ namespace ManagerFaktur
         {
             tCB.Items.AddRange(Enum.GetNames(typeof(UltraListViewStyle)));
             tCB.SelectedIndex = 0;
-
+            var x =Directory.GetDirectories(Settings.Instance.WorkPath, "*", SearchOption.AllDirectories).AsEnumerable()
+                .Where(f=> f.Contains(DateTime.Now.Year.ToString())).ToDictionary(h=>h,
+                z=> z.Split('\\').Last());
+            uComboPath.DataSource = x;
+            uComboPath.DisplayLayout.Bands[0].Columns[0].Hidden = true;
             PropertyListView();
-            eh.LoadExplorer();
+            eh.LoadExplorer(Settings.Instance.WorkPath);
         }
 
         private void PropertyListView()
@@ -115,7 +120,7 @@ namespace ManagerFaktur
         private void RefreshExplorer()
         {
             uListView.Items.Clear();
-            eh.LoadExplorer();
+            eh.LoadExplorer(Settings.Instance.WorkPath);
         }
 
         private void TCB_TextChanged(object sender, EventArgs e)
@@ -266,6 +271,14 @@ namespace ManagerFaktur
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             RefreshExplorer();
+        }
+
+        private void uComboPath_ValueChanged(object sender, EventArgs e)
+        {
+            var x = uComboPath.SelectedRow;
+
+            uListView.Items.Clear();
+            eh.LoadExplorer(x.GetCellValue("Key").ToString());           
         }
     }
 }

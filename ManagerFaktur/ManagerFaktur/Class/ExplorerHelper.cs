@@ -23,7 +23,7 @@ namespace ManagerFaktur
             appWord.Image = Properties.Resources.word;
         }
 
-        public void LoadExplorer()
+        public void LoadExplorer(string Path)
         {
             try
             {
@@ -32,7 +32,7 @@ namespace ManagerFaktur
                     return;
                 }
 
-                DirectoryInfo cDriveInfo = new DirectoryInfo(Settings.Instance.WorkPath);
+                DirectoryInfo cDriveInfo = new DirectoryInfo(Path);
                        
                 FileInfo[] files = cDriveInfo.GetFiles("*.*", Settings.Instance.SearchOptions);
                 for (int i = 0; i < files.Length; i++)

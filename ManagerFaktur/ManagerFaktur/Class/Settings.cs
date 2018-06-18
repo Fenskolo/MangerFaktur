@@ -17,23 +17,9 @@ namespace ManagerFaktur
         private static Settings instance;
         private Settings() { }
         private static string xmlFile = Properties.Settings.Default.XmlConfig;
-        private string _workPath = string.Empty;
-        private string _destPath = string.Empty;
-        private string _logPath = Properties.Settings.Default.Log;
-        private string _fileNameDest = string.Empty;
-        private SearchOption searchOptions = 0;
         private List<string> _listExtenstion;
         private SymbolCollection ep;
         private List<string> _listSDelOneMonth;
-        
-
-        /// <summary>
-        /// Mail
-        /// </summary>
-        private string _login = string.Empty;
-        private string _password = string.Empty;
-        private string _from = string.Empty;
-        private string _to = string.Empty;
         private List<string> _listMail;
 
         public static Settings Instance
@@ -164,20 +150,16 @@ namespace ManagerFaktur
         }
 
         [Category("SendMail"), Description("login do poczty")]
-        public string Login{ get => _login; set => _login = value; }
-
+        public string Login { get; set; } = string.Empty;
         [Category("SendMail"), Description("hasło do poczty")]
         [TypeConverter(typeof(PasswordConverter))]
         [Editor(typeof(PasswordEditor), typeof(UITypeEditor))]
-        public string Password{ get => _password; set =>  _password = value;}
-
+        public string Password { get; set; } = string.Empty;
         [Category("SendMail"), Description("Mail od")]
-        public string From { get => _from; set =>  _from = value;}
-
-        [Category("SendMail"),Description("Mail do")]
-        public string To { get => _to; set => _to = value;}
-
-        public string LogPath { get => _logPath; set => _logPath = value;}
+        public string From { get; set; } = string.Empty;
+        [Category("SendMail"), Description("Mail do")]
+        public string To { get; set; } = string.Empty;
+        public string LogPath { get; set; } = Properties.Settings.Default.Log;
 
         [Editor(@"System.Windows.Forms.Design.StringCollectionEditor,"+"System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
        typeof(UITypeEditor))]
@@ -195,16 +177,15 @@ namespace ManagerFaktur
             set => _listSDelOneMonth = value;
         }
 
-        public SearchOption SearchOptions { get => searchOptions; set => searchOptions = value; }
-
+        public SearchOption SearchOptions { get; set; } = 0;
         [EditorAttribute(typeof(FolderNameEditor), typeof(UITypeEditor))]
         [XmlElement("WorkPath")]
-        public string WorkPath { get => _workPath; set => _workPath = value; }
+        public string WorkPath { get; set; } = string.Empty;
         [EditorAttribute(typeof(FolderNameEditor), typeof(UITypeEditor))]
         [XmlElement("DestPath")]
-        public string DestPath { get => _destPath; set => _destPath = value; }
+        public string DestPath { get; set; } = string.Empty;
         [XmlElement("NazwaPoczątkuPliku")]
-        public string FileNameDest { get => _fileNameDest; set => _fileNameDest = value; }
+        public string FileNameDest { get; set; } = string.Empty;
     }
 
     public class SymbolCollection : CollectionBase
@@ -224,21 +205,17 @@ namespace ManagerFaktur
 
     public class Symbol
     {
-        private string firstString;
-        private string lastString;
-        private TypDanych td;
-        
         [Category("Symbol")]
         [DisplayName("Start")]
-        public string FirstString { get => firstString; set => firstString = value; }       
+        public string FirstString { get; set; }
 
         [Category("Symbol")]
         [DisplayName("End")]
-        public string LastString { get => lastString; set => lastString = value; }
+        public string LastString { get; set; }
 
         [Category("Symbol")]
         [DisplayName("Typ")]
-        public TypDanych Td { get => td; set => td = value; }        
+        public TypDanych Td { get; set; }
     }
 
     public enum TypDanych

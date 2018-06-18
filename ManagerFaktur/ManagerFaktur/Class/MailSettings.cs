@@ -12,9 +12,7 @@ namespace ManagerFaktur
     {
         private static MailSettings ins;
         private MailSettings() { }
-        private string _subject = string.Empty;
-        private string _message = string.Empty;
-        private string _mailTo = string.Empty;
+
         private List<string> _listMail;
         private List<string> _listAtach;
 
@@ -31,16 +29,15 @@ namespace ManagerFaktur
             set => ins = value;
         }
 
-        
-        public string Subject { get => _subject; set => _subject = value; }
-         
+
+        public string Subject { get; set; } = string.Empty;
         [XmlIgnore]
         [Browsable(false)]
         public MailSettings MyInstance { get => ins; set => ins = value; }
-        
+
         [Editor(typeof(MultiLineTextEditor), typeof(UITypeEditor))]
-        public string Message { get => _message; set => _message = value; }
-        
+        public string Message { get; set; } = string.Empty;
+
         [XmlIgnore]
         [Editor(@"System.Windows.Forms.Design.StringCollectionEditor," + "System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
          typeof(UITypeEditor))]
@@ -60,12 +57,12 @@ namespace ManagerFaktur
                 Settings.Instance.ListMail = value;
             }
         }
-                
+
         [DisplayName("Mail Do")]
         [DefaultValue("")]
         [TypeConverter(typeof(FormatStringConverter))]
-        public string MailTo { get => _mailTo; set => _mailTo = value; }
-        
+        public string MailTo { get; set; } = string.Empty;
+
         [Browsable(false)]
         public List<string> ListAtach
         {
