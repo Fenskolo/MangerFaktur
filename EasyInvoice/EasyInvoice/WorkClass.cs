@@ -15,10 +15,6 @@ namespace EasyInvoice
         private FirmaData _sprzedawca;
         private FirmaData _nabywca;
         private Naglowek _naglowek;
-        private bool _gotowka;
-        private bool _przelew;
-        private string _numerRachunku;
-        private string _myDtString;
 
         [XmlIgnore]
         public DataTable Dt
@@ -42,8 +38,6 @@ namespace EasyInvoice
                     _dt.Columns.Add(DictionaryMain.kolumnaWartoscBrutto, typeof(decimal));
                     if (!string.IsNullOrEmpty(MyDtString))
                     {
-                     //   _dt =(DataTable)DeserializeObject(MyDtString);
-                     //   XmlSerializationReader
                         _dt.ReadXml("dt.xml");
                     }
                 }
@@ -84,9 +78,9 @@ namespace EasyInvoice
             set => _nabywca = value;
         }
 
-        public bool Gotowka { get => _gotowka; set => _gotowka = value; }
-        public bool Przelew { get => _przelew; set => _przelew = value; }
-        public string NumerRachunku { get => _numerRachunku; set => _numerRachunku = value; }
+        public bool Gotowka { get; set; }
+        public bool Przelew { get; set; }
+        public string NumerRachunku { get; set; }
 
         public Naglowek Naglowek
         {
@@ -114,7 +108,7 @@ namespace EasyInvoice
             set => _naglowek = value;
         }
 
-        public string MyDtString { get => _myDtString; set => _myDtString = value; }
+        public string MyDtString { get; set; }
 
         public object Clone()
         {

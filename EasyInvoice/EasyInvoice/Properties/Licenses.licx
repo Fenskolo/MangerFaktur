@@ -3,3 +3,4 @@ Infragistics.Controls.Barcodes.XamGs1DataBarBarcode, InfragisticsWPF4.Controls.B
 Infragistics.Windows.Controls.XamCarouselPanel, InfragisticsWPF4.v15.1, Version=15.1.20151.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb
 Infragistics.Windows.DataPresenter.XamDataGrid, InfragisticsWPF4.DataPresenter.v15.1, Version=15.1.20151.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb
 Infragistics.Windows.Editors.XamComboEditor, InfragisticsWPF4.Editors.v15.1, Version=15.1.20151.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb
+Infragistics.Controls.Editors.XamMultiColumnComboEditor, InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1, Version=15.1.20151.1000, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb

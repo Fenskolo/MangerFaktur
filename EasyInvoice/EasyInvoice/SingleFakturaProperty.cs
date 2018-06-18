@@ -57,7 +57,6 @@ namespace EasyInvoice
             set => _work = value;
         }
 
-        //   [XmlIgnore]
         public List<DaneUsluga> GetListDt()
         {
             List<DaneUsluga> list = new List<DaneUsluga>();

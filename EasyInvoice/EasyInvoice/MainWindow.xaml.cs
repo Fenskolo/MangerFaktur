@@ -27,24 +27,12 @@ namespace EasyInvoice
 
         public MainWindow()
         {
-           // SingleFakturaProperty.Singleton.MySingleton = HelperXML.Deserialize();
-            
             InitializeComponent();
-            if (Property.Instance.Works.Count > 0)
-            {
-                var x = (WorkClass)Property.Instance.Works[Property.Instance.Works.Count - 1];
-                SingleFakturaProperty.Singleton.MySingleton.Work = (WorkClass)x.Clone();
-                SingleFakturaProperty.Singleton.MySingleton.Work.Naglowek = (Naglowek)x.Naglowek.Clone();
-                SingleFakturaProperty.Singleton.MySingleton.Work.Sprzedawca = (FirmaData)x.Sprzedawca.Clone();
-                SingleFakturaProperty.Singleton.MySingleton.Work.Nabywca = (FirmaData)x.Nabywca.Clone();
-            }
-            xDG.DataContext = SingleFakturaProperty.Singleton.MySingleton.Work.Dt.DefaultView;
-        //    xamComboEditor.DataContext = Property.Instance.Works.Select(f => f.Naglowek.Id).ToList();
-            lblFaktura.Content = DictionaryMain.labelNrFaktury;
+            FillValuesFaktura(null);            
             lblMiejsceWystawienia.Content = DictionaryMain.labelMiejsceWystawienia;
-            lblDataWystawienia  .Content = DictionaryMain.labelDataWystawienia;
-            lblDataSprzedazy  .Content = DictionaryMain.labelDataSprzedazy;
-            lblTerminZaplaty  .Content = DictionaryMain.labelTerminZaplaty;
+            lblDataWystawienia.Content = DictionaryMain.labelDataWystawienia;
+            lblDataSprzedazy.Content = DictionaryMain.labelDataSprzedazy;
+            lblTerminZaplaty.Content = DictionaryMain.labelTerminZaplaty;
             lblFormaPlatnosc.Content = DictionaryMain.labelFormaPlatnosci;
             lblSprzedawca.Content = DictionaryMain.labelHeaderSprzedawca;
             lblNabywca.Content = DictionaryMain.labelHeaderNabywca;
@@ -62,13 +50,42 @@ namespace EasyInvoice
             lblNumerRachunku.Content = DictionaryMain.labelNumerRachunku;
             Gotowka.Content = "Gotówka";
             Przelew.Content = "Przelew";
+            cbFaktura.SelectionChanged += CbFaktura_SelectionChanged;
+        }
 
+        public void FillValuesFaktura(int? id)
+        {
+            if (Property.Instance.Works.Count > 0)
+            {                
+                var x = id.HasValue? (WorkClass)Property.Instance.Works.Where(q=>q.Naglowek.Id==id).FirstOrDefault() 
+                                    :(WorkClass)Property.Instance.Works.OrderByDescending(f => f.Naglowek.Id).First();
+                SingleFakturaProperty.Singleton.MySingleton.Work = (WorkClass)x.Clone();
+                SingleFakturaProperty.Singleton.MySingleton.Work.Naglowek = null;
+                SingleFakturaProperty.Singleton.MySingleton.Work.Naglowek.MiejsceWystawienia = x.Naglowek.MiejsceWystawienia;
+                SingleFakturaProperty.Singleton.MySingleton.Work.Sprzedawca = (FirmaData)x.Sprzedawca.Clone();
+                SingleFakturaProperty.Singleton.MySingleton.Work.Nabywca = (FirmaData)x.Nabywca.Clone();
+            }
+            xDG.DataContext = null;
+            xDG.DataContext = SingleFakturaProperty.Singleton.MySingleton.Work.Dt.DefaultView;
+            Nabywca.DataContext = null;
             Nabywca.DataContext = SingleFakturaProperty.Singleton.MySingleton.Work.Nabywca;
+            Sprzedawca.DataContext = null;
             Sprzedawca.DataContext = SingleFakturaProperty.Singleton.MySingleton.Work.Sprzedawca;
-          //  PrzelewG.DataContext = sf;
+            BankGotowka.DataContext = null;
             BankGotowka.DataContext = SingleFakturaProperty.Singleton.MySingleton.Work;
+            Naglowek.DataContext = null;
             Naglowek.DataContext = SingleFakturaProperty.Singleton.MySingleton.Work.Naglowek;
+            lblFaktura.Content = null;
+            lblFaktura.Content = DictionaryMain.labelNrFaktury;
 
+            cbFaktura.ItemsSource = Property.Instance.Works.Select(f => f.Naglowek.Id).ToList();
+            cbFaktura.SelectedValue = SingleFakturaProperty.Singleton.Work.Naglowek.Id;            
+        }
+
+        private void CbFaktura_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int myId = Convert.ToInt32((sender as ComboBox).SelectedItem);
+            FillValuesFaktura(myId);
         }
 
         private void XDG1_Loaded(object sender, RoutedEventArgs e)
@@ -95,7 +112,7 @@ namespace EasyInvoice
         private void Button_Click(object sender, RoutedEventArgs e)
         {     
             xDG.ActiveRecord =null;
-            MakePdf a = new MakePdf();                      
+            MakePdf a = new MakePdf(this);                      
         }
 
         private void Gotowka_Click(object sender, RoutedEventArgs e)

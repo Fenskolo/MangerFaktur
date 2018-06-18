@@ -20,12 +20,8 @@
 
                     </LinearGradientBrush>
                 </ToolBar.Background>
-                <Custom3:XamComboEditor x:Name="xamComboEditor" Height="35" Margin="0" VerticalAlignment="Top" Width="168" IsEditable="false" Theme="Office2k7Black" ItemsSource="{Binding Id}">
-                    <!--<Custom3:XamComboEditor.ItemsProvider>
-                    <Custom3:ComboBoxItemsProvider DisplayMemberPath="Id" ValuePath="Id" />
-                    </Custom3:XamComboEditor.ItemsProvider>-->
-                </Custom3:XamComboEditor>
-                <Button Content="Button" Height="35" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.347,0.629" Click="Button_Click">
+                <ComboBox x:Name="cbFaktura" Height="35" Margin="0" VerticalAlignment="Top" Width="120"/>
+                <Button Content="Generuj Fakturę" Height="35" VerticalAlignment="Top" Width="121" RenderTransformOrigin="0.347,0.629" Click="Button_Click">
                     <Button.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="#FF595353" Offset="0"/>
@@ -34,10 +30,11 @@
                     </Button.Background>
                 </Button>
                 
+
             </ToolBar>
         </ToolBarPanel>
         <Custom:XamTabControl Margin="0,0"     >
-            <TabItem Header="TabItem" Height="25" Width="60">
+            <TabItem Header="Faktura" Height="25" Width="70">
                 <TabItem.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#FF7C6D95" Offset="0"/>
@@ -203,7 +200,7 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="TabItem" Height="25" Width="60">
+            <TabItem Header="TabItem" Height="25" Width="70">
                 <TabItem.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#FF7C6D95" Offset="0"/>
@@ -212,7 +209,7 @@
                 </TabItem.Background>
                 <Grid Background="#FFE5E5E5"/>
             </TabItem>
-            <TabItem Header="TabItem" Height="25" Width="60">
+            <TabItem Header="TabItem" Height="25" Width="70">
                 <TabItem.Background>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                         <GradientStop Color="#FF7C6D95" Offset="0"/>

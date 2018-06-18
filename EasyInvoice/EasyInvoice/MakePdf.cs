@@ -9,7 +9,7 @@ namespace EasyInvoice
 {
     public class MakePdf
     {
-        public MakePdf()
+        public MakePdf(MainWindow mw)
         {
             string fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "plik" + ".pdf";
             GenerujPolaWDokumencie p = new GenerujPolaWDokumencie(fileName);
@@ -31,10 +31,13 @@ namespace EasyInvoice
                 x.Nabywca = (FirmaData)SingleFakturaProperty.Singleton.Work.Nabywca.Clone();
                 x.Sprzedawca = (FirmaData)SingleFakturaProperty.Singleton.Work.Sprzedawca.Clone();
             Property.Instance.Works.Add(x);
-            Property.SerializeXml(); 
+            Property.Instance.NameList= Property.Instance.NameList.Distinct().ToList();
+            Property.Instance.StawkaList = Property.Instance.StawkaList.Distinct().ToList();
+            Property.SerializeXml();
 
-         //   HelperXML.SerializeXml();
-         //  SingleFakturaProperty.Singleton.Work.Dt.WriteXml("dt.xml");
+            SingleFakturaProperty.Singleton = null;
+            SingleFakturaProperty.Singleton.Work = null;
+            mw.FillValuesFaktura(null);
         }
     }
 }

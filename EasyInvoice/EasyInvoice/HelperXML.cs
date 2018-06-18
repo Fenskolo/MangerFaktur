@@ -80,8 +80,10 @@ namespace EasyInvoice
         public static DataTable Stam(string data)
         {
             StringReader theReader = new StringReader(data);
-            DataTable table = new DataTable();
-            table.TableName = "TabelaFaktura";
+            DataTable table = new DataTable
+            {
+                TableName = "TabelaFaktura"
+            };
             table.Columns.Add(DictionaryMain.kolumnaTowar, typeof(string));
             table.Columns.Add(DictionaryMain.kolumnaJM);
             table.Columns.Add(DictionaryMain.kolumnaIlosc, typeof(Int32));

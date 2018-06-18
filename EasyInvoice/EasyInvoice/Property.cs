@@ -42,7 +42,7 @@ namespace EasyInvoice
         {
             get
             {
-                if (_nameList == null)
+                if (_nameList == null|| _nameList.Count==0)
                 {
                     _nameList = new List<string>()
                     {
@@ -69,7 +69,7 @@ namespace EasyInvoice
         {
             get
             {
-                if (_stawkaList == null)
+                if (_stawkaList == null || _stawkaList.Count==0)
                 {
                     _stawkaList = new List<string>()
                     {
