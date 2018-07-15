@@ -147,7 +147,7 @@ namespace EasyInvoice
         public const string labelDataWystawienia = "DATA WYSTAWIENIA:";
         public const string labelDataSprzedazy = "DATA SPRZEDAŻY:";
         public const string labelTerminZaplaty = "TERMIN ZAPŁATY:";
-        public const string labelFormaPlatnosci = "FORMA PŁATNOŚĆ:";
+        public const string labelFormaPlatnosci = "FORMA PŁATNOŚCI:";
         public const string labelHeaderSprzedawca = "Sprzedawca";
         public const string labelHeaderNabywca = "Nabywca i płatnik";
         public const string labelNazwaSprzedawcaNabywca = "Nazwa firmy:";
