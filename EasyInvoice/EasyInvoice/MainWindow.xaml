@@ -167,7 +167,7 @@
                             <DatePicker Grid.Column="1" Margin="0" Grid.Row="1"  Text="{Binding DataWystawienia, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             <DatePicker Grid.Column="1" Margin="0" Grid.Row="2"  Text="{Binding DataSprzedazy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             <DatePicker Grid.Column="3" Margin="0" Text="{Binding TerminZaplaty, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <TextBox Grid.Column="3" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding FormaPlatnosci, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox x:Name="fPlatnosci" Grid.Column="3" Margin="0" Grid.Row="1" TextWrapping="Wrap" Text="{Binding FormaPlatnosci, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
                     </Grid>
                     <Grid x:Name="GridWithDataGrid" Margin="0,315,0,0" VerticalAlignment="Top">
@@ -180,7 +180,7 @@
                             <Custom2:XamDataGrid.FieldLayouts>
                                 <Custom2:FieldLayout>
                                     <!--<Custom2:Field Name="Lp." Width="3*" Visibility="Hidden"/>-->
-                                    <Custom2:Field Name="Towar / usługa" Width="35*"/>
+                                    <Custom2:ComboBoxField Name="Towar / usługa" ItemsSource="{Binding}" Width="35*"/>
                                     <Custom2:ComboBoxField Name="J.m." ItemsSource="{Binding}" Width="5*"/>
                                     <Custom2:Field Name="Ilość" Width="5*"/>
                                     <Custom2:Field Name="Cena Netto" Width="9*"/>

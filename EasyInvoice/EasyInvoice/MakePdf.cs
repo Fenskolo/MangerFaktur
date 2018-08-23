@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.Sql;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace EasyInvoice
 {
@@ -15,8 +18,53 @@ namespace EasyInvoice
             GenerujPolaWDokumencie p = new GenerujPolaWDokumencie(fileName);
 
             System.Diagnostics.Process.Start(fileName);
-            
-            SingleFakturaProperty.Singleton.Work.MyDtString = SingleFakturaProperty.Singleton.Work.Dt.Serialize();
+
+            int idFaktua;
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                cmd.Connection = new SqlConnection(Properties.Settings.Default.dbConn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "dbo.addNewFaktura";
+                cmd.Parameters.AddWithValue("@nr_faktury", SingleFakturaProperty.Singleton.Work.Naglowek.NumerFaktury);
+                cmd.Parameters.AddWithValue("@miejsceWystawienia", SingleFakturaProperty.Singleton.Work.Naglowek.MiejsceWystawienia);
+                cmd.Parameters.AddWithValue("@dataWystawienia", SingleFakturaProperty.Singleton.Work.Naglowek.DataWystawienia);
+                cmd.Parameters.AddWithValue("@dataSprzedazy", SingleFakturaProperty.Singleton.Work.Naglowek.DataSprzedazy);
+                cmd.Parameters.AddWithValue("@dataZaplaty", SingleFakturaProperty.Singleton.Work.Naglowek.TerminZaplaty);
+                cmd.Parameters.AddWithValue("@id_formaPlatnosci", getIdFromTable(mw.formaPlatnosc, SingleFakturaProperty.Singleton.Work.Naglowek.FormaPlatnosci));
+                cmd.Parameters.AddWithValue("@id_typPlatnosci", getIdFromTable(mw.typPlatnosci, "przelew"));
+ //cmd.Parameters.AddWithValue("@kwotaRazem", SingleFakturaProperty.Singleton.Work.Dt.)
+//cmd.Parameters.AddWithValue("@zaplacono",)
+                cmd.Parameters.AddWithValue("@id_sprzedawcy", getIdFromTable(mw.firma, SingleFakturaProperty.Singleton.Work.Sprzedawca.NazwaFirmy));
+                cmd.Parameters.AddWithValue("@id_nabywcy", getIdFromTable(mw.firma, SingleFakturaProperty.Singleton.Work.Nabywca.NazwaFirmy));
+
+                cmd.Connection.Open();
+                idFaktua = Convert.ToInt32(cmd.ExecuteScalar());
+            }
+
+            foreach (DataRow row in SingleFakturaProperty.Singleton.Work.Dt.Rows)
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.Connection = new SqlConnection(Properties.Settings.Default.dbConn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandText = "dbo.addNewUslugaFaktura";
+                    cmd.Parameters.AddWithValue("@id_faktury", idFaktua);
+                    cmd.Parameters.AddWithValue("@id_usluga", getIdFromTable(mw.usluga, row[DictionaryMain.kolumnaTowar].ToString()));
+                    cmd.Parameters.AddWithValue("@id_jednostka", getIdFromTable(mw.jednostka, row[DictionaryMain.kolumnaJM].ToString()));
+                    cmd.Parameters.AddWithValue("@iloscJednostek", row[DictionaryMain.kolumnaIlosc]);
+                    cmd.Parameters.AddWithValue("@cenaNetto", row[DictionaryMain.kolumnaCenaNetto]);
+                    cmd.Parameters.AddWithValue("@wartoscNetto", row[DictionaryMain.kolumnaWartoscNetto]);
+                    cmd.Parameters.AddWithValue("@id_stawkaVat", getIdFromTable(mw.stawkaVat, row[DictionaryMain.kolumnaStawkaVat].ToString()));
+                    cmd.Parameters.AddWithValue("@kwotaVat", row[DictionaryMain.kolumnaKwotaVat]);
+                    cmd.Parameters.AddWithValue("@wartoscBrutto", row[DictionaryMain.kolumnaWartoscBrutto]);
+                    cmd.Connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+
+
+                SingleFakturaProperty.Singleton.Work.MyDtString = SingleFakturaProperty.Singleton.Work.Dt.Serialize();
 
             int myID = 1;
             bool que = true;
@@ -38,6 +86,11 @@ namespace EasyInvoice
             SingleFakturaProperty.Singleton = null;
             SingleFakturaProperty.Singleton.Work = null;
             mw.FillValuesFaktura(null);
+        }
+
+        private static object getIdFromTable(DataTable dt, string searchValue)
+        {
+            return dt.Rows.Cast<DataRow>().Where(w => w[1].ToString() == searchValue).FirstOrDefault().ItemArray[0];
         }
     }
 }
