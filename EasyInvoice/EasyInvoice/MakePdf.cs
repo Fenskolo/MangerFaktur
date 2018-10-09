@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Data.Sql;
 using System.Data.SqlClient;
 using System.Data;
+using System.IO;
 
 namespace EasyInvoice
 {
@@ -15,6 +16,7 @@ namespace EasyInvoice
         public MakePdf(MainWindow mw)
         {
             string fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "plik" + ".pdf";
+            fileName = Path.Combine(Properties.Settings.Default.pathDest, fileName);
             GenerujPolaWDokumencie p = new GenerujPolaWDokumencie(fileName);
 
             System.Diagnostics.Process.Start(fileName);

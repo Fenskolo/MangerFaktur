@@ -32,5 +32,14 @@ namespace EasyInvoice.Properties {
                 return ((string)(this["dbConn"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("D:\\Dane\\Dysk Google\\Faktury\\")]
+        public string pathDest {
+            get {
+                return ((string)(this["pathDest"]));
+            }
+        }
     }
 }
