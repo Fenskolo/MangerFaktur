@@ -34,10 +34,13 @@ namespace ManagerFaktur
             tCB.Items.AddRange(Enum.GetNames(typeof(UltraListViewStyle)));
             tCB.SelectedIndex = 0;
             var x =Directory.GetDirectories(Settings.Instance.WorkPath, "*", SearchOption.AllDirectories).AsEnumerable()
-                .Where(f=> f.Contains(DateTime.Now.Year.ToString())).ToDictionary(h=>h,
+                .Where(f=> f.Contains(DateTime.Now.Year.ToString()) || f.Contains((DateTime.Now.Year -1).ToString())).ToDictionary(h=>h,
                 z=> z.Split('\\').Last());
             uComboPath.DataSource = x;
-            uComboPath.DisplayLayout.Bands[0].Columns[0].Hidden = true;
+            if (x.Count > 0)
+            {
+                uComboPath.DisplayLayout.Bands[0].Columns[0].Hidden = true;
+            }
             PropertyListView();
             eh.LoadExplorer(Settings.Instance.WorkPath);
         }
