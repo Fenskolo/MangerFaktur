@@ -32,19 +32,19 @@ namespace ManagerFaktur
                     return;
                 }
 
-                DirectoryInfo cDriveInfo = new DirectoryInfo(Path);
+                var cDriveInfo = new DirectoryInfo(Path);
                        
-                FileInfo[] files = cDriveInfo.GetFiles("*.*", Settings.Instance.SearchOptions);
+                var files = cDriveInfo.GetFiles("*.*", Settings.Instance.SearchOptions);
                 for (int i = 0; i < files.Length; i++)
                 {
-                    FileInfo fileInfo = files[i];
+                    var fileInfo = files[i];
 
                     if (!Settings.Instance.ListExtenstion.Contains(fileInfo.Extension.ToUpper()))
                     {
                         continue;
                     }
 
-                    UltraListViewItem item = ulv.Items.Add(fileInfo.FullName, fileInfo.Name);
+                    var item = ulv.Items.Add(fileInfo.FullName, fileInfo.Name);
                     item.SubItems["FileSize"].Value = fileInfo.Length / 1024;
                     item.SubItems["FileType"].Value = "File";
                     item.SubItems["DateModified"].Value = fileInfo.LastWriteTime;
@@ -81,20 +81,21 @@ namespace ManagerFaktur
             symbol = null;
             string okres = null;
             okresD = null;
+
             foreach (Symbol x in Settings.Instance.SymboleOkres)
             {
                 if (x.Td == TypDanych.containsSymbol && tekst.Contains(x.FirstString))
                 {
                     symbol = x.LastString;
                 }
-                else if (x.Td == TypDanych.symbolOdDo && !string.IsNullOrEmpty(getBetween(tekst, x.FirstString, x.LastString)))
+                else if (x.Td == TypDanych.symbolOdDo && !string.IsNullOrEmpty(GetBetween(tekst, x.FirstString, x.LastString)))
                 {
-                    symbol = getBetween(tekst, x.FirstString, x.LastString);
+                    symbol = GetBetween(tekst, x.FirstString, x.LastString);
                 }
 
-                if (x.Td == TypDanych.okresOdDo && !string.IsNullOrEmpty(getBetween(tekst, x.FirstString, x.LastString)))
+                if (x.Td == TypDanych.okresOdDo && !string.IsNullOrEmpty(GetBetween(tekst, x.FirstString, x.LastString)))
                 {
-                    okres = getBetween(tekst, x.FirstString, x.LastString);
+                    okres = GetBetween(tekst, x.FirstString, x.LastString);
                 }
             }
 
@@ -136,7 +137,7 @@ namespace ManagerFaktur
             return new DateTime(year, month, day);
         }
 
-        public static string getBetween(string strSource, string strStart, string strEnd)
+        public static string GetBetween(string strSource, string strStart, string strEnd)
         {
             int Start, End;
             if (strSource.Contains(strStart) && strSource.Contains(strEnd))
@@ -153,97 +154,20 @@ namespace ManagerFaktur
 
         public string ExtractTextFromPdf(string path)
         {
-            using (PdfReader reader = new PdfReader(path))
+            using (var reader = new PdfReader(path))
             {
-                StringBuilder text = new StringBuilder();
+                var text = new StringBuilder();
                 string t1 = string.Empty;
 
                 for (int i = 1; i <= reader.NumberOfPages; i++)
                 {
-                    TextWithFontExtractionStategy s = new TextWithFontExtractionStategy();
+                    var s = new TextWithFontExtractionStategy();
                     text.Append(PdfTextExtractor.GetTextFromPage(reader, i, s));
                 }
                 text.Replace(" ", "").Replace("\r\n","");
                 return text.ToString();
             }
         }
-    }
-
-    public class TextWithFontExtractionStategy : ITextExtractionStrategy
-    {
-        private StringBuilder result = new StringBuilder();
-        
-        private Vector lastBaseLine;
-        private string lastFont;
-        private float lastFontSize;
-        
-        private enum TextRenderMode
-        {
-            FillText = 0,
-            StrokeText = 1,
-            FillThenStrokeText = 2,
-            Invisible = 3,
-            FillTextAndAddToPathForClipping = 4,
-            StrokeTextAndAddToPathForClipping = 5,
-            FillThenStrokeTextAndAddToPathForClipping = 6,
-            AddTextToPaddForClipping = 7
-        }
-        
-        public void RenderText(TextRenderInfo renderInfo)
-        {
-            string curFont = renderInfo.GetFont().PostscriptFontName;
-            //Check if faux bold is used
-            if ((renderInfo.GetTextRenderMode() == (int)TextRenderMode.FillThenStrokeText))
-            {
-                curFont += "-Bold";
-            }
-
-            //This code assumes that if the baseline changes then we're on a newline
-            Vector curBaseline = renderInfo.GetBaseline().GetStartPoint();
-            Vector topRight = renderInfo.GetAscentLine().GetEndPoint();
-            iTextSharp.text.Rectangle rect = new iTextSharp.text.Rectangle(curBaseline[Vector.I1], curBaseline[Vector.I2], topRight[Vector.I1], topRight[Vector.I2]);
-            Single curFontSize = rect.Height;
-
-            //See if something has changed, either the baseline, the font or the font size
-            if ((this.lastBaseLine == null) || (curBaseline[Vector.I2] != lastBaseLine[Vector.I2]) || (curFontSize != lastFontSize) || (curFont != lastFont))
-            {
-                //if we've put down at least one span tag close it
-                if ((this.lastBaseLine != null))
-                {
-                    this.result.AppendLine("</span>");
-                }
-                //If the baseline has changed then insert a line break
-                if ((this.lastBaseLine != null) && curBaseline[Vector.I2] != lastBaseLine[Vector.I2])
-                {
-                    this.result.AppendLine("<br />");
-                }
-                //Create an HTML tag with appropriate styles
-                this.result.AppendFormat("<span>");// style=\"font-family:{0};font-size:{1}\">", curFont, curFontSize);
-            }
-
-            //Append the current text
-            this.result.Append(renderInfo.GetText());
-
-            //Set currently used properties
-            this.lastBaseLine = curBaseline;
-            this.lastFontSize = curFontSize;
-            this.lastFont = curFont;
-        }
-
-        public string GetResultantText()
-        {
-            //If we wrote anything then we'll always have a missing closing tag so close it here
-            if (result.Length > 0)
-            {
-                result.Append("</span>");
-            }
-            return result.ToString();
-        }
-
-        //Not needed
-        public void BeginTextBlock() { }
-        public void EndTextBlock() { }
-        public void RenderImage(ImageRenderInfo renderInfo) { }
     }
 }
 

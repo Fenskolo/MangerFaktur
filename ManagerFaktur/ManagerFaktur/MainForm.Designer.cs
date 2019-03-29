@@ -138,7 +138,7 @@
             this.uBtnShowTxt.Size = new System.Drawing.Size(354, 23);
             this.uBtnShowTxt.TabIndex = 2;
             this.uBtnShowTxt.Text = "Zobacz Tekst";
-            this.uBtnShowTxt.Click += new System.EventHandler(this.uBtnShowTxt_Click);
+            this.uBtnShowTxt.Click += new System.EventHandler(this.UBtnShowTxt_Click);
             // 
             // WBrowser
             // 
@@ -180,7 +180,7 @@
             this.uBtnMove.Size = new System.Drawing.Size(86, 23);
             this.uBtnMove.TabIndex = 6;
             this.uBtnMove.Text = "Przenieś Pliki";
-            this.uBtnMove.Click += new System.EventHandler(this.uBtnMove_Click);
+            this.uBtnMove.Click += new System.EventHandler(this.UBtnMove_Click);
             // 
             // uDTEditor
             // 

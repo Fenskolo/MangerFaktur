@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
 namespace ManagerFaktur
@@ -69,7 +67,7 @@ namespace ManagerFaktur
 
             try
             {
-                XmlSerializer xsSubmit = new XmlSerializer(typeof(Logs));
+                var xsSubmit = new XmlSerializer(typeof(Logs));
                 writer = new StreamWriter(Settings.Instance.LogPath, true);
                 xsSubmit.Serialize(writer, Log);
             }
@@ -93,15 +91,12 @@ namespace ManagerFaktur
     }
 
     [Serializable]
-    [DataContract]
     public class PairFiles
     {
         [XmlElement(Order = 2)]
-        [DataMember]
         public string News { get ; set ; }
 
         [XmlElement(Order = 1)]
-        [DataMember]
         public string Old { get ; set ; }
     }
 }

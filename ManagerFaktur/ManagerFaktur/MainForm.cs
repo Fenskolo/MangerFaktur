@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Infragistics.Win.UltraWinEditors;
 using System.Linq;
+using System.Threading;
 
 namespace ManagerFaktur
 {
@@ -44,9 +45,9 @@ namespace ManagerFaktur
 
         private void PropertyListView()
         {
-            UltraListViewSubItemColumn colFileSize = this.uListView.SubItemColumns.Add("FileSize");
-            UltraListViewSubItemColumn colFileType = this.uListView.SubItemColumns.Add("FileType");
-            UltraListViewSubItemColumn colDateModified = this.uListView.SubItemColumns.Add("DateModified");
+            var colFileSize = this.uListView.SubItemColumns.Add("FileSize");
+            var colFileType = this.uListView.SubItemColumns.Add("FileType");
+            var colDateModified = this.uListView.SubItemColumns.Add("DateModified");
             colFileSize.DataType = typeof(int);
             colFileSize.Format = "#,###,##0 KB";
             colFileSize.SubItemAppearance.TextHAlign = HAlign.Right;
@@ -60,8 +61,8 @@ namespace ManagerFaktur
             this.uListView.MainColumn.DataType = typeof(string);
             this.uListView.MainColumn.Text = "Name";
 
-            UltraListViewSubItemColumn colOkres = this.uListView.SubItemColumns.Add("Okres");
-            UltraListViewSubItemColumn colSymbol = this.uListView.SubItemColumns.Add("Symbol");
+            var colOkres = this.uListView.SubItemColumns.Add("Okres");
+            var colSymbol = this.uListView.SubItemColumns.Add("Symbol");
             colOkres.DataType = typeof(DateTime);
             colSymbol.DataType = typeof(string);
             colSymbol.Text = "Symbol";
@@ -97,6 +98,7 @@ namespace ManagerFaktur
             {
                 return;
             }
+
             if (e.Item.Key.ToUpper().Contains(".PDF"))
             {
                 WBrowser.Navigate(e.Item.Key);
@@ -111,7 +113,7 @@ namespace ManagerFaktur
         {
             if (wb.TempFileName != string.Empty && !e.Url.ToString().ToUpper().Contains(".PDF") && e.Url.ToString() != "about:blank")
             {
-                System.Threading.Thread.Sleep(100);
+                Thread.Sleep(100);
                 File.Delete(wb.TempFileName);
                 wb.TempFileName = string.Empty;
             }
@@ -178,7 +180,7 @@ namespace ManagerFaktur
             });
         }
 
-        private void uBtnMove_Click(object sender, EventArgs e)
+        private void UBtnMove_Click(object sender, EventArgs e)
         {
             foreach(var x in uListView.Items)
             {
@@ -229,12 +231,12 @@ namespace ManagerFaktur
                     while (WBrowser.ReadyState != WebBrowserReadyState.Complete)
                     {
                         Application.DoEvents();
-                        System.Threading.Thread.Sleep(100);
+                        Thread.Sleep(100);
                     }
 
-                    PairFiles pf = new PairFiles()
+                    var pf = new PairFiles()
                     {
-                        Old = x.Key.ToString(),
+                        Old = x.Key,
                         News = Path.Combine(destDirectory, fileName)
                     };
                     
@@ -249,7 +251,7 @@ namespace ManagerFaktur
             RefreshExplorer();
         }
 
-        private void uBtnShowTxt_Click(object sender, EventArgs e)
+        private void UBtnShowTxt_Click(object sender, EventArgs e)
         {
             var tekst = eh.ExtractTextFromPdf(WBrowser.Url.ToString());
             var txt = new TxtFromPdf(tekst);

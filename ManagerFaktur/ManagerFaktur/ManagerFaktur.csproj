@@ -69,11 +69,17 @@
     <Reference Include="UIAutomationTypes" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class\Crypto.cs" />
     <Compile Include="Class\ExplorerHelper.cs" />
+    <Compile Include="Class\FormatStringConverter.cs" />
     <Compile Include="Class\Logs.cs" />
     <Compile Include="Class\MailSettings.cs" />
+    <Compile Include="Class\PasswordConverter.cs" />
     <Compile Include="Class\PasswordEditor.cs" />
+    <Compile Include="Class\Symbol.cs" />
+    <Compile Include="Class\SymbolCollection.cs" />
+    <Compile Include="Class\SymbolCollectionEditor.cs" />
+    <Compile Include="Class\TextWithFontExtractionStategy.cs" />
+    <Compile Include="Class\TypDanych.cs" />
     <Compile Include="MailProperty.cs">
       <SubType>Form</SubType>
     </Compile>

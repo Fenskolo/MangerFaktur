@@ -5,12 +5,11 @@ using System.Windows.Forms;
 
 namespace ManagerFaktur
 {
-    class WBHelper
+    public class WBHelper
     {
         private WebBrowser wb;
-        private string tempFileName;
 
-        public string TempFileName { get => tempFileName; set => tempFileName = value; }
+        public string TempFileName { get; set; }
 
         delegate void ConvertDocumentDelegate(string fileName);
 
@@ -18,10 +17,10 @@ namespace ManagerFaktur
         {
             wb = _wb;
         }
-        
+
         public void LoadDocument(string fileName)
         {
-            ConvertDocumentDelegate del = new ConvertDocumentDelegate(ConvertDocument);            
+            var del = new ConvertDocumentDelegate(ConvertDocument);
             del.BeginInvoke(fileName, DocumentConversionComplete, null);
         }
 
@@ -47,10 +46,10 @@ namespace ManagerFaktur
 
                 // Cast these items to object.  The methods we're calling 
                 // only take object types in their method parameters. 
-                object newFileName = (object)TempFileName;
+                object newFileName = TempFileName;
 
                 // We will be saving this file as HTML format. 
-                object fileType = (object)WdSaveFormat.wdFormatHTML;
+                object fileType = WdSaveFormat.wdFormatHTML;
 
                 // Save the file. 
                 doc.SaveAs(ref newFileName, ref fileType,

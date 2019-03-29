@@ -1,9 +1,7 @@
 ﻿using Infragistics.Win.Design;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
-using System.Windows.Forms;
 using System.Xml.Serialization;
 
 namespace ManagerFaktur
@@ -31,6 +29,7 @@ namespace ManagerFaktur
 
 
         public string Subject { get; set; } = string.Empty;
+
         [XmlIgnore]
         [Browsable(false)]
         public MailSettings MyInstance { get => ins; set => ins = value; }
@@ -76,16 +75,6 @@ namespace ManagerFaktur
                 return _listAtach;
             }
             set => _listAtach = value;
-        }
-    }
-
-    public class FormatStringConverter : StringConverter
-    {
-        public override Boolean GetStandardValuesSupported(ITypeDescriptorContext context) { return true; }
-        public override Boolean GetStandardValuesExclusive(ITypeDescriptorContext context) { return true; }
-        public override TypeConverter.StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
-        {           
-            return new StandardValuesCollection(MailSettings.Ins.ListMail);
         }
     }
 }

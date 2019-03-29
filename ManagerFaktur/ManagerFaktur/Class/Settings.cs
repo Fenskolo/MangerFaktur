@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.Design;
 using System.Drawing.Design;
 using System.IO;
 using System.Windows.Forms.Design;
@@ -16,11 +14,11 @@ namespace ManagerFaktur
     {
         private static Settings instance;
         private Settings() { }
-        private static string xmlFile = Properties.Settings.Default.XmlConfig;
-        private List<string> _listExtenstion;
+        private static readonly string xmlFile = Properties.Settings.Default.XmlConfig;
+        private List<string> m_ListExtenstion;
         private SymbolCollection ep;
-        private List<string> _listSDelOneMonth;
-        private List<string> _listMail;
+        private List<string> m_ListSDelOneMonth;
+        private List<string> m_ListMail;
 
         public static Settings Instance
         {
@@ -103,14 +101,14 @@ namespace ManagerFaktur
         {
             get
             {
-                if (_listMail == null)
+                if (m_ListMail == null)
                 {
-                    _listMail = new List<string>();
+                    m_ListMail = new List<string>();
                 }
 
-                return _listMail;
+                return m_ListMail;
             }
-            set => _listMail = value;
+            set => m_ListMail = value;
         }
 
         [Editor(@"System.Windows.Forms.Design.StringCollectionEditor," +
@@ -120,14 +118,14 @@ namespace ManagerFaktur
         {
             get
             {
-                if(_listExtenstion == null)
+                if(m_ListExtenstion == null)
                 {
-                    _listExtenstion = new List<string>();
+                    m_ListExtenstion = new List<string>();
                 }
 
-                return _listExtenstion;
+                return m_ListExtenstion;
             }
-            set => _listExtenstion = value;
+            set => m_ListExtenstion = value;
         }          
 
         public void Serialze()
@@ -167,14 +165,14 @@ namespace ManagerFaktur
         {
             get
             {
-                if (_listSDelOneMonth == null)
+                if (m_ListSDelOneMonth == null)
                 {
-                    _listSDelOneMonth = new List<string>();
+                    m_ListSDelOneMonth = new List<string>();
                 }
 
-                return _listSDelOneMonth;
+                return m_ListSDelOneMonth;
             }
-            set => _listSDelOneMonth = value;
+            set => m_ListSDelOneMonth = value;
         }
 
         public SearchOption SearchOptions { get; set; } = 0;
@@ -186,61 +184,5 @@ namespace ManagerFaktur
         public string DestPath { get; set; } = string.Empty;
         [XmlElement("NazwaPoczątkuPliku")]
         public string FileNameDest { get; set; } = string.Empty;
-    }
-
-    public class SymbolCollection : CollectionBase
-    {
-        public Symbol this[int index] {get => (Symbol)List[index]; }
-
-        public void Add(Symbol emp)
-        {
-            List.Add(emp);
-        }
-
-        public void Remove(Symbol emp)
-        {
-            List.Remove(emp);
-        }
-    }
-
-    public class Symbol
-    {
-        [Category("Symbol")]
-        [DisplayName("Start")]
-        public string FirstString { get; set; }
-
-        [Category("Symbol")]
-        [DisplayName("End")]
-        public string LastString { get; set; }
-
-        [Category("Symbol")]
-        [DisplayName("Typ")]
-        public TypDanych Td { get; set; }
-    }
-
-    public enum TypDanych
-    {
-        containsOkres = 0,
-        okresOdDo =1,
-        containsSymbol =2,
-        symbolOdDo=3
-    }
-
-    public class SymbolCollectionEditor : CollectionEditor
-    {
-        public SymbolCollectionEditor(Type type)
-            : base(type)
-        {
-        }
-
-        protected override string GetDisplayText(object value)
-        {
-            Symbol item = new Symbol();
-            item = (Symbol)value;
-
-            return base.GetDisplayText(string.Format("{0}, {1}", item.FirstString, item.LastString));
-        }
-    }
-
-    
+    }    
 }
