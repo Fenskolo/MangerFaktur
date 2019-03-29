@@ -2,13 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EasyInvoice
-{    
+{
     public class GenerujPolaWDokumencie
     {
         DaneNaglowek dNaglowek = new DaneNaglowek();
@@ -50,7 +46,7 @@ namespace EasyInvoice
 
             lastPosition = CreateTable(hData.GetSprzeNaby(), 1.3, 30, 8, lastPosition - 1.4, lastPosition-6.2, true, ContentAlignment.MiddleLeft);
 
-            Double WidthRow = ArialNormal.TextWidth(8, hData.NrBankowy()[0].Lewa + hData.NrBankowy()[0].Prawa) + 0.25;
+            double WidthRow = ArialNormal.TextWidth(8, hData.NrBankowy()[0].Lewa + hData.NrBankowy()[0].Prawa) + 0.25;
 
             lastPosition = CreateTable(hData.NrBankowy(), 1.3, 1.3+WidthRow, 8, lastPosition - 1, lastPosition - 6.2, false, ContentAlignment.MiddleLeft);
 
@@ -194,20 +190,20 @@ namespace EasyInvoice
             const Double MARGIN_HOR = 0.04;
             const Double MARGIN_VER = 0.04;
             const Double FRAME_WIDTH = 0.015;
-            
+
             PdfTable Table = new PdfTable(Page, Contents, ArialNormal, FONT_SIZE)
             {
                 TableArea = new PdfRectangle(LEFT, BOTTOM, RIGHT, TOP)
             };
             Double[] array = new Double[] { 1, 10, 1.5, 2.5, 2.5, 3.5, 3, 3, 3 };
             Table.SetColumnWidth(array);
-            
+
             Table.Borders.ClearAllBorders();
             Table.Borders.SetAllBorders(FRAME_WIDTH, FRAME_WIDTH);
 
-           
+
             PdfRectangle Margin = new PdfRectangle(MARGIN_HOR, MARGIN_VER);
-            
+
             Table.DefaultHeaderStyle.Margin = Margin;
             Table.DefaultHeaderStyle.BackgroundColor = Color.LightGray;
             Table.DefaultHeaderStyle.Font = ArialBold;
@@ -233,8 +229,8 @@ namespace EasyInvoice
                 Table.Cell[i].Style.Alignment = ContentAlignment.MiddleCenter;
                 Table.CellStyle.TextDrawStyle = DrawStyle.Superscript;
             }
-            
-            foreach (var item in  SingleFakturaProperty.Singleton.GetListDt())// hData.GetListTable())
+
+            foreach (var item in SingleFakturaProperty.Singleton.GetListDt())// hData.GetListTable())
             {
                 Table.Cell[0].Value = item.LpTabela;
                 Table.Cell[1].Value = item.OpisTabela;

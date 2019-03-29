@@ -93,6 +93,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DaneTabela.cs" />
+    <Compile Include="DaneUsluga.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="FirmaData.cs" />
     <Compile Include="HelperXML.cs" />

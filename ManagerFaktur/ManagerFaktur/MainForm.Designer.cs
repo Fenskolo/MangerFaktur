@@ -193,7 +193,7 @@
             this.uDTEditor.Name = "uDTEditor";
             this.uDTEditor.Size = new System.Drawing.Size(144, 21);
             this.uDTEditor.TabIndex = 7;
-            this.uDTEditor.EditorButtonClick += new Infragistics.Win.UltraWinEditors.EditorButtonEventHandler(this.uDTEditor_EditorButtonClick);
+            this.uDTEditor.EditorButtonClick += new Infragistics.Win.UltraWinEditors.EditorButtonEventHandler(this.UDTEditor_EditorButtonClick);
             // 
             // btnRefresh
             // 
@@ -203,7 +203,7 @@
             this.btnRefresh.Size = new System.Drawing.Size(86, 23);
             this.btnRefresh.TabIndex = 8;
             this.btnRefresh.Text = "Odśwież";
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            this.btnRefresh.Click += new System.EventHandler(this.BtnRefresh_Click);
             // 
             // uComboPath
             // 
@@ -266,7 +266,7 @@
             this.uComboPath.Name = "uComboPath";
             this.uComboPath.Size = new System.Drawing.Size(174, 22);
             this.uComboPath.TabIndex = 9;
-            this.uComboPath.ValueChanged += new System.EventHandler(this.uComboPath_ValueChanged);
+            this.uComboPath.ValueChanged += new System.EventHandler(this.UComboPath_ValueChanged);
             // 
             // MF
             // 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -131,37 +130,5 @@ namespace EasyInvoice
 
             return dt;
         }
-    }
-
-    [DataContract]
-    public class DaneUsluga
-    {
-        [DataMember]
-        public int LpTabela { get; set; }
-        [DataMember]
-        public string OpisTabela { get; set; }
-        [DataMember]
-        public string Rodzajilosc { get; set; }
-        [DataMember]
-        public int Ilosc { get; set; }
-        [DataMember]
-        public decimal CenaNetto { get; set; }
-        [DataMember]
-        public decimal WartoscNetto { get; set; }
-        [DataMember]
-        public string StawkaVat { get; set; }
-        [DataMember]
-        public decimal KwotaVat { get; set; }
-        [DataMember]
-        public decimal WartoscBrutto { get; set; }
-    }
-
-    [DataContract]
-    public class DaneTabela
-    {
-        [DataMember]
-        public string Lewa { get; set; }
-        [DataMember]
-        public string Prawa { get; set; }
     }
 }

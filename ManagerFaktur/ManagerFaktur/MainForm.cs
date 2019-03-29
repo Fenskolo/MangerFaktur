@@ -4,10 +4,7 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Text;
 using System.Windows.Forms;
-using iTextSharp.text.pdf;
-using iTextSharp.text.pdf.parser;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Infragistics.Win.UltraWinEditors;
@@ -131,7 +128,7 @@ namespace ManagerFaktur
             this.uListView.View = (UltraListViewStyle)Enum.Parse(typeof(UltraListViewStyle), tCB.SelectedItem.ToString());
         }
 
-        private void UTxt_EditorButtonClick(object sender, Infragistics.Win.UltraWinEditors.EditorButtonEventArgs e)
+        private void UTxt_EditorButtonClick(object sender, EditorButtonEventArgs e)
         {
             if (e.Button.Key == "rightB")
             {
@@ -187,13 +184,13 @@ namespace ManagerFaktur
             {
                 if (x.CheckState == CheckState.Checked && x.SubItems["Okres"]?.Value != null)
                 {
-                    DateTime dt = (DateTime)x.SubItems["Okres"].Value;
+                    var dt = (DateTime)x.SubItems["Okres"].Value;
                     dt = (DateTime)x.SubItems["Okres"].Value == new DateTime() ? DateTime.Now : dt;
                     string month = dt.Month.ToString();
                     month = month.Length == 1 ? "0" + month : month;
                     string year = dt.Year.ToString();
                     string MonthYear = month + "-" + year;
-                    string destDirectory = System.IO.Path.Combine(Settings.Instance.DestPath, MonthYear);
+                    string destDirectory = Path.Combine(Settings.Instance.DestPath, MonthYear);
 
                     if (!Directory.Exists(destDirectory))
                     {
@@ -207,19 +204,19 @@ namespace ManagerFaktur
                     int nrFaktury = 1;
 
 
-                    string fileName = Settings.Instance.FileNameDest + " " + symbol + " " + MonthYear + ".pdf";
+                    string fileName = $"{Settings.Instance.FileNameDest} {symbol} {MonthYear}.pdf";
                     if (symbol == "Faktura")
                     {
-                        fileName = Settings.Instance.FileNameDest + " " + symbol + nrFaktury.ToString() + " " + MonthYear + ".pdf";
+                        fileName = $"{Settings.Instance.FileNameDest} {symbol} {nrFaktury} {MonthYear}.pdf";
                         nrFaktury++;
                     }
 
                     bool notExists = false;
                     while (!notExists)
                     {
-                        if (File.Exists(System.IO.Path.Combine(destDirectory, fileName)))
+                        if (File.Exists(Path.Combine(destDirectory, fileName)))
                         {
-                            fileName = Settings.Instance.FileNameDest + " " + symbol + nrFaktury.ToString() + " " + MonthYear + ".pdf";
+                            fileName = $"{Settings.Instance.FileNameDest} {symbol} {nrFaktury} {MonthYear}.pdf";
                             nrFaktury++;
                         }
                         else
@@ -238,11 +235,11 @@ namespace ManagerFaktur
                     PairFiles pf = new PairFiles()
                     {
                         Old = x.Key.ToString(),
-                        News = System.IO.Path.Combine(destDirectory, fileName)
+                        News = Path.Combine(destDirectory, fileName)
                     };
                     
                     Logs.Log.FileOperation.Add(pf);
-                    File.Move(x.Key.ToString(), System.IO.Path.Combine(destDirectory, fileName));
+                    File.Move(x.Key.ToString(), Path.Combine(destDirectory, fileName));
                 }
             }
 
@@ -254,13 +251,13 @@ namespace ManagerFaktur
 
         private void uBtnShowTxt_Click(object sender, EventArgs e)
         {
-            string tekst = eh.ExtractTextFromPdf(WBrowser.Url.ToString());
-            TxtFromPdf txt = new TxtFromPdf(tekst);
+            var tekst = eh.ExtractTextFromPdf(WBrowser.Url.ToString());
+            var txt = new TxtFromPdf(tekst);
             txt.ShowDialog();
             
         }
 
-        private void uDTEditor_EditorButtonClick(object sender, EditorButtonEventArgs e)
+        private void UDTEditor_EditorButtonClick(object sender, EditorButtonEventArgs e)
         {
             foreach(var x in uListView.Items)
             {
@@ -271,12 +268,12 @@ namespace ManagerFaktur
             }
         }
 
-        private void btnRefresh_Click(object sender, EventArgs e)
+        private void BtnRefresh_Click(object sender, EventArgs e)
         {
             RefreshExplorer();
         }
 
-        private void uComboPath_ValueChanged(object sender, EventArgs e)
+        private void UComboPath_ValueChanged(object sender, EventArgs e)
         {
             var x = uComboPath.SelectedRow;
 
