@@ -1,23 +1,10 @@
 ﻿using Infragistics.Windows.DataPresenter;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-//using System.Data.SQLite;
-using System.IO;
-using System.IO.Packaging;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace EasyInvoice
 {
@@ -72,10 +59,10 @@ namespace EasyInvoice
 
         private static DataSet GetDataSetDb()
         {
-            DataSet ds = new DataSet();
-            using (SqlDataAdapter adapter = new SqlDataAdapter())
+            var ds = new DataSet();
+            using (var adapter = new SqlDataAdapter())
             {
-                using (SqlCommand cmd = new SqlCommand())
+                using (var cmd = new SqlCommand())
                 {
                     adapter.SelectCommand = cmd;
                     cmd.Connection = new SqlConnection(Properties.Settings.Default.dbConn);
@@ -93,11 +80,10 @@ namespace EasyInvoice
         {
             if (Property.Instance.Works.Count > 0)
             {                
-                var x = id.HasValue? (WorkClass)Property.Instance.Works.Where(q=>q.Naglowek.Id==id).FirstOrDefault() 
-                                    :(WorkClass)Property.Instance.Works.OrderByDescending(f => f.Naglowek.Id).First();
+                var x = id.HasValue? Property.Instance.Works.Where(q => q.Naglowek.Id == id).FirstOrDefault()
+                                    : Property.Instance.Works.OrderByDescending(f => f.Naglowek.Id).First();
                 SingleFakturaProperty.Singleton.MySingleton.Work = (WorkClass)x.Clone();
                 SingleFakturaProperty.Singleton.MySingleton.Work.Dt = null;
-             //   SingleFakturaProperty.Singleton.MySingleton.Work.Dt = x.Dt;
                 SingleFakturaProperty.Singleton.MySingleton.Work.Naglowek = null;
                 SingleFakturaProperty.Singleton.MySingleton.Work.Naglowek.FormaPlatnosci = x.Naglowek.FormaPlatnosci;
                 SingleFakturaProperty.Singleton.MySingleton.Work.Naglowek.MiejsceWystawienia = x.Naglowek.MiejsceWystawienia;
@@ -116,8 +102,6 @@ namespace EasyInvoice
             Naglowek.DataContext = SingleFakturaProperty.Singleton.MySingleton.Work.Naglowek;
             lblFaktura.Content = null;
             lblFaktura.Content = DictionaryMain.labelNrFaktury;
-            //fPlatnosci.DataContext = null;
-            //fPlatnosci.DataContext = SingleFakturaProperty.Singleton.Work.Naglowek.FormaPlatnosci;
 
             cbFaktura.ItemsSource = Property.Instance.Works.Select(f => f.Naglowek.Id).ToList();
             cbFaktura.SelectedValue = SingleFakturaProperty.Singleton.Work.Naglowek.Id;            
@@ -138,9 +122,9 @@ namespace EasyInvoice
         {
             try
             {
-                ComboBoxField cbJ = (ComboBoxField)grid.DefaultFieldLayout.Fields[DictionaryMain.kolumnaJM];
-                ComboBoxField cbV = (ComboBoxField)grid.DefaultFieldLayout.Fields[DictionaryMain.kolumnaStawkaVat];
-                ComboBoxField cbN = (ComboBoxField)grid.DefaultFieldLayout.Fields[DictionaryMain.kolumnaTowar];
+                var cbJ = (ComboBoxField)grid.DefaultFieldLayout.Fields[DictionaryMain.kolumnaJM];
+                var cbV = (ComboBoxField)grid.DefaultFieldLayout.Fields[DictionaryMain.kolumnaStawkaVat];
+                var cbN = (ComboBoxField)grid.DefaultFieldLayout.Fields[DictionaryMain.kolumnaTowar];
 
                 cbJ.ItemsSource = jednostka.Rows.Cast<DataRow>().Select(s => s[1]).ToList();
                 cbV.ItemsSource = stawkaVat.Rows.Cast<DataRow>().Select(s => s[1]).ToList();
@@ -155,7 +139,7 @@ namespace EasyInvoice
         private void Button_Click(object sender, RoutedEventArgs e)
         {     
             xDG.ActiveRecord =null;
-            MakePdf a = new MakePdf(this);                      
+            var a = new MakePdf(this);                      
         }
 
         private void Gotowka_Click(object sender, RoutedEventArgs e)

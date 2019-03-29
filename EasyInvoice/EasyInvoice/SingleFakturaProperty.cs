@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace EasyInvoice
@@ -12,18 +9,18 @@ namespace EasyInvoice
     [Serializable()]
     public class SingleFakturaProperty
     {
-        private static SingleFakturaProperty _singleton;
+        private static SingleFakturaProperty m_Singleton;
         public SingleFakturaProperty() { }
-        private WorkClass _work;
+        private WorkClass m_Work;
       
 
         [XmlIgnore]
         public SingleFakturaProperty MySingleton
         {
-            get => _singleton;
+            get => m_Singleton;
             set
             {
-                _singleton = value;
+                m_Singleton = value;
             }
         }
 
@@ -32,56 +29,84 @@ namespace EasyInvoice
         {
             get
             {
-                if (_singleton == null)
+                if (m_Singleton == null)
                 {
-                    _singleton = new SingleFakturaProperty();
+                    m_Singleton = new SingleFakturaProperty();
                 }
-                return _singleton;
+                return m_Singleton;
             }
 
 
-            set => _singleton = value;
+            set => m_Singleton = value;
         }
 
         public WorkClass Work
         {
             get
             {
-                if(_work ==null)
+                if(m_Work ==null)
                 {
-                    _work = new WorkClass();
+                    m_Work = new WorkClass();
                 }
 
-                return _work;
+                return m_Work;
             }
-            set => _work = value;
+            set => m_Work = value;
         }
 
-        public List<DaneUsluga> GetListDt()
+        public IEnumerable<DaneUsluga> GetListDt()
         {
-            List<DaneUsluga> list = new List<DaneUsluga>();
-
             int i = 1;
             foreach (DataRow dr in Work.Dt.Rows)
             {
-                DaneUsluga dat = new DaneUsluga
+                var dat = new DaneUsluga
                 {
                     LpTabela = i,
                     OpisTabela = dr[DictionaryMain.kolumnaTowar].ToString(),
                     Rodzajilosc = dr[DictionaryMain.kolumnaJM].ToString(),
                     Ilosc = Convert.ToInt32(dr[DictionaryMain.kolumnaIlosc]),
-                    CenaNetto = Decimal.Round((decimal)dr[DictionaryMain.kolumnaCenaNetto],2),
-                    WartoscNetto = Decimal.Round((decimal)dr[DictionaryMain.kolumnaWartoscNetto],2),
+                    CenaNetto = decimal.Round((decimal)dr[DictionaryMain.kolumnaCenaNetto],2),
+                    WartoscNetto = decimal.Round((decimal)dr[DictionaryMain.kolumnaWartoscNetto],2),
                     StawkaVat = dr[DictionaryMain.kolumnaStawkaVat].ToString(),
-                    KwotaVat = Decimal.Round((decimal)dr[DictionaryMain.kolumnaKwotaVat],2),
-                    WartoscBrutto = Decimal.Round((decimal)dr[DictionaryMain.kolumnaWartoscBrutto],2)
+                    KwotaVat = decimal.Round((decimal)dr[DictionaryMain.kolumnaKwotaVat],2),
+                    WartoscBrutto = decimal.Round((decimal)dr[DictionaryMain.kolumnaWartoscBrutto],2)
                 };
-                list.Add(dat);
+                yield return dat;
                 i++;
-
             }
-            return list;
-        }         
+        }
+
+
+        public IEnumerable<DaneUsluga> GetSum()
+        {
+            var x = GetListDt().Select(z => z.StawkaVat).Distinct().ToList();
+
+            var d1 = new DaneUsluga();
+            foreach (var item in GetListDt())
+            {
+                d1.WartoscNetto += item.WartoscNetto;
+                d1.KwotaVat += item.KwotaVat;
+                d1.WartoscBrutto += item.WartoscBrutto;
+                d1.StawkaVat = "-";
+            }
+            yield return d1;
+
+            foreach (var stri in x)
+            {
+                var d2 = new DaneUsluga();
+                foreach (var item in GetListDt())
+                {
+                    if (stri == item.StawkaVat)
+                    {
+                        d2.WartoscNetto += item.WartoscNetto;
+                        d2.KwotaVat += item.KwotaVat;
+                        d2.WartoscBrutto += item.WartoscBrutto;
+                        d2.StawkaVat = stri;
+                    }
+                }
+                yield return d2;
+            }
+        }
     }
 }
 

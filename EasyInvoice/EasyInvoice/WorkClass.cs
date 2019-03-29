@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace EasyInvoice
@@ -11,75 +7,70 @@ namespace EasyInvoice
     [Serializable()]
     public class WorkClass : ICloneable
     {
-        private DataTable _dt;
-        private FirmaData _sprzedawca;
-        private FirmaData _nabywca;
-        private Naglowek _naglowek;
+        private DataTable m_Dt;
+        private FirmaData m_Sprzedawca;
+        private FirmaData m_Nabywca;
+        private Naglowek m_Naglowek;
 
         [XmlIgnore]
         public DataTable Dt
         {
             get
             {
-                if (_dt == null)
+                if (m_Dt == null)
                 {
-
-                    _dt = new DataTable
+                    m_Dt = new DataTable
                     {
                         TableName = "TabelaFaktura"
                     };
-                    _dt.Columns.Add(DictionaryMain.kolumnaTowar, typeof(string));
-                    _dt.Columns.Add(DictionaryMain.kolumnaJM);
-                    _dt.Columns.Add(DictionaryMain.kolumnaIlosc, typeof(Int32));
-                    _dt.Columns.Add(DictionaryMain.kolumnaCenaNetto, typeof(decimal));
-                    _dt.Columns.Add(DictionaryMain.kolumnaWartoscNetto, typeof(decimal));
-                    _dt.Columns.Add(DictionaryMain.kolumnaStawkaVat);
-                    _dt.Columns.Add(DictionaryMain.kolumnaKwotaVat, typeof(decimal));
-                    _dt.Columns.Add(DictionaryMain.kolumnaWartoscBrutto, typeof(decimal));
+                    m_Dt.Columns.Add(DictionaryMain.kolumnaTowar, typeof(string));
+                    m_Dt.Columns.Add(DictionaryMain.kolumnaJM);
+                    m_Dt.Columns.Add(DictionaryMain.kolumnaIlosc, typeof(int));
+                    m_Dt.Columns.Add(DictionaryMain.kolumnaCenaNetto, typeof(decimal));
+                    m_Dt.Columns.Add(DictionaryMain.kolumnaWartoscNetto, typeof(decimal));
+                    m_Dt.Columns.Add(DictionaryMain.kolumnaStawkaVat);
+                    m_Dt.Columns.Add(DictionaryMain.kolumnaKwotaVat, typeof(decimal));
+                    m_Dt.Columns.Add(DictionaryMain.kolumnaWartoscBrutto, typeof(decimal));
                     if (!string.IsNullOrEmpty(MyDtString))
                     {
-                       // _dt.ReadXml("dt.xml");
-                    //}
-                    //else
-                    //{
-                       _dt = HelperXML.DeserializeObject<DataTable>(MyDtString);
+                       m_Dt = HelperXML.DeserializeObject<DataTable>(MyDtString);
                     }
                 }
 
-                return _dt;
+                return m_Dt;
             }
 
-            set => _dt = value;
+            set => m_Dt = value;
         }
 
         public FirmaData Sprzedawca
         {
             get
             {
-                if (_sprzedawca == null)
+                if (m_Sprzedawca == null)
                 {
-                    _sprzedawca = new FirmaData();
+                    m_Sprzedawca = new FirmaData();
                 }
 
-                return _sprzedawca;
+                return m_Sprzedawca;
             }
 
-            set => _sprzedawca = value;
+            set => m_Sprzedawca = value;
         }
 
         public FirmaData Nabywca
         {
             get
             {
-                if (_nabywca == null)
+                if (m_Nabywca == null)
                 {
-                    _nabywca = new FirmaData();
+                    m_Nabywca = new FirmaData();
                 }
 
-                return _nabywca;
+                return m_Nabywca;
             }
 
-            set => _nabywca = value;
+            set => m_Nabywca = value;
         }
 
         public bool Gotowka { get; set; }
@@ -90,26 +81,26 @@ namespace EasyInvoice
         {
             get
             {
-                if (_naglowek == null)
+                if (m_Naglowek == null)
                 {
 
                     int month = DateTime.Now.Month;
                     int year = DateTime.Now.Year;
                     int day = DateTime.DaysInMonth(year, month);
-                    _naglowek = new Naglowek
+                    m_Naglowek = new Naglowek
                     {
                         DataSprzedazy = new DateTime(year, month, day),
                         DataWystawienia = new DateTime(year, month, day)
                     };
-                    _naglowek.TerminZaplaty = _naglowek.DataSprzedazy.AddDays(14);
-                    _naglowek.NumerFaktury = "0001/" +  DateTime.Now.ToString("MM") + "/" + DateTime.Now.Year;
-                    _naglowek.DataUtworzenia = DateTime.Now;
+                    m_Naglowek.TerminZaplaty = m_Naglowek.DataSprzedazy.AddDays(14);
+                    m_Naglowek.NumerFaktury = "0001/" +  DateTime.Now.ToString("MM") + "/" + DateTime.Now.Year;
+                    m_Naglowek.DataUtworzenia = DateTime.Now;
                 }
 
-                return _naglowek;
+                return m_Naglowek;
             }
 
-            set => _naglowek = value;
+            set => m_Naglowek = value;
         }
 
         public string MyDtString { get; set; }

@@ -1,23 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EasyInvoice
 {
-    class HelperData
+    public interface IHelperData
     {
+        List<DaneTabela> GetSprzeNaby();
+        List<DaneTabela> GetZapDoZap();
+        List<DaneTabela> NrBankowy();
+        List<DaneTabela> Razem();
+        DaneTabela RazemSlownie();
+    }
+
+    public class HelperData : IHelperData
+    {
+        private readonly WorkClass m_WorkClass;
+        private readonly IEnumerable<DaneUsluga> m_ListDt;
+
+        public HelperData(SingleFakturaProperty singleFakturaProperty)
+        {
+            m_WorkClass = singleFakturaProperty.Work;
+            m_ListDt = singleFakturaProperty.GetSum();
+
+        }
         public List<DaneTabela> GetSprzeNaby()
         {
             List<DaneTabela> dt = new List<DaneTabela>()
             {
                 new DaneTabela{ Lewa= DictionaryMain.labelHeaderSprzedawca, Prawa= DictionaryMain.labelHeaderNabywca },
-                new DaneTabela{ Lewa= SingleFakturaProperty.Singleton.Work.Sprzedawca.NazwaFirmy, Prawa= SingleFakturaProperty.Singleton.Work.Nabywca.NazwaFirmy },
-                new DaneTabela{ Lewa= SingleFakturaProperty.Singleton.Work.Sprzedawca.UlicaFirmy, Prawa= SingleFakturaProperty.Singleton.Work.Nabywca.UlicaFirmy },
-                new DaneTabela{ Lewa= SingleFakturaProperty.Singleton.Work.Sprzedawca.MiastoFirmy, Prawa= SingleFakturaProperty.Singleton.Work.Nabywca.MiastoFirmy },
-                new DaneTabela{ Lewa= SingleFakturaProperty.Singleton.Work.Sprzedawca.NipFirmy, Prawa= SingleFakturaProperty.Singleton.Work.Nabywca.NipFirmy },
-                new DaneTabela{ Lewa= SingleFakturaProperty.Singleton.Work.Sprzedawca.InneFirmy, Prawa= SingleFakturaProperty.Singleton.Work.Nabywca.InneFirmy },
+                new DaneTabela{ Lewa= m_WorkClass.Sprzedawca.NazwaFirmy, Prawa= m_WorkClass.Nabywca.NazwaFirmy },
+                new DaneTabela{ Lewa= m_WorkClass.Sprzedawca.UlicaFirmy, Prawa= m_WorkClass.Nabywca.UlicaFirmy },
+                new DaneTabela{ Lewa= m_WorkClass.Sprzedawca.MiastoFirmy, Prawa=m_WorkClass.Nabywca.MiastoFirmy },
+                new DaneTabela{ Lewa= m_WorkClass.Sprzedawca.NipFirmy, Prawa= m_WorkClass.Nabywca.NipFirmy },
+                new DaneTabela{ Lewa= m_WorkClass.Sprzedawca.InneFirmy, Prawa= m_WorkClass.Nabywca.InneFirmy },
             };
 
             return dt;
@@ -27,7 +43,7 @@ namespace EasyInvoice
         {
             List<DaneTabela> dt = new List<DaneTabela>()
             {
-                new DaneTabela{ Lewa=DictionaryMain.labelNumerRachunku, Prawa= SingleFakturaProperty.Singleton.Work.NumerRachunku}
+                new DaneTabela{ Lewa=DictionaryMain.labelNumerRachunku, Prawa= m_WorkClass.NumerRachunku}
             };
 
             return dt;
@@ -35,10 +51,11 @@ namespace EasyInvoice
 
         public List<DaneTabela> GetZapDoZap()
         {
-            List<DaneTabela> dt = new List<DaneTabela>()
+            var sum = m_ListDt.First();
+            var dt = new List<DaneTabela>()
             {
                 new DaneTabela{ Lewa= DictionaryMain.labelZaplacone, Prawa= "0,00 PLN" },
-                new DaneTabela{ Lewa= DictionaryMain.labelDoZaplaty, Prawa= GetSum()[0].WartoscBrutto.ToString() + " PLN"}
+                new DaneTabela{ Lewa= DictionaryMain.labelDoZaplaty, Prawa= sum.WartoscBrutto.ToCurrency(true)}
             };
 
             return dt;
@@ -46,89 +63,34 @@ namespace EasyInvoice
 
         public List<DaneTabela> Razem()
         {
-            List<DaneTabela> dt = new List<DaneTabela>()
+            var sum = m_ListDt.First();
+            var dt = new List<DaneTabela>()
             {
-                new DaneTabela{ Lewa= DictionaryMain.labelRazem, Prawa= GetSum()[0].WartoscBrutto.ToString() + " PLN" }
+                new DaneTabela{ Lewa= DictionaryMain.labelRazem, Prawa= sum.WartoscBrutto.ToCurrency(true) }
             };
 
             return dt;
         }
 
-        public List<DaneTabela> RazemSlownie()
+        public DaneTabela RazemSlownie()
         {
-            LiczbyNaSlowaNET.NumberToTextOptions nTTO = new LiczbyNaSlowaNET.NumberToTextOptions()
+            var sum = m_ListDt.First();
+            var nTTO = new LiczbyNaSlowaNET.NumberToTextOptions()
             {
                 Currency = LiczbyNaSlowaNET.Currency.PLN,
                 Stems = true
             };
 
-            string Slowo = LiczbyNaSlowaNET.NumberToText.Convert(Convert.ToDecimal(GetSum()[0].WartoscBrutto), nTTO);
-            List<DaneTabela> dt = new List<DaneTabela>()
-            {
-                new DaneTabela{ Lewa= DictionaryMain.labelSlownie, Prawa= Slowo }
-            };
-
-            return dt;
-        }
-
-        public List<DaneUsluga> GetSum()
-        {
-            List<DaneUsluga> du = new List<DaneUsluga>();
-            var x = SingleFakturaProperty.Singleton.GetListDt().Select(z => z.StawkaVat).Distinct().ToList();
-
-            DaneUsluga d1 = new DaneUsluga();
-            foreach(var item in SingleFakturaProperty.Singleton.GetListDt())
-            {
-                d1.WartoscNetto += item.WartoscNetto;
-                d1.KwotaVat += item.KwotaVat;
-                d1.WartoscBrutto += item.WartoscBrutto;
-                d1.StawkaVat = "-";
-            }
-            du.Add(d1);
-
-            foreach(var stri in x)
-            {
-                DaneUsluga d2 = new DaneUsluga();
-                foreach (var item in SingleFakturaProperty.Singleton.GetListDt())
-                {
-                    if(stri==item.StawkaVat)
-                    {
-                        d2.WartoscNetto += item.WartoscNetto;
-                        d2.KwotaVat += item.KwotaVat;
-                        d2.WartoscBrutto += item.WartoscBrutto;
-                        d2.StawkaVat = stri;
-                    }
-                }
-                du.Add(d2);
-            }
-            
-            return du;
+            string Slowo = LiczbyNaSlowaNET.NumberToText.Convert(Convert.ToDecimal(sum.WartoscBrutto), nTTO);
+            return new DaneTabela { Lewa = DictionaryMain.labelSlownie, Prawa = Slowo };
         }
     }
 
-    public class DaneNaglowek
+    public static class Converter
     {
-        public List<DaneTabela> GetNaglowekL()
+        public static string ToCurrency(this decimal ob, bool pln =false)
         {
-            List<DaneTabela> dt = new List<DaneTabela>
-            {
-                new DaneTabela(){Lewa = DictionaryMain.labelMiejsceWystawienia, Prawa = SingleFakturaProperty.Singleton.Work.Naglowek.MiejsceWystawienia},
-                new DaneTabela(){Lewa = DictionaryMain.labelDataWystawienia, Prawa = SingleFakturaProperty.Singleton.Work.Naglowek.DataWystawienia.ToShortDateString()},
-                new DaneTabela(){Lewa = DictionaryMain.labelDataSprzedazy, Prawa = SingleFakturaProperty.Singleton.Work.Naglowek.DataSprzedazy.ToShortDateString()}
-            };
-
-            return dt;
-        }
-
-        public List<DaneTabela> GetNaglowekR()
-        {
-            List<DaneTabela> dt = new List<DaneTabela>
-            {
-                new DaneTabela(){Lewa = DictionaryMain.labelTerminZaplaty, Prawa = SingleFakturaProperty.Singleton.Work.Naglowek.TerminZaplaty.ToShortDateString()},
-                new DaneTabela(){Lewa = DictionaryMain.labelFormaPlatnosci, Prawa = SingleFakturaProperty.Singleton.Work.Naglowek.FormaPlatnosci}
-            };
-
-            return dt;
+            return ob.ToString("C").Replace(" zł", pln? " PLN": string.Empty);
         }
     }
 }
