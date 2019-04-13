@@ -32,7 +32,7 @@ namespace ManagerFaktur
             tCB.Items.AddRange(Enum.GetNames(typeof(UltraListViewStyle)));
             tCB.SelectedIndex = 0;
             var x =Directory.GetDirectories(Settings.Instance.WorkPath, "*", SearchOption.AllDirectories).AsEnumerable()
-                .Where(f=> f.Contains(DateTime.Now.Year.ToString()) || f.Contains((DateTime.Now.Year -1).ToString())).ToDictionary(h=>h,
+                .Where(f=> f.Contains(DateTime.Now.Year.ToString())).ToDictionary(h=>h,
                 z=> z.Split('\\').Last());
             uComboPath.DataSource = x;
             if (x.Count > 0)
@@ -209,7 +209,7 @@ namespace ManagerFaktur
                     string fileName = $"{Settings.Instance.FileNameDest} {symbol} {MonthYear}.pdf";
                     if (symbol == "Faktura")
                     {
-                        fileName = $"{Settings.Instance.FileNameDest} {symbol} {nrFaktury} {MonthYear}.pdf";
+                        fileName = $"{Settings.Instance.FileNameDest} {symbol}{nrFaktury} {MonthYear}.pdf";
                         nrFaktury++;
                     }
 
@@ -218,7 +218,7 @@ namespace ManagerFaktur
                     {
                         if (File.Exists(Path.Combine(destDirectory, fileName)))
                         {
-                            fileName = $"{Settings.Instance.FileNameDest} {symbol} {nrFaktury} {MonthYear}.pdf";
+                            fileName = $"{Settings.Instance.FileNameDest} {symbol}{nrFaktury} {MonthYear}.pdf";
                             nrFaktury++;
                         }
                         else

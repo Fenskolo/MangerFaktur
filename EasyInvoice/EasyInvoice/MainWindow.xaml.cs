@@ -139,7 +139,7 @@ namespace EasyInvoice
         private void Button_Click(object sender, RoutedEventArgs e)
         {     
             xDG.ActiveRecord =null;
-            var a = new MakePdf(this);                      
+            var a = new MakePdf(this, SingleFakturaProperty.Singleton);                      
         }
 
         private void Gotowka_Click(object sender, RoutedEventArgs e)
