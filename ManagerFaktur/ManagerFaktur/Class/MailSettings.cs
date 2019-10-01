@@ -18,7 +18,7 @@ namespace ManagerFaktur
         {
             get
             {
-                if(ins==null)
+                if (ins == null)
                 {
                     ins = new MailSettings();
                 }

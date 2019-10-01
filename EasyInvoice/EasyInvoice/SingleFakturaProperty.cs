@@ -12,16 +12,13 @@ namespace EasyInvoice
         private static SingleFakturaProperty m_Singleton;
         public SingleFakturaProperty() { }
         private WorkClass m_Work;
-      
+
 
         [XmlIgnore]
         public SingleFakturaProperty MySingleton
         {
             get => m_Singleton;
-            set
-            {
-                m_Singleton = value;
-            }
+            set => m_Singleton = value;
         }
 
 
@@ -44,7 +41,7 @@ namespace EasyInvoice
         {
             get
             {
-                if(m_Work ==null)
+                if (m_Work == null)
                 {
                     m_Work = new WorkClass();
                 }
@@ -65,11 +62,11 @@ namespace EasyInvoice
                     OpisTabela = dr[DictionaryMain.kolumnaTowar].ToString(),
                     Rodzajilosc = dr[DictionaryMain.kolumnaJM].ToString(),
                     Ilosc = Convert.ToInt32(dr[DictionaryMain.kolumnaIlosc]),
-                    CenaNetto = decimal.Round((decimal)dr[DictionaryMain.kolumnaCenaNetto],2),
-                    WartoscNetto = decimal.Round((decimal)dr[DictionaryMain.kolumnaWartoscNetto],2),
+                    CenaNetto = decimal.Round((decimal)dr[DictionaryMain.kolumnaCenaNetto], 2),
+                    WartoscNetto = decimal.Round((decimal)dr[DictionaryMain.kolumnaWartoscNetto], 2),
                     StawkaVat = dr[DictionaryMain.kolumnaStawkaVat].ToString(),
-                    KwotaVat = decimal.Round((decimal)dr[DictionaryMain.kolumnaKwotaVat],2),
-                    WartoscBrutto = decimal.Round((decimal)dr[DictionaryMain.kolumnaWartoscBrutto],2)
+                    KwotaVat = decimal.Round((decimal)dr[DictionaryMain.kolumnaKwotaVat], 2),
+                    WartoscBrutto = decimal.Round((decimal)dr[DictionaryMain.kolumnaWartoscBrutto], 2)
                 };
                 yield return dat;
                 i++;

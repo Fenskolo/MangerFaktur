@@ -14,9 +14,9 @@ namespace MailSender
 
             try
             {
-                using (var mail = new MailMessage())
+                using (MailMessage mail = new MailMessage())
                 {
-                    using (var smtp = new SmtpClient())
+                    using (SmtpClient smtp = new SmtpClient())
                     {
                         mail.From = new MailAddress(from);
                         smtp.Port = 587;
@@ -34,9 +34,9 @@ namespace MailSender
 
                         if (atach != null && atach.Count > 0)
                         {
-                            foreach (var at in atach)
+                            foreach (string at in atach)
                             {
-                                var attachment = new Attachment(at);
+                                Attachment attachment = new Attachment(at);
                                 mail.Attachments.Add(attachment);
                             }
                         }
@@ -56,4 +56,4 @@ namespace MailSender
     }
 }
 
-           
+

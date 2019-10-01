@@ -1,17 +1,16 @@
 ﻿using iTextSharp.text.pdf.parser;
-using System;
 using System.Text;
 
 namespace ManagerFaktur
 {
     public class TextWithFontExtractionStategy : ITextExtractionStrategy
     {
-        private StringBuilder result = new StringBuilder();
-        
+        private readonly StringBuilder result = new StringBuilder();
+
         private Vector lastBaseLine;
         private string lastFont;
         private float lastFontSize;
-        
+
         private enum TextRenderMode
         {
             FillText = 0,
@@ -23,7 +22,7 @@ namespace ManagerFaktur
             FillThenStrokeTextAndAddToPathForClipping = 6,
             AddTextToPaddForClipping = 7
         }
-        
+
         public void RenderText(TextRenderInfo renderInfo)
         {
             string curFont = renderInfo.GetFont().PostscriptFontName;

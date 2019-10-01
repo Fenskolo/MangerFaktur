@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace ManagerFaktur
 {
@@ -8,7 +7,7 @@ namespace ManagerFaktur
         public override bool GetStandardValuesSupported(ITypeDescriptorContext context) { return true; }
         public override bool GetStandardValuesExclusive(ITypeDescriptorContext context) { return true; }
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
-        {           
+        {
             return new StandardValuesCollection(MailSettings.Ins.ListMail);
         }
     }

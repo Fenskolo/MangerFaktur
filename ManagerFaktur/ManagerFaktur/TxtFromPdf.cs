@@ -8,6 +8,6 @@ namespace ManagerFaktur
         {
             InitializeComponent();
             rTxt.Text = tekst;
-        }        
+        }
     }
 }

@@ -11,7 +11,7 @@ namespace EasyInvoice
         public DateTime TerminZaplaty { get; set; }
         public string FormaPlatnosci { get; set; }
         public DateTime DataUtworzenia { get; set; }
-        public int Id{ get; set; }
+        public int Id { get; set; }
 
         public object Clone()
         {

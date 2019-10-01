@@ -17,5 +17,5 @@ namespace ManagerFaktur
 
             return base.GetDisplayText(string.Format("{0}, {1}", item.FirstString, item.LastString));
         }
-    }    
+    }
 }

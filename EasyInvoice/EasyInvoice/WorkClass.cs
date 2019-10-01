@@ -33,7 +33,7 @@ namespace EasyInvoice
                     m_Dt.Columns.Add(DictionaryMain.kolumnaWartoscBrutto, typeof(decimal));
                     if (!string.IsNullOrEmpty(MyDtString))
                     {
-                       m_Dt = HelperXML.DeserializeObject<DataTable>(MyDtString);
+                        m_Dt = HelperXML.DeserializeObject<DataTable>(MyDtString);
                     }
                 }
 
@@ -93,7 +93,7 @@ namespace EasyInvoice
                         DataWystawienia = new DateTime(year, month, day)
                     };
                     m_Naglowek.TerminZaplaty = m_Naglowek.DataSprzedazy.AddDays(14);
-                    m_Naglowek.NumerFaktury = "0001/" +  DateTime.Now.ToString("MM") + "/" + DateTime.Now.Year;
+                    m_Naglowek.NumerFaktury = "0001/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.Year;
                     m_Naglowek.DataUtworzenia = DateTime.Now;
                 }
 

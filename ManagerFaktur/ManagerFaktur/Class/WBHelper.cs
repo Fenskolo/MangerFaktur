@@ -7,11 +7,11 @@ namespace ManagerFaktur
 {
     public class WBHelper
     {
-        private WebBrowser wb;
+        private readonly WebBrowser wb;
 
         public string TempFileName { get; set; }
 
-        delegate void ConvertDocumentDelegate(string fileName);
+        private delegate void ConvertDocumentDelegate(string fileName);
 
         public WBHelper(WebBrowser _wb)
         {
@@ -20,15 +20,15 @@ namespace ManagerFaktur
 
         public void LoadDocument(string fileName)
         {
-            var del = new ConvertDocumentDelegate(ConvertDocument);
+            ConvertDocumentDelegate del = new ConvertDocumentDelegate(ConvertDocument);
             del.BeginInvoke(fileName, DocumentConversionComplete, null);
         }
 
         private void ConvertDocument(string fileName)
         {
             object m = System.Reflection.Missing.Value;
-            object oldFileName = (object)fileName;
-            object readOnly = (object)false;
+            object oldFileName = fileName;
+            object readOnly = false;
             Microsoft.Office.Interop.Word.Application ac = null;
 
             try
@@ -67,12 +67,12 @@ namespace ManagerFaktur
             }
         }
 
-        void DocumentConversionComplete(IAsyncResult result)
+        private void DocumentConversionComplete(IAsyncResult result)
         {
             wb.Navigate(TempFileName);
         }
 
-        string GetTempFile(string extension)
+        private string GetTempFile(string extension)
         {
             string tempPath = Path.GetTempPath();
             string extensionPath = Path.ChangeExtension(Path.GetRandomFileName(), extension);

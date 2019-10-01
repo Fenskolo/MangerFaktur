@@ -34,7 +34,7 @@ namespace ManagerFaktur
                     {
                         instance = new Settings();
                         SerializeXml();
-                    }                   
+                    }
                 }
 
                 return instance;
@@ -46,7 +46,7 @@ namespace ManagerFaktur
             TextReader reader = null;
             try
             {
-                var serializer = new XmlSerializer(typeof(Settings));
+                XmlSerializer serializer = new XmlSerializer(typeof(Settings));
                 reader = new StreamReader(xmlFile);
                 return (Settings)serializer.Deserialize(reader);
             }
@@ -56,7 +56,7 @@ namespace ManagerFaktur
                 {
                     reader.Close();
                 }
-            }            
+            }
         }
 
         public static void SerializeXml()
@@ -68,7 +68,7 @@ namespace ManagerFaktur
                 writer = new StreamWriter(xmlFile, false);
                 xsSubmit.Serialize(writer, instance);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw;
             }
@@ -80,7 +80,7 @@ namespace ManagerFaktur
                 }
             }
         }
-         
+
 
         [XmlIgnore]
         [Browsable(false)]
@@ -113,12 +113,12 @@ namespace ManagerFaktur
 
         [Editor(@"System.Windows.Forms.Design.StringCollectionEditor," +
         "System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
-       typeof(UITypeEditor))]        
+       typeof(UITypeEditor))]
         public List<string> ListExtenstion
         {
             get
             {
-                if(m_ListExtenstion == null)
+                if (m_ListExtenstion == null)
                 {
                     m_ListExtenstion = new List<string>();
                 }
@@ -126,7 +126,7 @@ namespace ManagerFaktur
                 return m_ListExtenstion;
             }
             set => m_ListExtenstion = value;
-        }          
+        }
 
         public void Serialze()
         {
@@ -138,13 +138,13 @@ namespace ManagerFaktur
         {
             get
             {
-                if(ep==null)
+                if (ep == null)
                 {
                     ep = new SymbolCollection();
                 }
                 return ep;
             }
-            set => ep = value; 
+            set => ep = value;
         }
 
         [Category("SendMail"), Description("login do poczty")]
@@ -159,7 +159,7 @@ namespace ManagerFaktur
         public string To { get; set; } = string.Empty;
         public string LogPath { get; set; } = Properties.Settings.Default.Log;
 
-        [Editor(@"System.Windows.Forms.Design.StringCollectionEditor,"+"System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+        [Editor(@"System.Windows.Forms.Design.StringCollectionEditor," + "System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
        typeof(UITypeEditor))]
         public List<string> ListSDelOneMonth
         {
@@ -176,13 +176,13 @@ namespace ManagerFaktur
         }
 
         public SearchOption SearchOptions { get; set; } = 0;
-        [EditorAttribute(typeof(FolderNameEditor), typeof(UITypeEditor))]
+        [Editor(typeof(FolderNameEditor), typeof(UITypeEditor))]
         [XmlElement("WorkPath")]
         public string WorkPath { get; set; } = string.Empty;
-        [EditorAttribute(typeof(FolderNameEditor), typeof(UITypeEditor))]
+        [Editor(typeof(FolderNameEditor), typeof(UITypeEditor))]
         [XmlElement("DestPath")]
         public string DestPath { get; set; } = string.Empty;
         [XmlElement("NazwaPoczątkuPliku")]
         public string FileNameDest { get; set; } = string.Empty;
-    }    
+    }
 }

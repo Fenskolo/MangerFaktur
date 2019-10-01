@@ -15,5 +15,5 @@ namespace ManagerFaktur
         [Category("Symbol")]
         [DisplayName("Typ")]
         public TypDanych Td { get; set; }
-    }    
+    }
 }

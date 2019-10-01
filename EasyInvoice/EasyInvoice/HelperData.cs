@@ -88,9 +88,9 @@ namespace EasyInvoice
 
     public static class Converter
     {
-        public static string ToCurrency(this decimal ob, bool pln =false)
+        public static string ToCurrency(this decimal ob, bool pln = false)
         {
-            return ob.ToString("C").Replace(" zł", pln? " PLN": string.Empty);
+            return ob.ToString("C").Replace(" zł", pln ? " PLN" : string.Empty);
         }
     }
 }

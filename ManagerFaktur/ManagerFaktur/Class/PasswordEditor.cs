@@ -15,18 +15,19 @@ namespace ManagerFaktur
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            var svc = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
+            IWindowsFormsEditorService svc = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
             if (svc != null)
             {
                 TextBox tb;
                 Button btn;
 
-                var frm = new Form
+                Form frm = new Form
                 {
                     Controls = {
                         (tb = new TextBox { PasswordChar = '*', Dock = DockStyle.Top, Text = (string)value}),
                         (btn = new Button { Text = "OK", Dock = DockStyle.Bottom, DialogResult = DialogResult.OK})
-                    }, AcceptButton = btn
+                    },
+                    AcceptButton = btn
                 };
 
                 if (frm.ShowDialog() == DialogResult.OK)

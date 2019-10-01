@@ -1,10 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Data.SqlClient;
+﻿using EasyInvoice.Properties;
+using System;
 using System.Data;
-using System.IO;
+using System.Data.SqlClient;
 using System.Diagnostics;
-using EasyInvoice.Properties;
+using System.IO;
+using System.Linq;
 
 namespace EasyInvoice
 {
@@ -47,7 +47,7 @@ namespace EasyInvoice
             fakturaProperty.Work = null;
             mw.FillValuesFaktura(null);
         }
-    
+
         private void AddInvoiceExternalValuesDb(MainWindow mw, string connection, int idFaktura, DataRow row)
         {
             using (SqlCommand cmd = new SqlCommand())
@@ -96,7 +96,9 @@ namespace EasyInvoice
 
         private object GetIdFromTable(DataTable dt, string searchValue)
         {
-            return dt.Rows.Cast<DataRow>().Where(w => w[1].ToString() == searchValue).FirstOrDefault().ItemArray[0];
+            return dt.Rows.Cast<DataRow>()
+                .Where(w => w[1].ToString() == searchValue)
+                .FirstOrDefault()?.ItemArray[0];
         }
     }
 }

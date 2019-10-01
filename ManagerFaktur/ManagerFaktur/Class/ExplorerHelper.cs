@@ -8,11 +8,11 @@ using System.Windows.Forms;
 
 namespace ManagerFaktur
 {
-    class ExplorerHelper
+    internal class ExplorerHelper
     {
-        private UltraListView ulv;
-        private Infragistics.Win.Appearance appPdf;
-        Infragistics.Win.Appearance appWord;
+        private readonly UltraListView ulv;
+        private readonly Infragistics.Win.Appearance appPdf;
+        private readonly Infragistics.Win.Appearance appWord;
 
         public ExplorerHelper(UltraListView _ulv)
         {
@@ -32,19 +32,19 @@ namespace ManagerFaktur
                     return;
                 }
 
-                var cDriveInfo = new DirectoryInfo(Path);
-                       
-                var files = cDriveInfo.GetFiles("*.*", Settings.Instance.SearchOptions);
+                DirectoryInfo cDriveInfo = new DirectoryInfo(Path);
+
+                FileInfo[] files = cDriveInfo.GetFiles("*.*", Settings.Instance.SearchOptions);
                 for (int i = 0; i < files.Length; i++)
                 {
-                    var fileInfo = files[i];
+                    FileInfo fileInfo = files[i];
 
                     if (!Settings.Instance.ListExtenstion.Contains(fileInfo.Extension.ToUpper()))
                     {
                         continue;
                     }
 
-                    var item = ulv.Items.Add(fileInfo.FullName, fileInfo.Name);
+                    UltraListViewItem item = ulv.Items.Add(fileInfo.FullName, fileInfo.Name);
                     item.SubItems["FileSize"].Value = fileInfo.Length / 1024;
                     item.SubItems["FileType"].Value = "File";
                     item.SubItems["DateModified"].Value = fileInfo.LastWriteTime;
@@ -125,14 +125,14 @@ namespace ManagerFaktur
 
         private DateTime BuildDate(string yearS, string monthS, string dayS)
         {
-            if (string.IsNullOrEmpty(yearS)|| string.IsNullOrEmpty(monthS))
+            if (string.IsNullOrEmpty(yearS) || string.IsNullOrEmpty(monthS))
             {
                 return new DateTime();
             }
 
-            int year = yearS.Length==2? Convert.ToInt32(yearS)+2000: Convert.ToInt32(yearS);
+            int year = yearS.Length == 2 ? Convert.ToInt32(yearS) + 2000 : Convert.ToInt32(yearS);
             int month = Convert.ToInt32(monthS);
-            int day = !string.IsNullOrEmpty(dayS)? Convert.ToInt32(dayS) : 1;
+            int day = !string.IsNullOrEmpty(dayS) ? Convert.ToInt32(dayS) : 1;
 
             return new DateTime(year, month, day);
         }
@@ -147,24 +147,24 @@ namespace ManagerFaktur
                 return strSource.Substring(Start, End - Start);
             }
             else
-            {                
+            {
                 return "";
             }
         }
 
         public string ExtractTextFromPdf(string path)
         {
-            using (var reader = new PdfReader(path))
+            using (PdfReader reader = new PdfReader(path))
             {
-                var text = new StringBuilder();
+                StringBuilder text = new StringBuilder();
                 string t1 = string.Empty;
 
                 for (int i = 1; i <= reader.NumberOfPages; i++)
                 {
-                    var s = new TextWithFontExtractionStategy();
+                    TextWithFontExtractionStategy s = new TextWithFontExtractionStategy();
                     text.Append(PdfTextExtractor.GetTextFromPage(reader, i, s));
                 }
-                text.Replace(" ", "").Replace("\r\n","");
+                text.Replace(" ", "").Replace("\r\n", "");
                 return text.ToString();
             }
         }

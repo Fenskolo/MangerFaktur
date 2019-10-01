@@ -14,7 +14,7 @@ namespace ManagerFaktur
         private MailSettings _ms;
         private DateTime _timeSent;
         private List<PairFiles> _fileOperation;
-        
+
         public MailSettings Ms
         {
             get
@@ -32,15 +32,15 @@ namespace ManagerFaktur
         {
             get
             {
-                if(_log==null)
+                if (_log == null)
                 {
                     _log = new Logs();
-                }                
+                }
                 return _log;
-            }           
+            }
         }
 
-        public DateTime TimeSent { get => DateTime.Now; set => _timeSent = value; }        
+        public DateTime TimeSent { get => DateTime.Now; set => _timeSent = value; }
 
         [XmlIgnore]
         [Browsable(false)]
@@ -52,7 +52,7 @@ namespace ManagerFaktur
         {
             get
             {
-                if(_fileOperation == null)
+                if (_fileOperation == null)
                 {
                     _fileOperation = new List<PairFiles>();
                 }
@@ -67,7 +67,7 @@ namespace ManagerFaktur
 
             try
             {
-                var xsSubmit = new XmlSerializer(typeof(Logs));
+                XmlSerializer xsSubmit = new XmlSerializer(typeof(Logs));
                 writer = new StreamWriter(Settings.Instance.LogPath, true);
                 xsSubmit.Serialize(writer, Log);
             }
@@ -94,9 +94,9 @@ namespace ManagerFaktur
     public class PairFiles
     {
         [XmlElement(Order = 2)]
-        public string News { get ; set ; }
+        public string News { get; set; }
 
         [XmlElement(Order = 1)]
-        public string Old { get ; set ; }
+        public string Old { get; set; }
     }
 }

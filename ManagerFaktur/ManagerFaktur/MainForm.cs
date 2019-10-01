@@ -1,39 +1,39 @@
 ﻿using Infragistics.Win;
+using Infragistics.Win.UltraWinEditors;
 using Infragistics.Win.UltraWinListView;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Windows.Forms;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Infragistics.Win.UltraWinEditors;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ManagerFaktur
 {
     public partial class MF : Form
     {
-        private WBHelper wb;
-        private ExplorerHelper eh;
-        private MailSender.MS ms;
+        private readonly WBHelper wb;
+        private readonly ExplorerHelper eh;
+        private readonly MailSender.MS ms;
 
         public MF()
         {
             InitializeComponent();
             wb = new WBHelper(WBrowser);
             eh = new ExplorerHelper(uListView);
-            ms = new MailSender.MS();            
+            ms = new MailSender.MS();
         }
 
         private void MF_Load(object sender, EventArgs e)
         {
             tCB.Items.AddRange(Enum.GetNames(typeof(UltraListViewStyle)));
             tCB.SelectedIndex = 0;
-            var x =Directory.GetDirectories(Settings.Instance.WorkPath, "*", SearchOption.AllDirectories).AsEnumerable()
-                .Where(f=> f.Contains(DateTime.Now.Year.ToString())).ToDictionary(h=>h,
-                z=> z.Split('\\').Last());
+            Dictionary<string, string> x = Directory.GetDirectories(Settings.Instance.WorkPath, "*", SearchOption.AllDirectories).AsEnumerable()
+                .Where(f => f.Contains(DateTime.Now.Year.ToString())).ToDictionary(h => h,
+                z => z.Split('\\').Last());
             uComboPath.DataSource = x;
             if (x.Count > 0)
             {
@@ -46,8 +46,8 @@ namespace ManagerFaktur
         private void PropertyListView()
         {
             var colFileSize = this.uListView.SubItemColumns.Add("FileSize");
-            var colFileType = this.uListView.SubItemColumns.Add("FileType");
-            var colDateModified = this.uListView.SubItemColumns.Add("DateModified");
+            UltraListViewSubItemColumn colFileType = this.uListView.SubItemColumns.Add("FileType");
+            UltraListViewSubItemColumn colDateModified = this.uListView.SubItemColumns.Add("DateModified");
             colFileSize.DataType = typeof(int);
             colFileSize.Format = "#,###,##0 KB";
             colFileSize.SubItemAppearance.TextHAlign = HAlign.Right;
@@ -61,8 +61,8 @@ namespace ManagerFaktur
             this.uListView.MainColumn.DataType = typeof(string);
             this.uListView.MainColumn.Text = "Name";
 
-            var colOkres = this.uListView.SubItemColumns.Add("Okres");
-            var colSymbol = this.uListView.SubItemColumns.Add("Symbol");
+            UltraListViewSubItemColumn colOkres = this.uListView.SubItemColumns.Add("Okres");
+            UltraListViewSubItemColumn colSymbol = this.uListView.SubItemColumns.Add("Symbol");
             colOkres.DataType = typeof(DateTime);
             colSymbol.DataType = typeof(string);
             colSymbol.Text = "Symbol";
@@ -71,7 +71,7 @@ namespace ManagerFaktur
 
         private void Ustawienia_Click(object sender, EventArgs e)
         {
-            var pG = new Property();
+            Property pG = new Property();
             pG.ShowDialog();
         }
 
@@ -85,16 +85,16 @@ namespace ManagerFaktur
             {
                 Settings.Instance.Serialze();
             }
-        }  
+        }
 
         private void UListView_ItemDoubleClick(object sender, ItemDoubleClickEventArgs e)
         {
             Process.Start(e.Item.Key);
         }
-            
+
         private void UListView_ItemActivated(object sender, ItemActivatedEventArgs e)
         {
-            if(e.Item?.Key == null)
+            if (e.Item?.Key == null)
             {
                 return;
             }
@@ -104,9 +104,9 @@ namespace ManagerFaktur
                 WBrowser.Navigate(e.Item.Key);
             }
             else
-            {               
+            {
                 wb.LoadDocument(e.Item.Key);
-            }                
+            }
         }
 
         private void WBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
@@ -117,8 +117,8 @@ namespace ManagerFaktur
                 File.Delete(wb.TempFileName);
                 wb.TempFileName = string.Empty;
             }
-        }  
-        
+        }
+
         private void RefreshExplorer()
         {
             uListView.Items.Clear();
@@ -139,7 +139,7 @@ namespace ManagerFaktur
                 string subject = MailSettings.Ins.Subject;
                 List<string> atach = new List<string>();
 
-                foreach (var item in uListView.Items)
+                foreach (UltraListViewItem item in uListView.Items)
                 {
                     if (item.CheckState == CheckState.Checked)
                     {
@@ -153,7 +153,7 @@ namespace ManagerFaktur
 
                 uTxt.Value = null;
             }
-            else if((e.Button.Key == "leftB"))
+            else if ((e.Button.Key == "leftB"))
             {
                 MailProperty mp = new MailProperty();
                 mp.ShowDialog();
@@ -182,11 +182,11 @@ namespace ManagerFaktur
 
         private void UBtnMove_Click(object sender, EventArgs e)
         {
-            foreach(var x in uListView.Items)
+            foreach (UltraListViewItem x in uListView.Items)
             {
                 if (x.CheckState == CheckState.Checked && x.SubItems["Okres"]?.Value != null)
                 {
-                    var dt = (DateTime)x.SubItems["Okres"].Value;
+                    DateTime dt = (DateTime)x.SubItems["Okres"].Value;
                     dt = (DateTime)x.SubItems["Okres"].Value == new DateTime() ? DateTime.Now : dt;
                     string month = dt.Month.ToString();
                     month = month.Length == 1 ? "0" + month : month;
@@ -234,12 +234,12 @@ namespace ManagerFaktur
                         Thread.Sleep(100);
                     }
 
-                    var pf = new PairFiles()
+                    PairFiles pf = new PairFiles()
                     {
                         Old = x.Key,
                         News = Path.Combine(destDirectory, fileName)
                     };
-                    
+
                     Logs.Log.FileOperation.Add(pf);
                     File.Move(x.Key.ToString(), Path.Combine(destDirectory, fileName));
                 }
@@ -253,17 +253,17 @@ namespace ManagerFaktur
 
         private void UBtnShowTxt_Click(object sender, EventArgs e)
         {
-            var tekst = eh.ExtractTextFromPdf(WBrowser.Url.ToString());
-            var txt = new TxtFromPdf(tekst);
+            string tekst = eh.ExtractTextFromPdf(WBrowser.Url.ToString());
+            TxtFromPdf txt = new TxtFromPdf(tekst);
             txt.ShowDialog();
-            
+
         }
 
         private void UDTEditor_EditorButtonClick(object sender, EditorButtonEventArgs e)
         {
-            foreach(var x in uListView.Items)
+            foreach (UltraListViewItem x in uListView.Items)
             {
-                if(x.CheckState==CheckState.Checked)
+                if (x.CheckState == CheckState.Checked)
                 {
                     x.SubItems["Okres"].Value = (DateTime)uDTEditor.Value;
                 }
@@ -277,10 +277,10 @@ namespace ManagerFaktur
 
         private void UComboPath_ValueChanged(object sender, EventArgs e)
         {
-            var x = uComboPath.SelectedRow;
+            Infragistics.Win.UltraWinGrid.UltraGridRow x = uComboPath.SelectedRow;
 
             uListView.Items.Clear();
-            eh.LoadExplorer(x.GetCellValue("Key").ToString());           
+            eh.LoadExplorer(x.GetCellValue("Key").ToString());
         }
     }
 }
