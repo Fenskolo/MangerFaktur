@@ -1,35 +1,29 @@
-﻿using PdfFileWriter;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using PdfFileWriter;
 
 namespace EasyInvoice
 {
     public class GenerujPolaWDokumencie
     {
-        private readonly IDaneNaglowek m_DaneNaglowka;
-        private readonly IHelperData m_HelperData;
-        private readonly PdfFont ArialNormal;
-        private readonly PdfFont ArialBold;
-        private readonly PdfPage Page;
-
-        private PdfDocument PdfDocument { get; set; }
-        private PdfContents PdfContents { get; set; }
-
         private const string ArialFontName = "Arial";
+        private readonly PdfFont _arialBold;
+        private readonly PdfFont _arialNormal;
+        private readonly PdfPage _page;
 
         public GenerujPolaWDokumencie(string FileName, SingleFakturaProperty singleFaktura)
         {
-            m_HelperData = new HelperData(singleFaktura);
-            m_DaneNaglowka = new DaneNaglowek(singleFaktura.Work.Naglowek);
+            IHelperData mHelperData = new HelperData(singleFaktura);
+            IDaneNaglowek mDaneNaglowka = new DaneNaglowek(singleFaktura.Work.Naglowek);
 
             PdfDocument = new PdfDocument(PaperType.A4, false, UnitOfMeasure.cm, FileName)
             {
                 Debug = false
             };
 
-            ArialBold = PdfFont.CreatePdfFont(PdfDocument, ArialFontName, FontStyle.Bold, true);
-            ArialNormal = PdfFont.CreatePdfFont(PdfDocument, ArialFontName, FontStyle.Regular, true);
+            _arialBold = PdfFont.CreatePdfFont(PdfDocument, ArialFontName, FontStyle.Bold);
+            _arialNormal = PdfFont.CreatePdfFont(PdfDocument, ArialFontName, FontStyle.Regular);
 
             var Info = PdfInfo.CreatePdfInfo(PdfDocument);
             Info.Title("Faktura");
@@ -37,46 +31,57 @@ namespace EasyInvoice
             Info.Keywords("keyword");
             Info.Subject("Temat");
 
-            Page = new PdfPage(PdfDocument);
-            PdfContents = new PdfContents(Page);
+            _page = new PdfPage(PdfDocument);
+            PdfContents = new PdfContents(_page);
 
             IdFaktury(singleFaktura.Work.Naglowek.NumerFaktury);
 
             double lastPosition = 26;
 
-            CreateTable(m_DaneNaglowka.GetNaglowekL(), 1.3, 10, 8, lastPosition, lastPosition - 3, false, ContentAlignment.MiddleLeft);
+            CreateTable(mDaneNaglowka.GetNaglowekL(), 1.3, 10, 8, lastPosition, lastPosition - 3, false,
+                ContentAlignment.MiddleLeft);
 
-            lastPosition = CreateTable(m_DaneNaglowka.GetNaglowekR(), 10.3, 16, 8, lastPosition, lastPosition - 1.5, false, ContentAlignment.MiddleLeft);
+            lastPosition = CreateTable(mDaneNaglowka.GetNaglowekR(), 10.3, 16, 8, lastPosition, lastPosition - 1.5,
+                false, ContentAlignment.MiddleLeft);
 
-            lastPosition = CreateTable(this.m_HelperData.GetSprzeNaby(), 1.3, 30, 8, lastPosition - 1.4, lastPosition - 6.2, true, ContentAlignment.MiddleLeft);
+            lastPosition = CreateTable(mHelperData.GetSprzeNaby(), 1.3, 30, 8, lastPosition - 1.4, lastPosition - 6.2,
+                true, ContentAlignment.MiddleLeft);
 
-            double WidthRow = ArialNormal.TextWidth(8, this.m_HelperData.NrBankowy()[0].Lewa + this.m_HelperData.NrBankowy()[0].Prawa) + 0.25;
+            var widthRow =
+                _arialNormal.TextWidth(8, mHelperData.NrBankowy()[0].Lewa + mHelperData.NrBankowy()[0].Prawa) + 0.25;
 
-            lastPosition = CreateTable(this.m_HelperData.NrBankowy(), 1.3, 1.3 + WidthRow, 8, lastPosition - 1, lastPosition - 6.2, false, ContentAlignment.MiddleLeft);
+            lastPosition = CreateTable(mHelperData.NrBankowy(), 1.3, 1.3 + widthRow, 8, lastPosition - 1,
+                lastPosition - 6.2, false, ContentAlignment.MiddleLeft);
 
-            lastPosition = TabelaDaneFaktura(1.3, lastPosition - 1, lastPosition - 11, 19.7, 9, singleFaktura.GetListDt());
+            lastPosition = TabelaDaneFaktura(1.3, lastPosition - 1, lastPosition - 11, 19.7, 9,
+                singleFaktura.GetListDt());
 
             RazemWTym(12.03, lastPosition - 0.018, lastPosition - 11, 9);
 
             lastPosition = Summary(12.03, lastPosition - 0.018, lastPosition - 11, 19.7, 9, singleFaktura.GetSum());
 
-            WidthRow = ArialNormal.TextWidth(8, this.m_HelperData.GetZapDoZap()[1].Lewa + this.m_HelperData.GetZapDoZap()[1].Prawa) + 0.25;
-            CreateTable(this.m_HelperData.GetZapDoZap(), 1.3, 1.3 + WidthRow, 8, lastPosition - 1, lastPosition - 10, false, ContentAlignment.MiddleLeft);
+            widthRow = _arialNormal.TextWidth(8,
+                           mHelperData.GetZapDoZap()[1].Lewa + mHelperData.GetZapDoZap()[1].Prawa) + 0.25;
+            CreateTable(mHelperData.GetZapDoZap(), 1.3, 1.3 + widthRow, 8, lastPosition - 1, lastPosition - 10, false,
+                ContentAlignment.MiddleLeft);
 
-            WidthRow = ArialNormal.TextWidth(12, this.m_HelperData.Razem()[0].Lewa + this.m_HelperData.Razem()[0].Prawa);
-            lastPosition = CreateTable(this.m_HelperData.Razem(), 19.7 - WidthRow, 19.7, 12, lastPosition - 1, lastPosition - 10, false, ContentAlignment.MiddleRight);
+            widthRow = _arialNormal.TextWidth(12, mHelperData.Razem()[0].Lewa + mHelperData.Razem()[0].Prawa);
+            lastPosition = CreateTable(mHelperData.Razem(), 19.7 - widthRow, 19.7, 12, lastPosition - 1,
+                lastPosition - 10, false, ContentAlignment.MiddleRight);
 
-            WidthRow = ArialNormal.TextWidth(8, this.m_HelperData.RazemSlownie().Lewa + this.m_HelperData.RazemSlownie().Prawa);
-            lastPosition = CreateTable(new List<DaneTabela> { this.m_HelperData.RazemSlownie() }, 19.7 - WidthRow, 19.7, 8, lastPosition, lastPosition - 10, false, ContentAlignment.MiddleRight);
+            widthRow = _arialNormal.TextWidth(8, mHelperData.RazemSlownie().Lewa + mHelperData.RazemSlownie().Prawa);
+            lastPosition = CreateTable(new List<DaneTabela> {mHelperData.RazemSlownie()}, 19.7 - widthRow, 19.7, 8,
+                lastPosition, lastPosition - 10, false, ContentAlignment.MiddleRight);
 
-            RamkiEnd(1.3, lastPosition - 1.4, lastPosition - 5, 9, 7, DictionaryMain.labelPodpisWystawiania);
+            RamkiEnd(1.3, lastPosition - 1.4, lastPosition - 5, 9, 7, DictionaryMain.LabelPodpisWystawiania);
 
-            RamkiEnd(12, lastPosition - 1.4, lastPosition - 5, 19.7, 7, DictionaryMain.labelPodpisOdbierania);
+            RamkiEnd(12, lastPosition - 1.4, lastPosition - 5, 19.7, 7, DictionaryMain.LabelPodpisOdbierania);
 
             PdfDocument.CreateFile();
-
-            return;
         }
+
+        private PdfDocument PdfDocument { get; }
+        private PdfContents PdfContents { get; }
 
 
         private void IdFaktury(string nrFaktury)
@@ -85,63 +90,63 @@ namespace EasyInvoice
 
             PdfContents.Translate(1.3, 21.0);
 
-            const double Width = 60;
-            const double Height = 7;
-            const double FontSize = 40;
-            var txtF = new TextBox(Width, 0);
-            var txtNr = new TextBox(Width, 0);
+            const double width = 60;
+            const double height = 7;
+            const double fontSize = 40;
+            var txtF = new TextBox(width);
+            var txtNr = new TextBox(width);
 
-            txtF.AddText(ArialNormal, FontSize, DictionaryMain.labelNrFaktury);
-            txtNr.AddText(ArialBold, FontSize, nrFaktury);
+            txtF.AddText(_arialNormal, fontSize, DictionaryMain.LabelNrFaktury);
+            txtNr.AddText(_arialBold, fontSize, nrFaktury);
 
-            double PosY = Height;
-            PdfContents.DrawText(0.0, ref PosY, 0, 0, 0.015, 0.05, TextBoxJustify.Left, txtF);
-            PosY = Height;
-            double sizeLabel = ArialNormal.TextWidth(FontSize, DictionaryMain.labelNrFaktury) + 1;
-            PdfContents.DrawText(sizeLabel, ref PosY, 0, 0, 0.015, 0.05, TextBoxJustify.Left, txtNr);
+            var posY = height;
+            PdfContents.DrawText(0.0, ref posY, 0, 0, 0.015, 0.05, TextBoxJustify.Left, txtF);
+            posY = height;
+            var sizeLabel = _arialNormal.TextWidth(fontSize, DictionaryMain.LabelNrFaktury) + 1;
+            PdfContents.DrawText(sizeLabel, ref posY, 0, 0, 0.015, 0.05, TextBoxJustify.Left, txtNr);
 
             PdfContents.RestoreGraphicsState();
         }
 
-        private double CreateTable(List<DaneTabela> dt, double left, double right, double fontSize, double top, double bottom, bool withHeader, ContentAlignment ca)
+        private double CreateTable(List<DaneTabela> dt, double left, double right, double fontSize, double top,
+            double bottom, bool withHeader, ContentAlignment ca)
         {
-            double LastRowPosition;
-            const double MARGIN_HOR = 0.04;
-            const double MARGIN_VER = 0.04;
+            const double marginHor = 0.04;
+            const double marginVer = 0.04;
 
-            double colWidthTitle = ArialNormal.TextWidth(fontSize, dt.First().Lewa) + 2.0 * MARGIN_HOR;
-            double colWidthDetail = ArialNormal.TextWidth(fontSize, dt.First().Prawa) + 2.0 * MARGIN_HOR;
+            var colWidthTitle = _arialNormal.TextWidth(fontSize, dt.First().Lewa) + 2.0 * marginHor;
+            var colWidthDetail = _arialNormal.TextWidth(fontSize, dt.First().Prawa) + 2.0 * marginHor;
 
-            var Table = new PdfTable(Page, PdfContents, ArialNormal, fontSize)
+            var table = new PdfTable(_page, PdfContents, _arialNormal, fontSize)
             {
                 TableArea = new PdfRectangle(left, bottom, right, top)
             };
-            var array = new double[] { colWidthTitle, colWidthDetail };
-            Table.SetColumnWidth(array);
+            var array = new[] {colWidthTitle, colWidthDetail};
+            table.SetColumnWidth(array);
 
-            Table.Borders.ClearAllBorders();
+            table.Borders.ClearAllBorders();
 
-            var Margin = new PdfRectangle(MARGIN_HOR, MARGIN_VER);
+            var Margin = new PdfRectangle(marginHor, marginVer);
 
-            Table.DefaultHeaderStyle.Margin = Margin;
-            Table.DefaultHeaderStyle.BackgroundColor = Color.White;
-            Table.DefaultHeaderStyle.Alignment = ca;
+            table.DefaultHeaderStyle.Margin = Margin;
+            table.DefaultHeaderStyle.BackgroundColor = Color.White;
+            table.DefaultHeaderStyle.Alignment = ca;
 
 
-            Table.DefaultCellStyle.Margin = Margin;
+            table.DefaultCellStyle.Margin = Margin;
             if (withHeader)
             {
-                Table.Header[0].Style.FontSize = 12;
-                Table.Header[0].Style.Font = ArialBold;
-                Table.Header[0].Value = dt.First().Lewa;
-                Table.Header[1].Value = dt.First().Prawa;
-                Table.Header[0].Style.FontSize = 12;
-                Table.Header[0].Style.Font = ArialBold;
-                Table.Header[1].Style.FontSize = 12;
-                Table.Header[1].Style.Font = ArialBold;
+                table.Header[0].Style.FontSize = 12;
+                table.Header[0].Style.Font = _arialBold;
+                table.Header[0].Value = dt.First().Lewa;
+                table.Header[1].Value = dt.First().Prawa;
+                table.Header[0].Style.FontSize = 12;
+                table.Header[0].Style.Font = _arialBold;
+                table.Header[1].Style.FontSize = 12;
+                table.Header[1].Style.Font = _arialBold;
             }
 
-            int i = 0;
+            var i = 0;
             foreach (var item in dt)
             {
                 if (withHeader && i == 0)
@@ -149,14 +154,15 @@ namespace EasyInvoice
                     i++;
                     continue;
                 }
-                Table.Cell[0].Value = item.Lewa;
-                Table.Cell[1].Value = item.Prawa;
-                Table.DrawRow();
+
+                table.Cell[0].Value = item.Lewa;
+                table.Cell[1].Value = item.Prawa;
+                table.DrawRow();
             }
 
-            LastRowPosition = Table.RowPosition[Table.RowNumber];
+            var LastRowPosition = table.RowPosition[table.RowNumber];
 
-            Table.Close();
+            table.Close();
 
             PdfContents.SaveGraphicsState();
 
@@ -164,18 +170,18 @@ namespace EasyInvoice
             return LastRowPosition;
         }
 
-        private double TabelaDaneFaktura(double LEFT, double TOP, double BOTTOM, double RIGHT, double FONT_SIZE, IEnumerable<DaneUsluga> daneUslugas)
+        private double TabelaDaneFaktura(double LEFT, double TOP, double BOTTOM, double RIGHT, double FONT_SIZE,
+            IEnumerable<DaneUsluga> daneUslugas)
         {
-            double positionLast;
             const double MARGIN_HOR = 0.04;
             const double MARGIN_VER = 0.04;
             const double FRAME_WIDTH = 0.015;
 
-            var Table = new PdfTable(Page, PdfContents, ArialNormal, FONT_SIZE)
+            var Table = new PdfTable(_page, PdfContents, _arialNormal, FONT_SIZE)
             {
                 TableArea = new PdfRectangle(LEFT, BOTTOM, RIGHT, TOP)
             };
-            var array = new double[] { 1, 9.5, 1.5, 2.5, 2.5, 3.5, 3, 3, 3.5 };
+            var array = new[] {1, 9.5, 1.5, 2.5, 2.5, 3.5, 3, 3, 3.5};
             Table.SetColumnWidth(array);
 
             Table.Borders.ClearAllBorders();
@@ -186,23 +192,23 @@ namespace EasyInvoice
 
             Table.DefaultHeaderStyle.Margin = Margin;
             Table.DefaultHeaderStyle.BackgroundColor = Color.LightGray;
-            Table.DefaultHeaderStyle.Font = ArialBold;
+            Table.DefaultHeaderStyle.Font = _arialBold;
             Table.DefaultHeaderStyle.MultiLineText = true;
             Table.DefaultHeaderStyle.Alignment = ContentAlignment.TopCenter;
 
-            Table.Header[0].Value = DictionaryMain.kolumnaLp;
-            Table.Header[1].Value = DictionaryMain.kolumnaTowar;
-            Table.Header[2].Value = DictionaryMain.kolumnaJM;
-            Table.Header[3].Value = DictionaryMain.kolumnaIlosc;
-            Table.Header[4].Value = DictionaryMain.kolumnaCenaNetto;
-            Table.Header[5].Value = DictionaryMain.kolumnaWartoscNetto;
-            Table.Header[6].Value = DictionaryMain.kolumnaStawkaVat;
-            Table.Header[7].Value = DictionaryMain.kolumnaKwotaVat;
-            Table.Header[8].Value = DictionaryMain.kolumnaWartoscBrutto;
+            Table.Header[0].Value = DictionaryMain.KolumnaLp;
+            Table.Header[1].Value = DictionaryMain.KolumnaTowar;
+            Table.Header[2].Value = DictionaryMain.KolumnaJm;
+            Table.Header[3].Value = DictionaryMain.KolumnaIlosc;
+            Table.Header[4].Value = DictionaryMain.KolumnaCenaNetto;
+            Table.Header[5].Value = DictionaryMain.KolumnaWartoscNetto;
+            Table.Header[6].Value = DictionaryMain.KolumnaStawkaVat;
+            Table.Header[7].Value = DictionaryMain.KolumnaKwotaVat;
+            Table.Header[8].Value = DictionaryMain.KolumnaWartoscBrutto;
 
             Table.DefaultCellStyle.Margin = Margin;
 
-            for (int i = 0; i < array.Length; i++)
+            for (var i = 0; i < array.Length; i++)
             {
                 Table.Cell[i].Style = Table.CellStyle;
                 Table.Cell[i].Style.MultiLineText = false;
@@ -225,7 +231,7 @@ namespace EasyInvoice
                 Table.DrawRow();
             }
 
-            positionLast = Table.RowPosition[Table.RowNumber] - Table.RowHeight; ;
+            var positionLast = Table.RowPosition[Table.RowNumber] - Table.RowHeight;
 
             Table.Close();
 
@@ -236,16 +242,15 @@ namespace EasyInvoice
 
         private double RamkiEnd(double LEFT, double TOP, double BOTTOM, double RIGHT, double FONT_SIZE, string tekst)
         {
-            double positionLast;
             const double MARGIN_HOR = 0.04;
             const double MARGIN_VER = 0.04;
             const double FRAME_WIDTH = 0.015;
 
-            var Table = new PdfTable(Page, PdfContents, ArialNormal, FONT_SIZE)
+            var Table = new PdfTable(_page, PdfContents, _arialNormal, FONT_SIZE)
             {
                 TableArea = new PdfRectangle(LEFT, BOTTOM, RIGHT, TOP)
             };
-            Table.SetColumnWidth(new double[] { 12 });
+            Table.SetColumnWidth(12);
 
             Table.Borders.ClearAllBorders();
             Table.Borders.SetFrame(FRAME_WIDTH);
@@ -270,7 +275,7 @@ namespace EasyInvoice
             Table.Cell[0].Value = tekst;
             Table.DrawRow();
 
-            positionLast = Table.RowPosition[Table.RowNumber] - Table.RowHeight; ;
+            var positionLast = Table.RowPosition[Table.RowNumber] - Table.RowHeight;
 
             Table.Close();
 
@@ -279,19 +284,19 @@ namespace EasyInvoice
             return positionLast;
         }
 
-        private double Summary(double LEFT, double TOP, double BOTTOM, double RIGHT, double FONT_SIZE, IEnumerable<DaneUsluga> daneUslugas)
+        private double Summary(double LEFT, double TOP, double BOTTOM, double RIGHT, double FONT_SIZE,
+            IEnumerable<DaneUsluga> daneUslugas)
         {
-            double positionLast;
             const double MARGIN_HOR = 0.04;
             const double MARGIN_VER = 0.04;
             const double FRAME_WIDTH = 0.015;
 
 
-            var Table = new PdfTable(Page, PdfContents, ArialNormal, FONT_SIZE)
+            var Table = new PdfTable(_page, PdfContents, _arialNormal, FONT_SIZE)
             {
                 TableArea = new PdfRectangle(LEFT - 0.31, BOTTOM, RIGHT, TOP)
             };
-            var array = new double[] { 3.5, 3, 3, 3.5 };
+            var array = new[] {3.5, 3, 3, 3.5};
             Table.SetColumnWidth(array);
 
             Table.Borders.ClearAllBorders();
@@ -302,17 +307,18 @@ namespace EasyInvoice
 
             Table.DefaultHeaderStyle.Margin = Margin;
             Table.DefaultHeaderStyle.BackgroundColor = Color.LightGray;
-            Table.DefaultHeaderStyle.Font = ArialBold;
+            Table.DefaultHeaderStyle.Font = _arialBold;
             Table.DefaultHeaderStyle.Alignment = ContentAlignment.TopCenter;
 
-            Table.Header[0].Value = daneUslugas.First().WartoscNetto.ToCurrency();
-            Table.Header[1].Value = daneUslugas.First().StawkaVat;
-            Table.Header[2].Value = daneUslugas.First().KwotaVat.ToCurrency();
-            Table.Header[3].Value = daneUslugas.First().WartoscBrutto.ToCurrency();
+            var enumerable = daneUslugas.ToList();
+            Table.Header[0].Value = enumerable.First().WartoscNetto.ToCurrency();
+            Table.Header[1].Value = enumerable.First().StawkaVat;
+            Table.Header[2].Value = enumerable.First().KwotaVat.ToCurrency();
+            Table.Header[3].Value = enumerable.First().WartoscBrutto.ToCurrency();
 
             Table.DefaultCellStyle.Margin = Margin;
 
-            for (int i = 0; i < array.Length; i++)
+            for (var i = 0; i < array.Length; i++)
             {
                 Table.Cell[i].Style = Table.CellStyle;
                 Table.Cell[i].Style.MultiLineText = false;
@@ -320,14 +326,15 @@ namespace EasyInvoice
                 Table.CellStyle.TextDrawStyle = DrawStyle.Superscript;
             }
 
-            int z = 0;
-            foreach (var item in daneUslugas)
+            var z = 0;
+            foreach (var item in enumerable)
             {
                 if (z == 0)
                 {
                     z++;
                     continue;
                 }
+
                 Table.Cell[0].Value = item.WartoscNetto.ToCurrency();
                 Table.Cell[1].Value = item.StawkaVat;
                 Table.Cell[2].Value = item.KwotaVat.ToCurrency();
@@ -335,7 +342,7 @@ namespace EasyInvoice
                 Table.DrawRow();
             }
 
-            positionLast = Table.RowPosition[Table.RowNumber] - Table.RowHeight; ;
+            var positionLast = Table.RowPosition[Table.RowNumber] - Table.RowHeight;
 
             Table.Close();
 
@@ -346,17 +353,17 @@ namespace EasyInvoice
 
         private void RazemWTym(double LEFT, double TOP, double BOTTOM, double FONT_SIZE)
         {
-            var TableLeft = new PdfTable(Page, PdfContents, ArialNormal, FONT_SIZE)
+            var TableLeft = new PdfTable(_page, PdfContents, _arialNormal, FONT_SIZE)
             {
                 TableArea = new PdfRectangle(LEFT - 3, BOTTOM, LEFT - 0.5, TOP)
             };
 
-            TableLeft.SetColumnWidth(new double[] { 2.5 });
+            TableLeft.SetColumnWidth(2.5);
             TableLeft.DefaultHeaderStyle.Alignment = ContentAlignment.MiddleRight;
             TableLeft.DefaultHeaderStyle.BackgroundColor = Color.Transparent;
-            TableLeft.Header[0].Value = DictionaryMain.summaRazem;
+            TableLeft.Header[0].Value = DictionaryMain.SummaRazem;
             TableLeft.Cell[0].Style.Alignment = ContentAlignment.MiddleRight;
-            TableLeft.Cell[0].Value = DictionaryMain.summaWTym;
+            TableLeft.Cell[0].Value = DictionaryMain.SummaWTym;
             TableLeft.DrawRow();
             PdfContents.SaveGraphicsState();
             PdfContents.RestoreGraphicsState();

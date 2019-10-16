@@ -2,7 +2,7 @@
 {
     public class TableData
     {
-        public string LeftSide { get;  set; }
-        public string RightSide { get;  set; }
+        public string LeftSide { get; set; }
+        public string RightSide { get; set; }
     }
 }

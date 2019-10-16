@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using LiczbyNaSlowaNET;
 
 namespace EasyInvoice
 {
@@ -15,25 +16,25 @@ namespace EasyInvoice
 
     public class HelperData : IHelperData
     {
-        private readonly WorkClass m_WorkClass;
-        private readonly IEnumerable<DaneUsluga> m_ListDt;
+        private readonly IEnumerable<DaneUsluga> _mListDt;
+        private readonly WorkClass _mWorkClass;
 
         public HelperData(SingleFakturaProperty singleFakturaProperty)
         {
-            m_WorkClass = singleFakturaProperty.Work;
-            m_ListDt = singleFakturaProperty.GetSum();
-
+            _mWorkClass = singleFakturaProperty.Work;
+            _mListDt = singleFakturaProperty.GetSum();
         }
+
         public List<DaneTabela> GetSprzeNaby()
         {
-            List<DaneTabela> dt = new List<DaneTabela>()
+            var dt = new List<DaneTabela>
             {
-                new DaneTabela{ Lewa= DictionaryMain.labelHeaderSprzedawca, Prawa= DictionaryMain.labelHeaderNabywca },
-                new DaneTabela{ Lewa= m_WorkClass.Sprzedawca.NazwaFirmy, Prawa= m_WorkClass.Nabywca.NazwaFirmy },
-                new DaneTabela{ Lewa= m_WorkClass.Sprzedawca.UlicaFirmy, Prawa= m_WorkClass.Nabywca.UlicaFirmy },
-                new DaneTabela{ Lewa= m_WorkClass.Sprzedawca.MiastoFirmy, Prawa=m_WorkClass.Nabywca.MiastoFirmy },
-                new DaneTabela{ Lewa= m_WorkClass.Sprzedawca.NipFirmy, Prawa= m_WorkClass.Nabywca.NipFirmy },
-                new DaneTabela{ Lewa= m_WorkClass.Sprzedawca.InneFirmy, Prawa= m_WorkClass.Nabywca.InneFirmy },
+                new DaneTabela {Lewa = DictionaryMain.LabelHeaderSprzedawca, Prawa = DictionaryMain.LabelHeaderNabywca},
+                new DaneTabela {Lewa = _mWorkClass.Sprzedawca.NazwaFirmy, Prawa = _mWorkClass.Nabywca.NazwaFirmy},
+                new DaneTabela {Lewa = _mWorkClass.Sprzedawca.UlicaFirmy, Prawa = _mWorkClass.Nabywca.UlicaFirmy},
+                new DaneTabela {Lewa = _mWorkClass.Sprzedawca.MiastoFirmy, Prawa = _mWorkClass.Nabywca.MiastoFirmy},
+                new DaneTabela {Lewa = _mWorkClass.Sprzedawca.NipFirmy, Prawa = _mWorkClass.Nabywca.NipFirmy},
+                new DaneTabela {Lewa = _mWorkClass.Sprzedawca.InneFirmy, Prawa = _mWorkClass.Nabywca.InneFirmy}
             };
 
             return dt;
@@ -41,9 +42,9 @@ namespace EasyInvoice
 
         public List<DaneTabela> NrBankowy()
         {
-            List<DaneTabela> dt = new List<DaneTabela>()
+            var dt = new List<DaneTabela>
             {
-                new DaneTabela{ Lewa=DictionaryMain.labelNumerRachunku, Prawa= m_WorkClass.NumerRachunku}
+                new DaneTabela {Lewa = DictionaryMain.LabelNumerRachunku, Prawa = _mWorkClass.NumerRachunku}
             };
 
             return dt;
@@ -51,11 +52,11 @@ namespace EasyInvoice
 
         public List<DaneTabela> GetZapDoZap()
         {
-            var sum = m_ListDt.First();
-            var dt = new List<DaneTabela>()
+            var sum = _mListDt.First();
+            var dt = new List<DaneTabela>
             {
-                new DaneTabela{ Lewa= DictionaryMain.labelZaplacone, Prawa= "0,00 PLN" },
-                new DaneTabela{ Lewa= DictionaryMain.labelDoZaplaty, Prawa= sum.WartoscBrutto.ToCurrency(true)}
+                new DaneTabela {Lewa = DictionaryMain.LabelZaplacone, Prawa = "0,00 PLN"},
+                new DaneTabela {Lewa = DictionaryMain.LabelDoZaplaty, Prawa = sum.WartoscBrutto.ToCurrency(true)}
             };
 
             return dt;
@@ -63,10 +64,10 @@ namespace EasyInvoice
 
         public List<DaneTabela> Razem()
         {
-            var sum = m_ListDt.First();
-            var dt = new List<DaneTabela>()
+            var sum = _mListDt.First();
+            var dt = new List<DaneTabela>
             {
-                new DaneTabela{ Lewa= DictionaryMain.labelRazem, Prawa= sum.WartoscBrutto.ToCurrency(true) }
+                new DaneTabela {Lewa = DictionaryMain.LabelRazem, Prawa = sum.WartoscBrutto.ToCurrency(true)}
             };
 
             return dt;
@@ -74,15 +75,15 @@ namespace EasyInvoice
 
         public DaneTabela RazemSlownie()
         {
-            var sum = m_ListDt.First();
-            var nTTO = new LiczbyNaSlowaNET.NumberToTextOptions()
+            var sum = _mListDt.First();
+            var nTto = new NumberToTextOptions
             {
-                Currency = LiczbyNaSlowaNET.Currency.PLN,
+                Currency = Currency.PLN,
                 Stems = true
             };
 
-            string Slowo = LiczbyNaSlowaNET.NumberToText.Convert(Convert.ToDecimal(sum.WartoscBrutto), nTTO);
-            return new DaneTabela { Lewa = DictionaryMain.labelSlownie, Prawa = Slowo };
+            var slowo = NumberToText.Convert(Convert.ToDecimal(sum.WartoscBrutto), nTto);
+            return new DaneTabela {Lewa = DictionaryMain.LabelSlownie, Prawa = slowo};
         }
     }
 

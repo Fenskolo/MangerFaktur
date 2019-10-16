@@ -1,49 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace InvoiceLibrary
+﻿namespace InvoiceLibrary
 {
     public class DictionaryMain
     {
-        public const string labelNrFaktury = "Faktura";
-        public const string labelMiejsceWystawienia = "MIEJSCE WYSTAWIENIA:";
-        public const string labelDataWystawienia = "DATA WYSTAWIENIA:";
-        public const string labelDataSprzedazy = "DATA SPRZEDAŻY:";
-        public const string labelTerminZaplaty = "TERMIN ZAPŁATY:";
-        public const string labelFormaPlatnosci = "FORMA PŁATNOŚCI:";
-        public const string labelHeaderSprzedawca = "Sprzedawca";
-        public const string labelHeaderNabywca = "Nabywca i płatnik";
-        public const string labelNazwaSprzedawcaNabywca = "Nazwa firmy:";
-        public const string labelUlicaSprzedawcaNabywca = "Ulica:";
-        public const string labelKodMiejsowoscSprzedawcaNabywca = "Kod p. i miejscowość:";
-        public const string labelNIPSprzedawcaNabywca = "NIP:";
-        public const string labelInnerSprzedawcaNabywca = "Inne:";
-        public const string labelNumerRachunku = "Numer rachunku bankowego: ";
-        public const string labelZaplacone = "Zapłacono:";
-        public const string labelDoZaplaty = "Do zapłaty";
-        public const string labelRazem = "Razem:";
-        public const string labelSlownie = "Słownie:";
-        public const string labelPodpisWystawiania = "Podpis osoby upoważnionej do wystawienia faktury";
-        public const string labelPodpisOdbierania = "Podpis osoby upoważnionej do odebrania faktury";
+        public const string LabelNrFaktury = "Faktura";
+        public const string LabelMiejsceWystawienia = "MIEJSCE WYSTAWIENIA:";
+        public const string LabelDataWystawienia = "DATA WYSTAWIENIA:";
+        public const string LabelDataSprzedazy = "DATA SPRZEDAŻY:";
+        public const string LabelTerminZaplaty = "TERMIN ZAPŁATY:";
+        public const string LabelFormaPlatnosci = "FORMA PŁATNOŚCI:";
+        public const string LabelHeaderSprzedawca = "Sprzedawca";
+        public const string LabelHeaderNabywca = "Nabywca i płatnik";
+        public const string LabelNazwaSprzedawcaNabywca = "Nazwa firmy:";
+        public const string LabelUlicaSprzedawcaNabywca = "Ulica:";
+        public const string LabelKodMiejsowoscSprzedawcaNabywca = "Kod p. i miejscowość:";
+        public const string LabelNipSprzedawcaNabywca = "NIP:";
+        public const string LabelInnerSprzedawcaNabywca = "Inne:";
+        public const string LabelNumerRachunku = "Numer rachunku bankowego: ";
+        public const string LabelZaplacone = "Zapłacono:";
+        public const string LabelDoZaplaty = "Do zapłaty";
+        public const string LabelRazem = "Razem:";
+        public const string LabelSlownie = "Słownie:";
+        public const string LabelPodpisWystawiania = "Podpis osoby upoważnionej do wystawienia faktury";
+        public const string LabelPodpisOdbierania = "Podpis osoby upoważnionej do odebrania faktury";
 
         ///////////
-        ///Tabela
-        ///
-        public const string kolumnaLp = "Lp.";
-        public const string kolumnaTowar = "Towar / usługa";
-        public const string kolumnaJM = "J.m.";
-        public const string kolumnaIlosc = "Ilość";
-        public const string kolumnaCenaNetto = "Cena Netto";
-        public const string kolumnaWartoscNetto = "Wartość netto";
-        public const string kolumnaStawkaVat = "Stawka VAT";
-        public const string kolumnaKwotaVat = "Kwota VAT";
-        public const string kolumnaWartoscBrutto = "Wartość Brutto";
+        /// Tabela
+        public const string KolumnaLp = "Lp.";
+
+        public const string KolumnaTowar = "Towar / usługa";
+        public const string KolumnaJm = "J.m.";
+        public const string KolumnaIlosc = "Ilość";
+        public const string KolumnaCenaNetto = "Cena Netto";
+        public const string KolumnaWartoscNetto = "Wartość netto";
+        public const string KolumnaStawkaVat = "Stawka VAT";
+        public const string KolumnaKwotaVat = "Kwota VAT";
+        public const string KolumnaWartoscBrutto = "Wartość Brutto";
 
 
-        public const string summaRazem = "Razem";
-        public const string summaWTym = "W tym";
+        public const string SummaRazem = "Razem";
+        public const string SummaWTym = "W tym";
     }
 }

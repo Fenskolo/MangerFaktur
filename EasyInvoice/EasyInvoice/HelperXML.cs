@@ -5,21 +5,18 @@ using System.Xml.Serialization;
 
 namespace EasyInvoice
 {
-    public static class HelperXML
+    public static class HelperXml
     {
         public static string Serialize<T>(this T value)
         {
-            if (value == null)
-            {
-                return string.Empty;
-            }
+            if (value == null) return string.Empty;
             try
             {
-                var xmlserializer = new XmlSerializer(typeof(T));
+                var serializers = new XmlSerializer(typeof(T));
                 var stringWriter = new StringWriter();
                 using (var writer = XmlWriter.Create(stringWriter))
                 {
-                    xmlserializer.Serialize(writer, value);
+                    serializers.Serialize(writer, value);
                     return stringWriter.ToString();
                 }
             }
@@ -31,16 +28,13 @@ namespace EasyInvoice
 
         public static T DeserializeObject<T>(string xml) where T : new()
         {
-            if (string.IsNullOrEmpty(xml))
-            {
-                return new T();
-            }
+            if (string.IsNullOrEmpty(xml)) return new T();
             try
             {
                 using (var stringReader = new StringReader(xml))
                 {
                     var serializer = new XmlSerializer(typeof(T));
-                    return (T)serializer.Deserialize(stringReader);
+                    return (T) serializer.Deserialize(stringReader);
                 }
             }
             catch (Exception)
@@ -49,5 +43,4 @@ namespace EasyInvoice
             }
         }
     }
-
 }

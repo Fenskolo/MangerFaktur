@@ -1,60 +1,62 @@
-﻿using Infragistics.Windows.DataPresenter;
-using System;
+﻿using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using EasyInvoice.Properties;
+using Infragistics.Windows.DataPresenter;
+using Infragistics.Windows.DataPresenter.Events;
 
 namespace EasyInvoice
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        public DataTable formaPlatnosc;
-        public DataTable jednostka;
-        public DataTable stawkaVat;
-        public DataTable typPlatnosci;
-        public DataTable usluga;
-        public DataTable firma;
+        public readonly DataTable Firma;
+        public readonly DataTable FormaPlatnosc;
+        public readonly DataTable Jednostka;
+        public readonly DataTable StawkaVat;
+        public readonly DataTable TypPlatnosci;
+        public readonly DataTable Usluga;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            DataSet ds = GetDataSetDb();
-            formaPlatnosc = ds.Tables[0];
-            jednostka = ds.Tables[1];
-            stawkaVat = ds.Tables[2];
-            typPlatnosci = ds.Tables[3];
-            usluga = ds.Tables[4];
-            firma = ds.Tables[5];
+            var ds = GetDataSetDb();
+            FormaPlatnosc = ds.Tables[0];
+            Jednostka = ds.Tables[1];
+            StawkaVat = ds.Tables[2];
+            TypPlatnosci = ds.Tables[3];
+            Usluga = ds.Tables[4];
+            Firma = ds.Tables[5];
 
             FillValuesFaktura(null);
-            lblMiejsceWystawienia.Content = DictionaryMain.labelMiejsceWystawienia;
-            lblDataWystawienia.Content = DictionaryMain.labelDataWystawienia;
-            lblDataSprzedazy.Content = DictionaryMain.labelDataSprzedazy;
-            lblTerminZaplaty.Content = DictionaryMain.labelTerminZaplaty;
-            lblFormaPlatnosc.Content = DictionaryMain.labelFormaPlatnosci;
-            lblSprzedawca.Content = DictionaryMain.labelHeaderSprzedawca;
-            lblNabywca.Content = DictionaryMain.labelHeaderNabywca;
-            lblSprzedawcaNazwa.Content = DictionaryMain.labelNazwaSprzedawcaNabywca;
-            lblNabywcaNazwa.Content = DictionaryMain.labelNazwaSprzedawcaNabywca;
+            LblMiejsceWystawienia.Content = DictionaryMain.LabelMiejsceWystawienia;
+            LblDataWystawienia.Content = DictionaryMain.LabelDataWystawienia;
+            LblDataSprzedazy.Content = DictionaryMain.LabelDataSprzedazy;
+            LblTerminZaplaty.Content = DictionaryMain.LabelTerminZaplaty;
+            LblFormaPlatnosc.Content = DictionaryMain.LabelFormaPlatnosci;
+            LblSprzedawca.Content = DictionaryMain.LabelHeaderSprzedawca;
+            LblNabywca.Content = DictionaryMain.LabelHeaderNabywca;
+            LblSprzedawcaNazwa.Content = DictionaryMain.LabelNazwaSprzedawcaNabywca;
+            LblNabywcaNazwa.Content = DictionaryMain.LabelNazwaSprzedawcaNabywca;
 
-            lblSprzedawcaUlica.Content = DictionaryMain.labelUlicaSprzedawcaNabywca;
-            lblSprzedawcaKodMiasto.Content = DictionaryMain.labelKodMiejsowoscSprzedawcaNabywca;
-            lblSprzedawcaNip.Content = DictionaryMain.labelNIPSprzedawcaNabywca;
-            lblSprzedawcaInne.Content = DictionaryMain.labelInnerSprzedawcaNabywca;
-            lblNabywcaUlica.Content = DictionaryMain.labelUlicaSprzedawcaNabywca;
-            lblNabywcaKodMiasto.Content = DictionaryMain.labelKodMiejsowoscSprzedawcaNabywca;
-            lblNabywcaNip.Content = DictionaryMain.labelNIPSprzedawcaNabywca;
-            lblNabywcaInne.Content = DictionaryMain.labelInnerSprzedawcaNabywca;
-            lblNumerRachunku.Content = DictionaryMain.labelNumerRachunku;
+            LblSprzedawcaUlica.Content = DictionaryMain.LabelUlicaSprzedawcaNabywca;
+            LblSprzedawcaKodMiasto.Content = DictionaryMain.LabelKodMiejsowoscSprzedawcaNabywca;
+            LblSprzedawcaNip.Content = DictionaryMain.LabelNipSprzedawcaNabywca;
+            LblSprzedawcaInne.Content = DictionaryMain.LabelInnerSprzedawcaNabywca;
+            LblNabywcaUlica.Content = DictionaryMain.LabelUlicaSprzedawcaNabywca;
+            LblNabywcaKodMiasto.Content = DictionaryMain.LabelKodMiejsowoscSprzedawcaNabywca;
+            LblNabywcaNip.Content = DictionaryMain.LabelNipSprzedawcaNabywca;
+            LblNabywcaInne.Content = DictionaryMain.LabelInnerSprzedawcaNabywca;
+            LblNumerRachunku.Content = DictionaryMain.LabelNumerRachunku;
             Gotowka.Content = "Gotówka";
             Przelew.Content = "Przelew";
-            cbFaktura.SelectionChanged += CbFaktura_SelectionChanged;
+            CbFaktura.SelectionChanged += CbFaktura_SelectionChanged;
         }
 
         private static DataSet GetDataSetDb()
@@ -65,7 +67,7 @@ namespace EasyInvoice
                 using (var cmd = new SqlCommand())
                 {
                     adapter.SelectCommand = cmd;
-                    cmd.Connection = new SqlConnection(Properties.Settings.Default.dbConn);
+                    cmd.Connection = new SqlConnection(Settings.Default.dbConn);
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandText = "dbo.getSlowniki";
                     cmd.Connection.Open();
@@ -80,18 +82,32 @@ namespace EasyInvoice
         {
             if (Property.Instance.Works.Count > 0)
             {
-                var x = id.HasValue ? Property.Instance.Works.Where(q => q.Naglowek.Id == id).FirstOrDefault()
-                                    : Property.Instance.Works.OrderByDescending(f => f.Naglowek.Id).First();
-                SingleFakturaProperty.Singleton.MySingleton.Work = (WorkClass)x.Clone();
-                SingleFakturaProperty.Singleton.MySingleton.Work.Dt = null;
-                SingleFakturaProperty.Singleton.MySingleton.Work.Naglowek = null;
-                SingleFakturaProperty.Singleton.MySingleton.Work.Naglowek.FormaPlatnosci = x.Naglowek.FormaPlatnosci;
-                SingleFakturaProperty.Singleton.MySingleton.Work.Naglowek.MiejsceWystawienia = x.Naglowek.MiejsceWystawienia;
-                SingleFakturaProperty.Singleton.MySingleton.Work.Sprzedawca = (FirmaData)x.Sprzedawca.Clone();
-                SingleFakturaProperty.Singleton.MySingleton.Work.Nabywca = (FirmaData)x.Nabywca.Clone();
+                var x = id.HasValue
+                    ? Property.Instance.Works.FirstOrDefault(q => q.Naglowek.Id == id)
+                    : Property.Instance.Works.OrderByDescending(f => f.Naglowek.Id).First();
+
+                if (x != null)
+                {
+                    SingleFakturaProperty.Singleton.MySingleton.Work = (WorkClass) x.Clone();
+                    SingleFakturaProperty.Singleton.MySingleton.Work.Dt = null;
+                    SingleFakturaProperty.Singleton.MySingleton.Work.Naglowek = null;
+                    if (SingleFakturaProperty.Singleton.MySingleton.Work.Naglowek != null)
+                    {
+                        SingleFakturaProperty.Singleton.MySingleton.Work.Naglowek.FormaPlatnosci =
+                            x.Naglowek.FormaPlatnosci;
+                        SingleFakturaProperty.Singleton.MySingleton.Work.Naglowek.MiejsceWystawienia =
+                            x.Naglowek.MiejsceWystawienia;
+                    }
+
+                    SingleFakturaProperty.Singleton.MySingleton.Work.Sprzedawca = (FirmaData) x.Sprzedawca.Clone();
+                    SingleFakturaProperty.Singleton.MySingleton.Work.Nabywca = (FirmaData) x.Nabywca.Clone();
+                }
             }
-            xDG.DataContext = null;
-            xDG.DataContext = SingleFakturaProperty.Singleton.MySingleton.Work.Dt.DefaultView;
+
+            XDg.DataContext = null;
+            if (SingleFakturaProperty.Singleton.MySingleton.Work.Dt != null)
+                XDg.DataContext = SingleFakturaProperty.Singleton.MySingleton.Work.Dt.DefaultView;
+
             Nabywca.DataContext = null;
             Nabywca.DataContext = SingleFakturaProperty.Singleton.MySingleton.Work.Nabywca;
             Sprzedawca.DataContext = null;
@@ -100,35 +116,35 @@ namespace EasyInvoice
             BankGotowka.DataContext = SingleFakturaProperty.Singleton.MySingleton.Work;
             Naglowek.DataContext = null;
             Naglowek.DataContext = SingleFakturaProperty.Singleton.MySingleton.Work.Naglowek;
-            lblFaktura.Content = null;
-            lblFaktura.Content = DictionaryMain.labelNrFaktury;
+            LblFaktura.Content = null;
+            LblFaktura.Content = DictionaryMain.LabelNrFaktury;
 
-            cbFaktura.ItemsSource = Property.Instance.Works.Select(f => f.Naglowek.Id).ToList();
-            cbFaktura.SelectedValue = SingleFakturaProperty.Singleton.Work.Naglowek.Id;
+            CbFaktura.ItemsSource = Property.Instance.Works.Select(f => f.Naglowek.Id).ToList();
+            CbFaktura.SelectedValue = SingleFakturaProperty.Singleton.Work.Naglowek.Id;
         }
 
         private void CbFaktura_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            int myId = Convert.ToInt32((sender as ComboBox).SelectedItem);
+            var myId = Convert.ToInt32((sender as ComboBox)?.SelectedItem);
             FillValuesFaktura(myId);
         }
 
         private void XDG1_Loaded(object sender, RoutedEventArgs e)
         {
-            PopulateCombo(xDG);
+            PopulateCombo(XDg);
         }
 
-        public void PopulateCombo(XamDataGrid grid)
+        private void PopulateCombo(XamDataGrid grid)
         {
             try
             {
-                var cbJ = (ComboBoxField)grid.DefaultFieldLayout.Fields[DictionaryMain.kolumnaJM];
-                var cbV = (ComboBoxField)grid.DefaultFieldLayout.Fields[DictionaryMain.kolumnaStawkaVat];
-                var cbN = (ComboBoxField)grid.DefaultFieldLayout.Fields[DictionaryMain.kolumnaTowar];
+                var cbJ = (ComboBoxField) grid.DefaultFieldLayout.Fields[DictionaryMain.KolumnaJm];
+                var cbV = (ComboBoxField) grid.DefaultFieldLayout.Fields[DictionaryMain.KolumnaStawkaVat];
+                var cbN = (ComboBoxField) grid.DefaultFieldLayout.Fields[DictionaryMain.KolumnaTowar];
 
-                cbJ.ItemsSource = jednostka.Rows.Cast<DataRow>().Select(s => s[1]).ToList();
-                cbV.ItemsSource = stawkaVat.Rows.Cast<DataRow>().Select(s => s[1]).ToList();
-                cbN.ItemsSource = usluga.Rows.Cast<DataRow>().Select(s => s[1]).ToList();
+                cbJ.ItemsSource = Jednostka.Rows.Cast<DataRow>().Select(s => s[1]).ToList();
+                cbV.ItemsSource = StawkaVat.Rows.Cast<DataRow>().Select(s => s[1]).ToList();
+                cbN.ItemsSource = Usluga.Rows.Cast<DataRow>().Select(s => s[1]).ToList();
             }
             catch (Exception ex)
             {
@@ -138,65 +154,69 @@ namespace EasyInvoice
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            xDG.ActiveRecord = null;
-            var a = new MakePdf(this, SingleFakturaProperty.Singleton);
+            XDg.ActiveRecord = null;
+            new MakePdf(this, SingleFakturaProperty.Singleton);
         }
 
-        private void Gotowka_Click(object sender, RoutedEventArgs e)
+        private void Gotowka_Click(object sender, RoutedEventArgs E)
         {
             Przelew.IsChecked = !Gotowka.IsChecked ?? Gotowka.IsChecked;
-            lblNumerRachunku.Visibility = (bool)Przelew.IsChecked ? Visibility.Visible : Visibility.Hidden;
-            txtNumerRachunku.Visibility = (bool)Przelew.IsChecked ? Visibility.Visible : Visibility.Hidden;
+            LblNumerRachunku.Visibility = (bool) Przelew.IsChecked ? Visibility.Visible : Visibility.Hidden;
+            TxtNumerRachunku.Visibility = (bool) Przelew.IsChecked ? Visibility.Visible : Visibility.Hidden;
         }
 
-        private void Przelew_Click(object sender, RoutedEventArgs e)
+        private void Przelew_Click(object Sender, RoutedEventArgs E)
         {
             Gotowka.IsChecked = !Przelew.IsChecked ?? Przelew.IsChecked;
-            lblNumerRachunku.Visibility = (bool)Przelew.IsChecked ? Visibility.Visible : Visibility.Hidden;
-            txtNumerRachunku.Visibility = (bool)Przelew.IsChecked ? Visibility.Visible : Visibility.Hidden;
+            LblNumerRachunku.Visibility = Przelew.IsChecked != null && (bool) Przelew.IsChecked
+                ? Visibility.Visible
+                : Visibility.Hidden;
+            TxtNumerRachunku.Visibility = Przelew.IsChecked != null && (bool) Przelew.IsChecked
+                ? Visibility.Visible
+                : Visibility.Hidden;
         }
 
-        private void xDG_CellUpdated(object sender, Infragistics.Windows.DataPresenter.Events.CellUpdatedEventArgs e)
+        private void xDG_CellUpdated(object Sender, CellUpdatedEventArgs E)
         {
-            DataRecord row = e.Record;
-            Cell stawkaVat = row.Cells[DictionaryMain.kolumnaStawkaVat];
-            Cell ilosc = row.Cells[DictionaryMain.kolumnaIlosc];
-            Cell wartoscNetto = row.Cells[DictionaryMain.kolumnaWartoscNetto];
-            Cell cenaNetto = row.Cells[DictionaryMain.kolumnaCenaNetto];
-            Cell kwotaVat = row.Cells[DictionaryMain.kolumnaKwotaVat];
-            Cell wartoscBrutto = row.Cells[DictionaryMain.kolumnaWartoscBrutto];
+            var row = E.Record;
+            var stawkaVat = row.Cells[DictionaryMain.KolumnaStawkaVat];
+            var ilosc = row.Cells[DictionaryMain.KolumnaIlosc];
+            var wartoscNetto = row.Cells[DictionaryMain.KolumnaWartoscNetto];
+            var cenaNetto = row.Cells[DictionaryMain.KolumnaCenaNetto];
+            var kwotaVat = row.Cells[DictionaryMain.KolumnaKwotaVat];
+            var wartoscBrutto = row.Cells[DictionaryMain.KolumnaWartoscBrutto];
 
             if (ilosc.Value != DBNull.Value && ilosc.Value != null
-            && cenaNetto.Value != DBNull.Value &&
-                (wartoscNetto.Value == DBNull.Value || Convert.ToDecimal(wartoscNetto.Value) != GetValueIloraz(ilosc, cenaNetto)))
-            {
+                                            && cenaNetto.Value != DBNull.Value &&
+                                            (wartoscNetto.Value == DBNull.Value ||
+                                             Convert.ToDecimal(wartoscNetto.Value) != GetValueIloraz(ilosc, cenaNetto)))
                 wartoscNetto.Value = GetValueIloraz(ilosc, cenaNetto);
-            }
 
             if (!string.IsNullOrEmpty(stawkaVat.Value.ToString())
-             && wartoscNetto.Value != DBNull.Value && wartoscNetto.Value != null
-             && (wartoscBrutto.Value == DBNull.Value || (decimal)wartoscBrutto.Value != GetValueIloraz(wartoscNetto, stawkaVat)))
-            {
+                && wartoscNetto.Value != DBNull.Value && wartoscNetto.Value != null
+                && (wartoscBrutto.Value == DBNull.Value ||
+                    (decimal) wartoscBrutto.Value != GetValueIloraz(wartoscNetto, stawkaVat)))
                 wartoscBrutto.Value = GetValueIloraz(wartoscNetto, stawkaVat);
-            }
 
             if (wartoscBrutto.Value != DBNull.Value && wartoscBrutto.Value != null
-             && wartoscNetto.Value != null
-                && (kwotaVat.Value == DBNull.Value || (decimal)kwotaVat.Value != (decimal)wartoscBrutto.Value - (decimal)wartoscNetto.Value))
-            {
-                kwotaVat.Value = (decimal)wartoscBrutto.Value - (decimal)wartoscNetto.Value;
-            }
+                                                    && wartoscNetto.Value != null
+                                                    && (kwotaVat.Value == DBNull.Value || (decimal) kwotaVat.Value !=
+                                                        (decimal) wartoscBrutto.Value - (decimal) wartoscNetto.Value))
+                kwotaVat.Value = (decimal) wartoscBrutto.Value - (decimal) wartoscNetto.Value;
         }
 
-        private static decimal getDecimalVatStawka(DataRecord row)
+        private static decimal GetDecimalVatStawka(DataRecord Row)
         {
-            return 1 + Convert.ToDecimal(row.Cells[DictionaryMain.kolumnaStawkaVat].Value.ToString().Split('%')[0]) / 100;
+            return 1 + Convert.ToDecimal(Row.Cells[DictionaryMain.KolumnaStawkaVat].Value.ToString().Split('%')[0]) /
+                   100;
         }
 
         private decimal GetValueIloraz(Cell first, Cell second)
         {
-            decimal sec = second.Field.Name == DictionaryMain.kolumnaStawkaVat ? getDecimalVatStawka(second.Record) : Convert.ToDecimal(second.Value);
-            decimal myDec = Convert.ToDecimal(first.Value) * sec;
+            var sec = second.Field.Name == DictionaryMain.KolumnaStawkaVat
+                ? GetDecimalVatStawka(second.Record)
+                : Convert.ToDecimal(second.Value);
+            var myDec = Convert.ToDecimal(first.Value) * sec;
 
             return myDec;
         }

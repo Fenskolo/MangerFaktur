@@ -9,40 +9,24 @@ namespace EasyInvoice
     [Serializable]
     public class Property
     {
-        private static Property m_Instance;
+        private static Property _mInstance;
         private static readonly string xmlPath = "xmlProperty.xml";
-        private List<string> m_NameList;
-        private List<string> m_StawkaList;
-        private List<WorkClass> m_Works;
-        public Property() { }
+        private List<string> _mNameList;
+        private List<string> _mStawkaList;
+        private List<WorkClass> _mWorks;
 
         public static Property Instance
         {
-            get
-            {
-                if (m_Instance == null)
-                {
-                    if (File.Exists(xmlPath))
-                    {
-                        m_Instance = Deserialize();
-                    }
-                    else
-                    {
-                        m_Instance = new Property();
-                    }
-                }
-                return m_Instance;
-            }
-            set => m_Instance = value;
+            get => _mInstance ?? (_mInstance = File.Exists(xmlPath) ? Deserialize() : new Property());
+            set => _mInstance = value;
         }
 
         public List<string> NameList
         {
             get
             {
-                if (m_NameList == null || m_NameList.Count == 0)
-                {
-                    m_NameList = new List<string>()
+                if (_mNameList == null || _mNameList.Count == 0)
+                    _mNameList = new List<string>
                     {
                         "szt.",
                         "godz.",
@@ -53,13 +37,12 @@ namespace EasyInvoice
                         "km.",
                         "m3."
                     };
-                }
-                return m_NameList;
+                return _mNameList;
             }
             set
             {
                 value.Where(f => NameList.Contains(f)).ToList().ForEach(a => value.Remove(a));
-                m_NameList = value;
+                _mNameList = value;
             }
         }
 
@@ -67,36 +50,27 @@ namespace EasyInvoice
         {
             get
             {
-                if (m_StawkaList == null || m_StawkaList.Count == 0)
-                {
-                    m_StawkaList = new List<string>()
+                if (_mStawkaList == null || _mStawkaList.Count == 0)
+                    _mStawkaList = new List<string>
                     {
                         "23%",
                         "0%",
                         "7%"
                     };
-                }
-                return m_StawkaList;
+                return _mStawkaList;
             }
             set
             {
                 value.Where(f => StawkaList.Contains(f)).ToList().ForEach(a => value.Remove(a));
-                m_StawkaList = value;
+                _mStawkaList = value;
             }
         }
 
         public List<WorkClass> Works
         {
-            get
-            {
-                if (m_Works == null)
-                {
-                    m_Works = new List<WorkClass>();
-                }
-                return m_Works;
-            }
+            get => _mWorks ?? (_mWorks = new List<WorkClass>());
 
-            set => m_Works = value;
+            set => _mWorks = value;
         }
 
         public static Property Deserialize()
@@ -106,14 +80,11 @@ namespace EasyInvoice
             {
                 var serializer = new XmlSerializer(typeof(Property));
                 reader = new StreamReader(xmlPath);
-                return (Property)serializer.Deserialize(reader);
+                return (Property) serializer.Deserialize(reader);
             }
             finally
             {
-                if (reader != null)
-                {
-                    reader.Close();
-                }
+                reader?.Close();
             }
         }
 
@@ -122,20 +93,13 @@ namespace EasyInvoice
             TextWriter writer = null;
             try
             {
-                XmlSerializer xsSubmit = new XmlSerializer(typeof(Property));
+                var xsSubmit = new XmlSerializer(typeof(Property));
                 writer = new StreamWriter(xmlPath, false);
                 xsSubmit.Serialize(writer, Instance);
             }
-            catch (Exception)
-            {
-                throw;
-            }
             finally
             {
-                if (writer != null)
-                {
-                    writer.Close();
-                }
+                writer?.Close();
             }
         }
     }
