@@ -51,7 +51,7 @@
     <Compile Include="TableData.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\PdfFileWriter\PdfFileWriter\PdfFileWriter.csproj">
+    <ProjectReference Include="..\PdfFileWriter\PdfFileWriter\PdfFileWriter.csproj">
       <Project>{7b531568-9c87-4cc5-917d-28c43bcf5b38}</Project>
       <Name>PdfFileWriter</Name>
     </ProjectReference>

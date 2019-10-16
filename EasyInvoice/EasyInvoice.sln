@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyInvoice", "EasyInvoice\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvoiceLibrary", "InvoiceLibrary\InvoiceLibrary.csproj", "{F0AFABFC-2C19-43E8-B19B-11D2FF1D812E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfFileWriter", "..\..\PdfFileWriter\PdfFileWriter\PdfFileWriter.csproj", "{7B531568-9C87-4CC5-917D-28C43BCF5B38}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfFileWriter", "PdfFileWriter\PdfFileWriter\PdfFileWriter.csproj", "{7B531568-9C87-4CC5-917D-28C43BCF5B38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
