@@ -31,8 +31,9 @@ namespace ManagerFaktur
         {
             tCB.Items.AddRange(Enum.GetNames(typeof(UltraListViewStyle)));
             tCB.SelectedIndex = 0;
-            Dictionary<string, string> x = Directory.GetDirectories(Settings.Instance.WorkPath, "*", SearchOption.AllDirectories).AsEnumerable()
-                .Where(f => f.Contains(DateTime.Now.Year.ToString())).ToDictionary(h => h,
+            var x = Directory.GetDirectories(Path.Combine( Settings.Instance.WorkPath, "Archiwum"), "*", SearchOption.AllDirectories).OrderByDescending(o=> o)
+                //.Where(f => f.Contains(DateTime.Now.Year.ToString()))
+                .ToDictionary(h => h,
                 z => z.Split('\\').Last());
             uComboPath.DataSource = x;
             if (x.Count > 0)
@@ -46,8 +47,8 @@ namespace ManagerFaktur
         private void PropertyListView()
         {
             var colFileSize = this.uListView.SubItemColumns.Add("FileSize");
-            UltraListViewSubItemColumn colFileType = this.uListView.SubItemColumns.Add("FileType");
-            UltraListViewSubItemColumn colDateModified = this.uListView.SubItemColumns.Add("DateModified");
+            var colFileType = this.uListView.SubItemColumns.Add("FileType");
+            var colDateModified = this.uListView.SubItemColumns.Add("DateModified");
             colFileSize.DataType = typeof(int);
             colFileSize.Format = "#,###,##0 KB";
             colFileSize.SubItemAppearance.TextHAlign = HAlign.Right;
@@ -61,8 +62,8 @@ namespace ManagerFaktur
             this.uListView.MainColumn.DataType = typeof(string);
             this.uListView.MainColumn.Text = "Name";
 
-            UltraListViewSubItemColumn colOkres = this.uListView.SubItemColumns.Add("Okres");
-            UltraListViewSubItemColumn colSymbol = this.uListView.SubItemColumns.Add("Symbol");
+            var colOkres = this.uListView.SubItemColumns.Add("Okres");
+            var colSymbol = this.uListView.SubItemColumns.Add("Symbol");
             colOkres.DataType = typeof(DateTime);
             colSymbol.DataType = typeof(string);
             colSymbol.Text = "Symbol";
