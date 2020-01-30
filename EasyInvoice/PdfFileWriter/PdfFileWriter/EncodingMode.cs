@@ -1,5 +1,4 @@
-﻿
-public enum EncodingMode
+﻿public enum EncodingMode
 {
     Terminator,
     Numeric,

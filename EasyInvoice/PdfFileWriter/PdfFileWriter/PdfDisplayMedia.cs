@@ -286,9 +286,15 @@ namespace PdfFileWriter
             this.MediaFile = MediaFile;
 
             // save mimetype
-            if (MimeType == null) MimeType = MediaFile.MimeType;
+            if (MimeType == null)
+            {
+                MimeType = MediaFile.MimeType;
+            }
 
-            if (string.IsNullOrWhiteSpace(MimeType)) throw new ApplicationException("MIME type is not defined");
+            if (string.IsNullOrWhiteSpace(MimeType))
+            {
+                throw new ApplicationException("MIME type is not defined");
+            }
 
             // rendition dictionary page 759 Section 9.1.2 Table 9.1
             Rendition = new PdfDictionary(this);
@@ -449,13 +455,18 @@ namespace PdfFileWriter
             FloatingWindow.AddInteger("/P", (int) Position);
 
             FloatingWindow.AddBoolean("/T", TitleBar != WindowTitleBar.NoTitleBar);
-            if (TitleBar == WindowTitleBar.NoTitleBar) return;
+            if (TitleBar == WindowTitleBar.NoTitleBar)
+            {
+                return;
+            }
 
             FloatingWindow.AddInteger("/R", (int) Resize);
 
             if (Title != null)
+            {
                 FloatingWindow.AddFormat("/TT", "[{0} {1}]", Document.TextToPdfString(string.Empty, this),
                     Document.TextToPdfString(Title, this));
+            }
         }
 
         /// <summary>

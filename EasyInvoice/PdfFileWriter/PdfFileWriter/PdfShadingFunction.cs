@@ -95,7 +95,10 @@ namespace PdfFileWriter
         )
         {
             // test for error
-            if (Length < 2) throw new ApplicationException("Shading function color array must have two or more items");
+            if (Length < 2)
+            {
+                throw new ApplicationException("Shading function color array must have two or more items");
+            }
 
             // the shading function is a sampled function
             Dictionary.Add("/FunctionType", "0");

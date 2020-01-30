@@ -9,11 +9,11 @@ namespace InvoiceLibrary
     {
         private const string ArialFontName = "Arial";
         private readonly PdfFont _arialBold;
-        public readonly PdfFont ArialNormal;
         private readonly InvoiceData _mInvoiceData;
+        private readonly PdfPage _page;
+        public readonly PdfFont ArialNormal;
 
         public readonly PdfDocument MPdfDocument;
-        private readonly PdfPage _page;
 
         public GenerateInvoice(string fileName, InvoiceData invoiceData)
         {

@@ -257,7 +257,10 @@ namespace PdfFileWriter
                 Count++;
                 for (var TestParent = Parent;
                     TestParent != null && TestParent.OpenEntries;
-                    TestParent = TestParent.Parent) TestParent.Count++;
+                    TestParent = TestParent.Parent)
+                {
+                    TestParent.Count++;
+                }
             }
             // the parent of this bookmark does not display all children
             else
@@ -271,10 +274,15 @@ namespace PdfFileWriter
             Bookmark.Dictionary.AddFormat("/Dest", "[{0} 0 R /XYZ {1} {2} {3}]", Page.ObjectNumber, ToPt(XPos),
                 ToPt(YPos), Round(Zoom));
             if (Paint != Color.Empty)
+            {
                 Bookmark.Dictionary.AddFormat("/C", "[{0} {1} {2}]", Round(Paint.R / 255.0), Round(Paint.G / 255.0),
                     Round(Paint.B / 255.0));
+            }
 
-            if (TextStyle != TextStyle.Normal) Bookmark.Dictionary.AddInteger("/F", (int) TextStyle);
+            if (TextStyle != TextStyle.Normal)
+            {
+                Bookmark.Dictionary.AddInteger("/F", (int) TextStyle);
+            }
 
             return Bookmark;
         }
@@ -307,10 +315,16 @@ namespace PdfFileWriter
                 var Index = IndexArray[Level];
 
                 // find the child at this level with the given index
-                for (Child = Bookmark.FirstChild; Index > 0 && Child != null; Child = Child.NextSibling, Index--) ;
+                for (Child = Bookmark.FirstChild; Index > 0 && Child != null; Child = Child.NextSibling, Index--)
+                {
+                    ;
+                }
 
                 // not found
-                if (Child == null) return null;
+                if (Child == null)
+                {
+                    return null;
+                }
             }
 
             return Child;
@@ -323,18 +337,33 @@ namespace PdfFileWriter
         internal override void WriteObjectToPdfFile()
         {
             // update dictionary
-            if (FirstChild != null) Dictionary.AddIndirectReference("/First", FirstChild);
+            if (FirstChild != null)
+            {
+                Dictionary.AddIndirectReference("/First", FirstChild);
+            }
 
-            if (LastChild != null) Dictionary.AddIndirectReference("/Last", LastChild);
+            if (LastChild != null)
+            {
+                Dictionary.AddIndirectReference("/Last", LastChild);
+            }
 
-            if (Count != 0) Dictionary.AddInteger("/Count", Count);
+            if (Count != 0)
+            {
+                Dictionary.AddInteger("/Count", Count);
+            }
 
             // all but root
             if (Parent != null)
             {
-                if (PrevSibling != null) Dictionary.AddIndirectReference("/Prev", PrevSibling);
+                if (PrevSibling != null)
+                {
+                    Dictionary.AddIndirectReference("/Prev", PrevSibling);
+                }
 
-                if (NextSibling != null) Dictionary.AddIndirectReference("/Next", NextSibling);
+                if (NextSibling != null)
+                {
+                    Dictionary.AddIndirectReference("/Next", NextSibling);
+                }
             }
 
             // call PdfObject base routine

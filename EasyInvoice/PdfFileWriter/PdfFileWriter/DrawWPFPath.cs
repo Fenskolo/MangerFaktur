@@ -131,7 +131,9 @@ namespace PdfFileWriter
 
             // test arguments
             if (PathBBoxWidth == 0 && PathBBoxHeight == 0)
+            {
                 throw new ApplicationException("DrawWPFPath: Path bounding box is empty");
+            }
 
             // initialization values
             FillRule = MediaPath.FillRule == SysMedia.FillRule.EvenOdd ? FillRule.EvenOdd : FillRule.NonZero;
@@ -383,7 +385,9 @@ namespace PdfFileWriter
         {
             if (MediaPen.Brush == null || MediaPen.Brush.GetType() != typeof(SysMedia.SolidColorBrush) ||
                 ((SysMedia.SolidColorBrush) MediaPen.Brush).Color == SysMedia.Colors.Transparent)
+            {
                 throw new ApplicationException("DrawWPFPath: System media pen must be SolidColorBrush");
+            }
 
             Stroking = MediaPen;
         }
@@ -419,7 +423,9 @@ namespace PdfFileWriter
             // test arguments
             if (DrawRectWidth == 0 && DrawRectHeight == 0 || DrawRectWidth == 0 && PathBBoxWidth != 0 ||
                 DrawRectHeight == 0 && PathBBoxHeight != 0)
+            {
                 throw new ApplicationException("DrawWPFPath: Drawing rectangle is empty");
+            }
 
             // set transformation matrix
             SetTransformation(Alignment);
@@ -448,7 +454,10 @@ namespace PdfFileWriter
                 BuildPath(Contents, FillRule == FillRule.EvenOdd ? PaintOp.ClipPathEor : PaintOp.ClipPathWnr);
 
                 // set bland mode
-                if (BlendMode != BlendMode.Normal) Contents.SetBlendMode(BlendMode);
+                if (BlendMode != BlendMode.Normal)
+                {
+                    Contents.SetBlendMode(BlendMode);
+                }
 
                 // set opacity
                 Contents.SetAlphaNonStroking(BrushOpacity);
@@ -490,7 +499,10 @@ namespace PdfFileWriter
                 Contents.RestoreGraphicsState();
 
                 // no pen defined
-                if (Stroking == null) return;
+                if (Stroking == null)
+                {
+                    return;
+                }
 
                 // pen is defined
                 PaintOperator = PaintOp.Stroke;
@@ -501,20 +513,29 @@ namespace PdfFileWriter
             {
                 // we have pen and no brush 
                 if (NonStroking == null)
+                {
                     PaintOperator = PaintOp.Stroke;
+                }
                 // we have brush but no pen
                 else if (Stroking == null)
+                {
                     PaintOperator = FillRule == FillRule.EvenOdd ? PaintOp.FillEor : PaintOp.Fill;
+                }
                 // we have brush and pen
                 else
+                {
                     PaintOperator = FillRule == FillRule.EvenOdd ? PaintOp.CloseFillStrokeEor : PaintOp.CloseFillStroke;
+                }
             }
 
             // save graphics state
             Contents.SaveGraphicsState();
 
             // set bland mode
-            if (BlendMode != BlendMode.Normal) Contents.SetBlendMode(BlendMode);
+            if (BlendMode != BlendMode.Normal)
+            {
+                Contents.SetBlendMode(BlendMode);
+            }
 
             // stroking (pen) is defined
             if (Stroking != null)
@@ -525,22 +546,40 @@ namespace PdfFileWriter
                     Contents.SetColorStroking((Color) Stroking);
 
                     // set opacity
-                    if (PenOpacity != 1.0) Contents.SetAlphaStroking(PenOpacity);
+                    if (PenOpacity != 1.0)
+                    {
+                        Contents.SetAlphaStroking(PenOpacity);
+                    }
 
                     // pen width
-                    if (PenWidth >= 0) Contents.SetLineWidth(PenWidth);
+                    if (PenWidth >= 0)
+                    {
+                        Contents.SetLineWidth(PenWidth);
+                    }
 
                     // line cap
-                    if (LineCap != (PdfLineCap) (-1)) Contents.SetLineCap(LineCap);
+                    if (LineCap != (PdfLineCap) (-1))
+                    {
+                        Contents.SetLineCap(LineCap);
+                    }
 
                     // line join
-                    if (LineJoin != (PdfLineJoin) (-1)) Contents.SetLineJoin(LineJoin);
+                    if (LineJoin != (PdfLineJoin) (-1))
+                    {
+                        Contents.SetLineJoin(LineJoin);
+                    }
 
                     // Miter
-                    if (MiterLimit != -1) Contents.SetMiterLimit(MiterLimit);
+                    if (MiterLimit != -1)
+                    {
+                        Contents.SetMiterLimit(MiterLimit);
+                    }
 
                     // line is made of dashes
-                    if (DashArray != null) Contents.SetDashLine(DashArray, DashPhase);
+                    if (DashArray != null)
+                    {
+                        Contents.SetDashLine(DashArray, DashPhase);
+                    }
                 }
 
                 else if (Stroking.GetType() == typeof(SysMedia.Pen))
@@ -559,7 +598,9 @@ namespace PdfFileWriter
 
                     // pen opacity
                     if (PenColor.A != 255 || Brush.Opacity != 1.0)
+                    {
                         Contents.SetAlphaStroking(PenColor.A / 255.0 * Brush.Opacity);
+                    }
 
                     // pen thickness converted to user units
                     var Thickness = Pen.Thickness * Math.Max(Math.Abs(ScaleX), Math.Abs(ScaleY));
@@ -604,7 +645,9 @@ namespace PdfFileWriter
                         var End = Pen.DashStyle.Dashes.Count;
                         var PenDashArray = new double[End];
                         for (var Index = 0; Index < End; Index++)
+                        {
                             PenDashArray[Index] = Thickness * Pen.DashStyle.Dashes[Index];
+                        }
 
                         Contents.SetDashLine(PenDashArray, Thickness * Pen.DashStyle.Offset);
                     }
@@ -616,14 +659,21 @@ namespace PdfFileWriter
             if (NonStroking != null)
             {
                 // set opacity
-                if (BrushOpacity != 1.0) Contents.SetAlphaNonStroking(BrushOpacity);
+                if (BrushOpacity != 1.0)
+                {
+                    Contents.SetAlphaNonStroking(BrushOpacity);
+                }
 
                 // brush color
                 if (NonStroking.GetType() == typeof(Color))
+                {
                     Contents.SetColorNonStroking((Color) NonStroking);
+                }
 
                 else if (NonStroking.GetType() == typeof(PdfTilingPattern))
+                {
                     Contents.SetPatternNonStroking((PdfTilingPattern) NonStroking);
+                }
             }
 
             // build path
@@ -650,6 +700,7 @@ namespace PdfFileWriter
                 // process all points of one sub-path
                 foreach (var Seg in SubPath.Segments)
                     // line segment
+                {
                     if (Seg.GetType() == typeof(SysMedia.LineSegment))
                     {
                         CurPoint = PathToDrawing(((SysMedia.LineSegment) Seg).Point);
@@ -722,9 +773,14 @@ namespace PdfFileWriter
                         if (Arc.SweepDirection == (PathYAxis == YAxisDirection.Down
                                 ? SysMedia.SweepDirection.Counterclockwise
                                 : SysMedia.SweepDirection.Clockwise))
+                        {
                             ArcType = Arc.IsLargeArc ? ArcType.LargeCounterClockWise : ArcType.SmallCounterClockWise;
+                        }
                         else
+                        {
                             ArcType = Arc.IsLargeArc ? ArcType.LargeClockWise : ArcType.SmallClockWise;
+                        }
+
                         Contents.DrawArc(CurPoint, NextPoint, SizeToDrawing(Arc.Size), Arc.RotationAngle, ArcType,
                             BezierPointOne.Ignore);
                         CurPoint = NextPoint;
@@ -735,9 +791,13 @@ namespace PdfFileWriter
                     {
                         throw new ApplicationException("Windows Media path: unknown path segment.");
                     }
+                }
 
                 // for stroke set paint operator for each sub-path
-                if (SubPath.IsClosed) Contents.SetPaintOp(PaintOp.CloseSubPath);
+                if (SubPath.IsClosed)
+                {
+                    Contents.SetPaintOp(PaintOp.CloseSubPath);
+                }
             }
 
             // paint operator
@@ -751,17 +811,26 @@ namespace PdfFileWriter
         )
         {
             // preserve aspect ratio
-            if (Alignment != 0) SetAspectRatio(Alignment);
+            if (Alignment != 0)
+            {
+                SetAspectRatio(Alignment);
+            }
 
             // calculate transformation for x axis
             ScaleX = DrawRectWidth / PathBBoxWidth;
-            if (double.IsNaN(ScaleX) || double.IsInfinity(ScaleX)) ScaleX = 0;
+            if (double.IsNaN(ScaleX) || double.IsInfinity(ScaleX))
+            {
+                ScaleX = 0;
+            }
 
             TransX = DrawRectX - PathBBoxX * ScaleX;
 
             // calculate transformation for y axis in down direction
             ScaleY = DrawRectHeight / PathBBoxHeight;
-            if (double.IsNaN(ScaleY) || double.IsInfinity(ScaleY)) ScaleY = 0;
+            if (double.IsNaN(ScaleY) || double.IsInfinity(ScaleY))
+            {
+                ScaleY = 0;
+            }
 
             if (PathYAxis == YAxisDirection.Down)
             {
@@ -783,15 +852,24 @@ namespace PdfFileWriter
         {
             // calculate height to fit aspect ratio
             var RatioHeight = DrawRectWidth * PathBBoxHeight / PathBBoxWidth;
-            if (RatioHeight == DrawRectHeight) return;
+            if (RatioHeight == DrawRectHeight)
+            {
+                return;
+            }
 
             if (!double.IsNaN(RatioHeight) && !double.IsInfinity(RatioHeight) && RatioHeight < DrawRectHeight)
             {
                 if (Alignment == ContentAlignment.MiddleLeft || Alignment == ContentAlignment.MiddleCenter ||
                     Alignment == ContentAlignment.MiddleRight)
+                {
                     DrawRectY += 0.5 * (DrawRectHeight - RatioHeight);
+                }
                 else if (Alignment == ContentAlignment.TopLeft || Alignment == ContentAlignment.TopCenter ||
-                         Alignment == ContentAlignment.TopRight) DrawRectY += DrawRectHeight - RatioHeight;
+                         Alignment == ContentAlignment.TopRight)
+                {
+                    DrawRectY += DrawRectHeight - RatioHeight;
+                }
+
                 DrawRectHeight = RatioHeight;
             }
 
@@ -803,9 +881,14 @@ namespace PdfFileWriter
                 {
                     if (Alignment == ContentAlignment.TopCenter || Alignment == ContentAlignment.MiddleCenter ||
                         Alignment == ContentAlignment.BottomCenter)
+                    {
                         DrawRectX += 0.5 * (DrawRectWidth - RatioWidth);
+                    }
                     else if (Alignment == ContentAlignment.TopRight || Alignment == ContentAlignment.MiddleRight ||
-                             Alignment == ContentAlignment.BottomRight) DrawRectX += DrawRectWidth - RatioWidth;
+                             Alignment == ContentAlignment.BottomRight)
+                    {
+                        DrawRectX += DrawRectWidth - RatioWidth;
+                    }
                 }
 
                 DrawRectWidth = RatioWidth;

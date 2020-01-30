@@ -485,7 +485,9 @@ namespace PdfFileWriter
         {
             // set is not allowed
             if (Parent.Active || TopBorder == null)
+            {
                 throw new ApplicationException("Set bordes after SetColumnWidth and before table is active.");
+            }
 
             // clear all horizontal borders
             TopBorder.Clear();
@@ -573,7 +575,9 @@ namespace PdfFileWriter
         {
             // set is not allowed
             if (Parent.Active || TopBorder == null)
+            {
                 throw new ApplicationException("Set bordes after SetColumnWidth and before table is active.");
+            }
 
             // define default horizontal borders
             TopBorder.Set(FrameWidth, FrameColor);
@@ -619,7 +623,9 @@ namespace PdfFileWriter
         {
             // set is not allowed
             if (Parent.Active || TopBorder == null)
+            {
                 throw new ApplicationException("Set bordes after SetColumnWidth and before table is active.");
+            }
 
             // define default horizontal borders
             TopBorder.Set(FrameWidth, FrameColor);
@@ -644,19 +650,23 @@ namespace PdfFileWriter
         {
             // look for at least one header vertical border
             for (var Index = 0; Index <= Columns; Index++)
+            {
                 if (HeaderVertBorder[Index].Display)
                 {
                     HeaderVertBorderActive = true;
                     break;
                 }
+            }
 
             // look for at least one cell vertical border
             for (var Index = 0; Index <= Columns; Index++)
+            {
                 if (CellVertBorder[Index].Display)
                 {
                     CellVertBorderActive = true;
                     break;
                 }
+            }
 
             // allocate array of overall half width
             VertBorderHalfWidth = new double[Columns + 1];
@@ -665,11 +675,16 @@ namespace PdfFileWriter
             if (HeaderVertBorderActive || CellVertBorderActive)
             {
                 for (var Index = 0; Index <= Columns; Index++)
+                {
                     VertBorderHalfWidth[Index] =
                         Math.Max(HeaderVertBorder[Index].HalfWidth, CellVertBorder[Index].HalfWidth);
+                }
 
                 var TotalWidth = VertBorderHalfWidth[0] + VertBorderHalfWidth[Columns];
-                for (var Index = 1; Index < Columns; Index++) TotalWidth += 2.0 * VertBorderHalfWidth[Index];
+                for (var Index = 1; Index < Columns; Index++)
+                {
+                    TotalWidth += 2.0 * VertBorderHalfWidth[Index];
+                }
 
                 return TotalWidth;
             }
@@ -682,7 +697,9 @@ namespace PdfFileWriter
         {
             // set is not allowed
             if (Parent.Active || TopBorder == null)
+            {
                 throw new ApplicationException("Set bordes after SetColumnWidth and before table is active.");
+            }
         }
     }
 }

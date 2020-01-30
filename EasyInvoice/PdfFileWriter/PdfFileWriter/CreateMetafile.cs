@@ -120,7 +120,9 @@ namespace PdfFileWriter
 
             // move file name inclusing terminating zer0 to the buffer
             for (var Index = 0; Index < FileName.Length; Index++)
+            {
                 Marshal.WriteInt16(CharBuffer, 2 * Index, (short) FileName[Index]);
+            }
 
             Marshal.WriteInt16(CharBuffer, 2 * FileName.Length, 0);
 

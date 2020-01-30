@@ -133,12 +133,16 @@ namespace PdfFileWriter
 
             // See if at least one font is defined. Make it the default font for the table
             if (Font == null)
+            {
                 foreach (var Obj in Document.ObjectArray)
+                {
                     if (Obj.GetType() == typeof(PdfFont))
                     {
                         Font = (PdfFont) Obj;
                         break;
                     }
+                }
+            }
 
             // initialize default cell style
             DefaultCellStyle = new PdfTableStyle
@@ -407,7 +411,10 @@ namespace PdfFileWriter
             get => _RowTopPosition;
             set
             {
-                if (Active) throw new ApplicationException("PdfTable: Row position must be defined at initialization.");
+                if (Active)
+                {
+                    throw new ApplicationException("PdfTable: Row position must be defined at initialization.");
+                }
 
                 _RowTopPosition = value;
             }
@@ -432,7 +439,10 @@ namespace PdfFileWriter
             get => new PdfRectangle(_TableArea);
             set
             {
-                if (Active) throw new ApplicationException("PdfTable: Table area must be defined at initialization.");
+                if (Active)
+                {
+                    throw new ApplicationException("PdfTable: Table area must be defined at initialization.");
+                }
 
                 _TableArea = value;
             }
@@ -514,7 +524,9 @@ namespace PdfFileWriter
         {
             // save column width
             if (_ColumnWidth != null || ColumnWidth == null || ColumnWidth.Length == 0)
+            {
                 throw new ApplicationException("PdfTable: SetColumnWidth invalid argument or already defined.");
+            }
 
             _ColumnWidth = ColumnWidth;
 
@@ -545,17 +557,26 @@ namespace PdfFileWriter
         public void PdfTableInitialization()
         {
             // initialize table is done
-            if (Active) return;
+            if (Active)
+            {
+                return;
+            }
 
             // make sure we have columns width array
-            if (_ColumnWidth == null) throw new ApplicationException("PdfTable: SetColumnWidth array is missing.");
+            if (_ColumnWidth == null)
+            {
+                throw new ApplicationException("PdfTable: SetColumnWidth array is missing.");
+            }
 
             // net table width
             var NetWidth = _TableArea.Width - Borders.HorizontalBordersTotalWidth();
 
             // calculate column width adjustment factor
             double Total = 0;
-            foreach (var Width in _ColumnWidth) Total += Width;
+            foreach (var Width in _ColumnWidth)
+            {
+                Total += Width;
+            }
 
             var Factor = NetWidth / Total;
 
@@ -602,7 +623,9 @@ namespace PdfFileWriter
 
             // columns width after adjustments
             for (var Index = 0; Index < Columns; Index++)
+            {
                 _ColumnWidth[Index] = _ColumnPosition[Index + 1] - _ColumnPosition[Index];
+            }
 
             // copy horizontal info from cell to header
             for (var Index = 0; Index < Columns; Index++)
@@ -616,11 +639,15 @@ namespace PdfFileWriter
 
             // user did not define initial row position
             if (_RowTopPosition == 0)
+            {
                 _RowTopPosition = _TableArea.Top;
+            }
 
             // make sure initial row position is within table area
             else if (_RowTopPosition < _TableArea.Bottom || _RowTopPosition > _TableArea.Top)
+            {
                 throw new ApplicationException("PdfTable: Initial RowPosition outside table area.");
+            }
 
             // border positions for border drawing
             BorderHeaderActive = false;
@@ -666,7 +693,10 @@ namespace PdfFileWriter
 
                 // calculate header height
                 int Index;
-                for (Index = 0; Index < Columns && _Header[Index].Value == null; Index++) ;
+                for (Index = 0; Index < Columns && _Header[Index].Value == null; Index++)
+                {
+                    ;
+                }
 
                 if (Index < Columns)
                 {
@@ -675,7 +705,10 @@ namespace PdfFileWriter
                 }
 
                 // call user event handler for start of table on each page
-                if (TableStartEvent != null) TableStartEvent(this, BorderRowTopPos);
+                if (TableStartEvent != null)
+                {
+                    TableStartEvent(this, BorderRowTopPos);
+                }
             }
 
             // calculate row height
@@ -688,10 +721,15 @@ namespace PdfFileWriter
                                                   : 0.0)) < TableBottomLimit &&
                 _RowTopPosition != TableTopLimit)
                 // create a new page
+            {
                 CreateNewPage();
+            }
 
             // draw header
-            if (HeaderHeight != 0.0) DrawHeader();
+            if (HeaderHeight != 0.0)
+            {
+                DrawHeader();
+            }
 
             // draw row
             DrawOneRow();
@@ -706,7 +744,10 @@ namespace PdfFileWriter
                 CreateNewPage();
 
                 // draw header
-                if (HeaderHeight != 0.0) DrawHeader();
+                if (HeaderHeight != 0.0)
+                {
+                    DrawHeader();
+                }
 
                 // calculate row height
                 CalculateRowHeight();
@@ -729,7 +770,9 @@ namespace PdfFileWriter
             {
                 // test the smaller row height (TextBox minimum lines)
                 if (_RowTopPosition - TextBoxRowHeight < TableBottomLimit - Epsilon)
+                {
                     throw new ApplicationException("Table row height is too big");
+                }
 
                 // adjust bottom position
                 RowBottomPosition = TableBottomLimit;
@@ -747,7 +790,10 @@ namespace PdfFileWriter
 
                 // call custom draw cell if required and draw header cell
                 if (CustomDrawCellEvent == null || !Cell.Style.RaiseCustomDrawCellEvent ||
-                    !CustomDrawCellEvent(this, Cell)) Cell.DrawCell();
+                    !CustomDrawCellEvent(this, Cell))
+                {
+                    Cell.DrawCell();
+                }
             }
 
             // adjust row position to next grid line
@@ -761,7 +807,10 @@ namespace PdfFileWriter
             _RowTopPosition -= Borders.CellHorBorder.HalfWidth;
 
             // reset cell value
-            foreach (var Cell in _Cell) Cell.Reset();
+            foreach (var Cell in _Cell)
+            {
+                Cell.Reset();
+            }
         }
 
         private void DrawHeader()
@@ -769,7 +818,10 @@ namespace PdfFileWriter
             // row bottom position
             RowBottomPosition = _RowTopPosition - HeaderHeight;
             if (RowBottomPosition <= _TableArea.Bottom + 2.0 * Borders.HeaderHorBorder.HalfWidth +
-                Borders.BottomBorder.HalfWidth) throw new ApplicationException("Table header height is too big");
+                Borders.BottomBorder.HalfWidth)
+            {
+                throw new ApplicationException("Table header height is too big");
+            }
 
             // draw each column header
             foreach (var Cell in _Header)
@@ -780,7 +832,10 @@ namespace PdfFileWriter
 
                 // call custom draw cell if required and draw header cell
                 if (CustomDrawCellEvent == null || !Cell.Style.RaiseCustomDrawCellEvent ||
-                    !CustomDrawCellEvent(this, Cell)) Cell.DrawCell();
+                    !CustomDrawCellEvent(this, Cell))
+                {
+                    Cell.DrawCell();
+                }
             }
 
             // adjust row position to next grid line
@@ -813,7 +868,10 @@ namespace PdfFileWriter
                 DrawBorders();
 
                 // call user event handler for end of table
-                if (TableEndEvent != null) TableEndEvent(this, _RowTopPosition);
+                if (TableEndEvent != null)
+                {
+                    TableEndEvent(this, _RowTopPosition);
+                }
             }
         }
 
@@ -831,9 +889,15 @@ namespace PdfFileWriter
                 Cell.DrawCellInitialization();
 
                 // adjust row height if required
-                if (Cell.CellHeight > RowHeight) RowHeight = Cell.CellHeight;
+                if (Cell.CellHeight > RowHeight)
+                {
+                    RowHeight = Cell.CellHeight;
+                }
 
-                if (Cell.TextBoxCellHeight > TextBoxRowHeight) TextBoxRowHeight = Cell.TextBoxCellHeight;
+                if (Cell.TextBoxCellHeight > TextBoxRowHeight)
+                {
+                    TextBoxRowHeight = Cell.TextBoxCellHeight;
+                }
             }
         }
 
@@ -850,7 +914,10 @@ namespace PdfFileWriter
                 Cell.DrawCellInitialization();
 
                 // adjust row height if required
-                if (Cell.CellHeight > HeaderHeight) HeaderHeight = Cell.CellHeight;
+                if (Cell.CellHeight > HeaderHeight)
+                {
+                    HeaderHeight = Cell.CellHeight;
+                }
             }
         }
 
@@ -864,7 +931,10 @@ namespace PdfFileWriter
                 DrawBorders();
 
                 // call user event handler for end of table on each page
-                if (TableEndEvent != null) TableEndEvent(this, _RowTopPosition);
+                if (TableEndEvent != null)
+                {
+                    TableEndEvent(this, _RowTopPosition);
+                }
 
                 // update page number
                 TablePageNumber++;
@@ -872,9 +942,11 @@ namespace PdfFileWriter
 
             // commit to PDF file
             if (CommitToPdfFile)
+            {
                 Contents.CommitToPdfFile(CommitGCCollectFreq > 0 &&
                                          (CommitGCCollectFreq == 1 || TablePageNumber % CommitGCCollectFreq ==
                                           CommitGCCollectFreq - 1));
+            }
 
             // create a new page as a clone of the previous page
             Page = new PdfPage(Page);
@@ -889,10 +961,16 @@ namespace PdfFileWriter
             _RowTopPosition = TableTopLimit;
 
             // calculate header height
-            if (DrawingActive && DisplayHeader && HeaderOnEachPage) CalculateHeaderHeight();
+            if (DrawingActive && DisplayHeader && HeaderOnEachPage)
+            {
+                CalculateHeaderHeight();
+            }
 
             // call user event handler for start of table on each page
-            if (TableStartEvent != null) TableStartEvent(this, BorderRowTopPos);
+            if (TableStartEvent != null)
+            {
+                TableStartEvent(this, BorderRowTopPos);
+            }
         }
 
         // Draw borders and grid lines after the last row on a page is drawn
@@ -915,25 +993,33 @@ namespace PdfFileWriter
 
             // draw horizontal cells border lines
             for (var Row = RowStart; Row < RowEnd; Row++)
+            {
                 Contents.DrawLine(BorderLeftPos, BorderYPos[Row], BorderRightPos, BorderYPos[Row],
                     Borders.CellHorBorder);
+            }
 
             // draw horizontal bottom border line
             Contents.DrawLine(BorderLeftPos, BorderRowTopPos, BorderRightPos, BorderRowTopPos, Borders.BottomBorder);
 
             // draw each vertical border line for header style
             if (BorderHeaderActive && Borders.HeaderVertBorderActive)
+            {
                 for (var Col = 0; Col <= Columns; Col++)
+                {
                     Contents.DrawLine(ColumnPosition[Col], BorderYPos[0], ColumnPosition[Col], BorderYPos[1],
                         Borders.HeaderVertBorder[Col]);
+                }
+            }
 
             // draw each vertical line between cells
             if (Borders.CellVertBorderActive)
             {
                 var Top = BorderHeaderActive ? BorderYPos[1] : BorderYPos[0];
                 for (var Col = 0; Col <= Columns; Col++)
+                {
                     Contents.DrawLine(ColumnPosition[Col], Top, ColumnPosition[Col], BorderRowTopPos,
                         Borders.CellVertBorder[Col]);
+                }
             }
         }
     }

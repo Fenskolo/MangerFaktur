@@ -593,9 +593,13 @@ namespace PdfFileWriter
 
             // for landscape swap width and height
             if (Landscape)
+            {
                 ConstructorHelper(Height, Width, Scale, FileName, null);
+            }
             else
+            {
                 ConstructorHelper(Width, Height, Scale, FileName, null);
+            }
         }
 
         ////////////////////////////////////////////////////////////////////
@@ -636,9 +640,13 @@ namespace PdfFileWriter
 
             // for landscape swap width and height
             if (Landscape)
+            {
                 ConstructorHelper(Height, Width, Scale, null, Stream);
+            }
             else
+            {
                 ConstructorHelper(Width, Height, Scale, null, Stream);
+            }
         }
 
         /// <summary>
@@ -682,8 +690,12 @@ namespace PdfFileWriter
 
             // dispose all objects with IDisposable interface
             foreach (var Obj in ObjectArray)
+            {
                 if (Obj is IDisposable)
+                {
                     ((IDisposable) Obj).Dispose();
+                }
+            }
         }
 
         /// <summary>
@@ -696,7 +708,10 @@ namespace PdfFileWriter
             int Index
         )
         {
-            if (Index < 0 || Index >= PageArray.Count) throw new ApplicationException("GetPage invalid argument");
+            if (Index < 0 || Index >= PageArray.Count)
+            {
+                throw new ApplicationException("GetPage invalid argument");
+            }
 
             return PageArray[Index];
         }
@@ -864,7 +879,10 @@ namespace PdfFileWriter
         )
         {
             // encryption can be set only once
-            if (Encryption != null) throw new ApplicationException("Encryption is already set");
+            if (Encryption != null)
+            {
+                throw new ApplicationException("Encryption is already set");
+            }
 
             // create encryption dictionary object
             Encryption = new PdfEncryption(this, UserPassword, OwnerPassword, Permissions, EncryptionType);
@@ -881,7 +899,10 @@ namespace PdfFileWriter
         public PdfBookmark GetBookmarksRoot()
         {
             // create bookmarks root node if this is the first time
-            if (BookmarksRoot == null) BookmarksRoot = new PdfBookmark(this);
+            if (BookmarksRoot == null)
+            {
+                BookmarksRoot = new PdfBookmark(this);
+            }
 
             // return bookmarks node to the user
             return BookmarksRoot;
@@ -899,14 +920,19 @@ namespace PdfFileWriter
         )
         {
             if (SourceIndex < 0 || SourceIndex >= PageCount || DestinationIndex < 0 || DestinationIndex > PageCount)
+            {
                 throw new ApplicationException("Move page invalid argument");
+            }
 
             // there is only one page or no move
             if (DestinationIndex != SourceIndex && DestinationIndex != SourceIndex + 1)
             {
                 var SourcePage = PageArray[SourceIndex];
                 PageArray.RemoveAt(SourceIndex);
-                if (DestinationIndex > SourceIndex) DestinationIndex--;
+                if (DestinationIndex > SourceIndex)
+                {
+                    DestinationIndex--;
+                }
 
                 PageArray.Insert(DestinationIndex, SourcePage);
             }
@@ -938,9 +964,14 @@ namespace PdfFileWriter
             // create page array
             var Kids = new StringBuilder("[");
             for (var Index = 0; Index < PageArray.Count; Index++)
+            {
                 Kids.AppendFormat("{0} 0 R ", PageArray[Index].ObjectNumber);
+            }
 
-            if (Kids.Length > 1) Kids.Length--;
+            if (Kids.Length > 1)
+            {
+                Kids.Length--;
+            }
 
             Kids.Append("]");
             PagesObject.Dictionary.Add("/Kids", Kids.ToString());
@@ -950,8 +981,12 @@ namespace PdfFileWriter
 
             // objects
             for (var Index = 0; Index < ObjectArray.Count; Index++)
+            {
                 if (ObjectArray[Index].FilePosition == 0)
+                {
                     ObjectArray[Index].WriteObjectToPdfFile();
+                }
+            }
 
             // save cross reference table position
             var XRefPos = (int) PdfFile.BaseStream.Position;
@@ -959,10 +994,16 @@ namespace PdfFileWriter
             // cross reference
             PdfFile.WriteFormat("xref\n0 {0}\n0000000000 65535 f \n", ObjectArray.Count + 1);
             foreach (var PO in ObjectArray)
+            {
                 if (PO.FilePosition != 0)
+                {
                     PdfFile.WriteFormat("{0:0000000000} 00000 n \n", PO.FilePosition);
+                }
                 else
+                {
                     PdfFile.WriteString("0000000000 00000 f \n");
+                }
+            }
 
             // finalize trailer dictionary
             TrailerDict.AddInteger("/Size", ObjectArray.Count + 1);
@@ -983,7 +1024,10 @@ namespace PdfFileWriter
 
         internal void AddDestToLinkAnnot()
         {
-            if (LinkAnnotArray == null) return;
+            if (LinkAnnotArray == null)
+            {
+                return;
+            }
 
             foreach (var Annot in LinkAnnotArray)
             {
@@ -992,7 +1036,10 @@ namespace PdfFileWriter
                 var Index = LocMarkerArray.BinarySearch(new LocationMarker(LocMarkerName));
 
                 // no location marker was defined for this name
-                if (Index < 0) throw new ApplicationException("No location marker was defined for: " + LocMarkerName);
+                if (Index < 0)
+                {
+                    throw new ApplicationException("No location marker was defined for: " + LocMarkerName);
+                }
 
                 // add action
                 Annot.Dictionary.AddFormat("/A", "<</Type/Action/S/GoTo/D{0}>>",
@@ -1003,13 +1050,19 @@ namespace PdfFileWriter
         internal void CreateNamedDestinations()
         {
             // destination array is empty
-            if (LocMarkerArray == null) return;
+            if (LocMarkerArray == null)
+            {
+                return;
+            }
 
             PdfObject NamedDest = null;
             StringBuilder DestStr = null;
             foreach (var LocMarker in LocMarkerArray)
             {
-                if (LocMarker.Scope != LocMarkerScope.NamedDest) continue;
+                if (LocMarker.Scope != LocMarkerScope.NamedDest)
+                {
+                    continue;
+                }
 
                 if (NamedDest == null)
                 {
@@ -1020,7 +1073,10 @@ namespace PdfFileWriter
                 DestStr.AppendFormat("{0}{1}", TextToPdfString(LocMarker.LocMarkerName, NamedDest), LocMarker.DestStr);
             }
 
-            if (NamedDest == null) return;
+            if (NamedDest == null)
+            {
+                return;
+            }
 
             // add one dictionary entry
             DestStr.Append("]");
@@ -1043,7 +1099,9 @@ namespace PdfFileWriter
             // convert to hex string
             var HexText = new StringBuilder("<");
             for (var index = 0; index < ByteArray.Length; index++)
+            {
                 HexText.AppendFormat("{0:x2}", (int) ByteArray[index]);
+            }
 
             HexText.Append(">");
             return HexText.ToString();
@@ -1064,7 +1122,9 @@ namespace PdfFileWriter
 
             // encryption is active. PDF string must be encrypted except for encryption dictionary
             if (Parent != null && Encryption != null && Encryption != Parent)
+            {
                 ByteArray = Encryption.EncryptByteArray(Parent.ObjectNumber, ByteArray);
+            }
 
             // convert byte array to PDF string format
             return ByteArrayToPdfString(ByteArray);
@@ -1086,10 +1146,15 @@ namespace PdfFileWriter
             {
                 // test for non printable characters
                 if (TestChar < ' ' || TestChar > '~' && TestChar < 160)
+                {
                     throw new ApplicationException("Text string must be made of printable characters");
+                }
 
                 // test for Unicode string
-                if (TestChar > 255) Unicode = true;
+                if (TestChar > 255)
+                {
+                    Unicode = true;
+                }
             }
 
             // declare output byte array
@@ -1101,7 +1166,10 @@ namespace PdfFileWriter
                 // save each imput character in one byte
                 ByteArray = new byte[Text.Length];
                 var Index = 0;
-                foreach (var TestChar in Text) ByteArray[Index++] = (byte) TestChar;
+                foreach (var TestChar in Text)
+                {
+                    ByteArray[Index++] = (byte) TestChar;
+                }
             }
 
             // Unicode case. we have some two bytes characters
@@ -1142,6 +1210,7 @@ namespace PdfFileWriter
             foreach (var TestByte in ByteArray)
                 // CR and NL must be replaced by \r and \n
                 // Otherwise PDF readers will convert CR or NL or CR-NL to NL
+            {
                 if (TestByte == '\r')
                 {
                     Str.Append("\\r");
@@ -1154,10 +1223,14 @@ namespace PdfFileWriter
                 // the three characters \ ( ) must be preceded by \
                 else
                 {
-                    if (TestByte == (byte) '\\' || TestByte == (byte) '(' || TestByte == (byte) ')') Str.Append('\\');
+                    if (TestByte == (byte) '\\' || TestByte == (byte) '(' || TestByte == (byte) ')')
+                    {
+                        Str.Append('\\');
+                    }
 
                     Str.Append((char) TestByte);
                 }
+            }
 
             Str.Append(')');
             return Str.ToString();

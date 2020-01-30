@@ -172,7 +172,10 @@ namespace PdfFileWriter
             this.BWImage = BWImage;
 
             // default image control
-            if (ImageControl == null) ImageControl = new PdfImageControl();
+            if (ImageControl == null)
+            {
+                ImageControl = new PdfImageControl();
+            }
 
             ImageControl.SaveAs = SaveImageAs.BWImage;
             this.ImageControl = ImageControl;
@@ -219,7 +222,10 @@ namespace PdfFileWriter
         )
         {
             // image control
-            if (ImageControl == null) ImageControl = new PdfImageControl();
+            if (ImageControl == null)
+            {
+                ImageControl = new PdfImageControl();
+            }
 
             this.ImageControl = ImageControl;
 
@@ -249,13 +255,17 @@ namespace PdfFileWriter
         {
             // test exitance
             if (!File.Exists(ImageFileName))
+            {
                 throw new ApplicationException("Image file " + ImageFileName + " does not exist");
+            }
 
             // get file length
             var FI = new FileInfo(ImageFileName);
             var ImageFileLength = FI.Length;
             if (ImageFileLength >= int.MaxValue)
+            {
                 throw new ApplicationException("Image file " + ImageFileName + " too long");
+            }
 
             // load the image file
             Image Image;
@@ -264,11 +274,15 @@ namespace PdfFileWriter
                 // file is metafile format
                 if (ImageFileName.EndsWith(".emf", StringComparison.OrdinalIgnoreCase) ||
                     ImageFileName.EndsWith(".wmf", StringComparison.OrdinalIgnoreCase))
+                {
                     Image = new Metafile(ImageFileName);
+                }
 
                 // all other image formats
                 else
+                {
                     Image = new Bitmap(ImageFileName);
+                }
             }
 
             // not image file
@@ -328,10 +342,12 @@ namespace PdfFileWriter
         {
             // crop rectangle is given in percent width or height
             if (ImageControl.CropRect.IsEmpty && !ImageControl.CropPercent.IsEmpty)
+            {
                 ImageControl.CropRect = new Rectangle((int) (0.01 * Image.Width * ImageControl.CropPercent.X + 0.5),
                     (int) (0.01 * Image.Height * ImageControl.CropPercent.Y + 0.5),
                     (int) (0.01 * Image.Width * ImageControl.CropPercent.Width + 0.5),
                     (int) (0.01 * Image.Height * ImageControl.CropPercent.Height + 0.5));
+            }
 
             // no crop
             if (ImageControl.CropRect.IsEmpty)
@@ -352,7 +368,9 @@ namespace PdfFileWriter
 
             // crop rectangle must be contained within image rectangle
             if (!ImageRect.Contains(ImageControl.CropRect))
+            {
                 throw new ApplicationException("PdfImage: Crop rectangle must be contained within image rectangle");
+            }
 
             // change image size to crop size
             WidthPix = ImageControl.CropRect.Width;
@@ -483,7 +501,10 @@ namespace PdfFileWriter
             }
 
             // dispose image
-            if (DisposeImage) Image.Dispose();
+            if (DisposeImage)
+            {
+                Image.Dispose();
+            }
 
             // set resolution
             Picture.SetResolution((float) HorizontalResolution, (float) VerticalResolution);
@@ -506,19 +527,28 @@ namespace PdfFileWriter
                     break;
 
                 case SaveImageAs.IndexedImage:
-                    if (!PictureToIndexedImage()) goto case SaveImageAs.Jpeg;
+                    if (!PictureToIndexedImage())
+                    {
+                        goto case SaveImageAs.Jpeg;
+                    }
 
                     break;
 
                 case SaveImageAs.GrayImage:
-                    if (!PictureToGrayImage()) goto case SaveImageAs.Jpeg;
+                    if (!PictureToGrayImage())
+                    {
+                        goto case SaveImageAs.Jpeg;
+                    }
 
                     break;
 
                 case SaveImageAs.BWImage:
                     if (Picture != null)
                     {
-                        if (!PictureToBWImage()) goto case SaveImageAs.Jpeg;
+                        if (!PictureToBWImage())
+                        {
+                            goto case SaveImageAs.Jpeg;
+                        }
                     }
                     else
                     {
@@ -532,7 +562,10 @@ namespace PdfFileWriter
             Dispose();
 
             // debug
-            if (Document.Debug) ObjectValueArray = Document.TextToByteArray("*** IMAGE PLACE HOLDER ***");
+            if (Document.Debug)
+            {
+                ObjectValueArray = Document.TextToByteArray("*** IMAGE PLACE HOLDER ***");
+            }
 
             // write stream
             base.WriteObjectToPdfFile();
@@ -625,11 +658,18 @@ namespace PdfFileWriter
             {
                 for (var X = 0; X < WidthPix; X++)
                 {
-                    if (ColorArray.Count == 256) return false;
+                    if (ColorArray.Count == 256)
+                    {
+                        return false;
+                    }
+
                     // color order is blue, green and red
                     var Pixel = PictureBytes[PicPtr++] | (PictureBytes[PicPtr++] << 8) | (PictureBytes[PicPtr++] << 16);
                     var Index = ColorArray.BinarySearch(Pixel);
-                    if (Index >= 0) continue;
+                    if (Index >= 0)
+                    {
+                        continue;
+                    }
 
                     ColorArray.Insert(~Index, Pixel);
                 }
@@ -663,9 +703,15 @@ namespace PdfFileWriter
                         var Pixel = PictureBytes[PicPtr++] | (PictureBytes[PicPtr++] << 8) |
                                     (PictureBytes[PicPtr++] << 16);
                         var Index = ColorArray.BinarySearch(Pixel);
-                        if (Index != 0) ObjectValueArray[ObjPtr] |= OneBitMask[X & 7];
+                        if (Index != 0)
+                        {
+                            ObjectValueArray[ObjPtr] |= OneBitMask[X & 7];
+                        }
 
-                        if ((X & 7) == 7) ObjPtr++;
+                        if ((X & 7) == 7)
+                        {
+                            ObjPtr++;
+                        }
                     }
 
                     PicPtr += PicDelta;
@@ -735,9 +781,13 @@ namespace PdfFileWriter
                                     (PictureBytes[PicPtr++] << 16);
                         var Index = ColorArray.BinarySearch(Pixel);
                         if ((X & 1) == 0)
+                        {
                             ObjectValueArray[ObjPtr] = (byte) (Index << 4);
+                        }
                         else
+                        {
                             ObjectValueArray[ObjPtr++] |= (byte) Index;
+                        }
                     }
 
                     PicPtr += PicDelta;
@@ -782,7 +832,9 @@ namespace PdfFileWriter
 
             // encryption is active. PDF string must be encrypted
             if (Document.Encryption != null)
+            {
                 ColorByteArray = Document.Encryption.EncryptByteArray(ObjectNumber, ColorByteArray);
+            }
 
             // convert byte array to PDF string format
             var ColorStr = Document.ByteArrayToPdfString(ColorByteArray);
@@ -853,7 +905,10 @@ namespace PdfFileWriter
             // add items to dictionary
             Dictionary.Add("/ColorSpace", "/DeviceGray");
             Dictionary.Add("/BitsPerComponent", "8");
-            if (ImageControl.ReverseBW) Dictionary.Add("/Decode", "[1 0]");
+            if (ImageControl.ReverseBW)
+            {
+                Dictionary.Add("/Decode", "[1 0]");
+            }
 
             return true;
         }
@@ -908,9 +963,14 @@ namespace PdfFileWriter
             for (var Row = 0; Row < HeightPix; Row++)
             {
                 for (var Col = 0; Col < WidthPix; Col++)
+                {
                     if (11 * PictureBytes[PicPtr++] + 59 * PictureBytes[PicPtr++] + 30 * PictureBytes[PicPtr++] >=
                         Cutoff)
+                    {
                         ObjectValueArray[RowPtr + (Col >> 3)] |= (byte) (1 << (7 - (Col & 7)));
+                    }
+                }
+
                 PicPtr += PicDelta;
                 RowPtr += WidthBytes;
             }
@@ -918,7 +978,10 @@ namespace PdfFileWriter
             // add items to dictionary
             Dictionary.Add("/ColorSpace", "/DeviceGray");
             Dictionary.Add("/BitsPerComponent", "1");
-            if (ImageControl.ReverseBW) Dictionary.Add("/Decode", "[1 0]");
+            if (ImageControl.ReverseBW)
+            {
+                Dictionary.Add("/Decode", "[1 0]");
+            }
 
             return true;
         }
@@ -940,15 +1003,23 @@ namespace PdfFileWriter
             for (var Row = 0; Row < HeightPix; Row++)
             {
                 for (var Col = 0; Col < WidthPix; Col++)
+                {
                     if (BWImage[Row, Col])
+                    {
                         ObjectValueArray[RowPtr + (Col >> 3)] |= (byte) (1 << (7 - (Col & 7)));
+                    }
+                }
+
                 RowPtr += WidthBytes;
             }
 
             // add items to dictionary
             Dictionary.Add("/ColorSpace", "/DeviceGray");
             Dictionary.Add("/BitsPerComponent", "1");
-            if (ImageControl.ReverseBW) Dictionary.Add("/Decode", "[1 0]");
+            if (ImageControl.ReverseBW)
+            {
+                Dictionary.Add("/Decode", "[1 0]");
+            }
         }
 
         ////////////////////////////////////////////////////////////////////
@@ -959,8 +1030,12 @@ namespace PdfFileWriter
         {
             var EncoderArray = ImageCodecInfo.GetImageEncoders();
             foreach (var Encoder in EncoderArray)
+            {
                 if (Encoder.MimeType == mimeType)
+                {
                     return Encoder;
+                }
+            }
 
             throw new ApplicationException("GetEncoderInfo: image/jpeg encoder does not exist");
             ;

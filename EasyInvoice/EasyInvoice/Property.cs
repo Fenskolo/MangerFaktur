@@ -26,6 +26,7 @@ namespace EasyInvoice
             get
             {
                 if (_mNameList == null || _mNameList.Count == 0)
+                {
                     _mNameList = new List<string>
                     {
                         "szt.",
@@ -37,6 +38,8 @@ namespace EasyInvoice
                         "km.",
                         "m3."
                     };
+                }
+
                 return _mNameList;
             }
             set
@@ -51,12 +54,15 @@ namespace EasyInvoice
             get
             {
                 if (_mStawkaList == null || _mStawkaList.Count == 0)
+                {
                     _mStawkaList = new List<string>
                     {
                         "23%",
                         "0%",
                         "7%"
                     };
+                }
+
                 return _mStawkaList;
             }
             set

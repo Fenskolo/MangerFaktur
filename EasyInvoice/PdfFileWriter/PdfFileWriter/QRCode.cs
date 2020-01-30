@@ -854,22 +854,30 @@ namespace PdfFileWriter
             // top left finder patterns
             for (var Row = 0; Row < 9; Row++)
             for (var Col = 0; Col < 9; Col++)
+            {
                 BaseMatrix[Row, Col] = FinderPatternTopLeft[Row, Col];
+            }
 
             // top right finder patterns
             var Pos = MatrixDimension - 8;
             for (var Row = 0; Row < 9; Row++)
             for (var Col = 0; Col < 8; Col++)
+            {
                 BaseMatrix[Row, Pos + Col] = FinderPatternTopRight[Row, Col];
+            }
 
             // bottom left finder patterns
             for (var Row = 0; Row < 8; Row++)
             for (var Col = 0; Col < 9; Col++)
+            {
                 BaseMatrix[Pos + Row, Col] = FinderPatternBottomLeft[Row, Col];
+            }
 
             // Timing pattern
             for (var Z = 8; Z < MatrixDimension - 8; Z++)
+            {
                 BaseMatrix[Z, 6] = BaseMatrix[6, Z] = (Z & 1) == 0 ? FixedBlack : FixedWhite;
+            }
 
             // alignment pattern
             if (Version > 1)
@@ -880,7 +888,10 @@ namespace PdfFileWriter
                 for (var Col = 0; Col < AlignmentDimension; Col++)
                 {
                     if (Col == 0 && Row == 0 || Col == AlignmentDimension - 1 && Row == 0 ||
-                        Col == 0 && Row == AlignmentDimension - 1) continue;
+                        Col == 0 && Row == AlignmentDimension - 1)
+                    {
+                        continue;
+                    }
 
                     PlaceAlignmentPattern(AlignPos[Col], AlignPos[Row]);
                 }
@@ -895,12 +906,16 @@ namespace PdfFileWriter
                 // top right
                 for (var Row = 0; Row < 6; Row++)
                 for (var Col = 0; Col < 3; Col++)
+                {
                     BaseMatrix[Row, Pos + Col] = FormatWhite;
+                }
 
                 // bottom right
                 for (var Col = 0; Col < 6; Col++)
                 for (var Row = 0; Row < 3; Row++)
+                {
                     BaseMatrix[Pos + Row, Col] = FormatWhite;
+                }
             }
         }
 
@@ -916,7 +931,9 @@ namespace PdfFileWriter
         {
             for (var Row = -2; Row < 3; Row++)
             for (var Col = -2; Col < 3; Col++)
+            {
                 BaseMatrix[PosRow + Row, PosCol + Col] = AlignmentPattern[Row + 2, Col + 2];
+            }
         }
 
         ////////////////////////////////////////////////////////////////////
@@ -975,9 +992,15 @@ namespace PdfFileWriter
             for (var Row = 0; Row < MatrixDimension; Row += 2)
             for (var Col = 0; Col < MatrixDimension; Col += 2)
             {
-                if ((MaskMatrix[Row, Col] & NonData) == 0) MaskMatrix[Row, Col] ^= 1;
+                if ((MaskMatrix[Row, Col] & NonData) == 0)
+                {
+                    MaskMatrix[Row, Col] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 1, Col + 1] & NonData) == 0) MaskMatrix[Row + 1, Col + 1] ^= 1;
+                if ((MaskMatrix[Row + 1, Col + 1] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 1, Col + 1] ^= 1;
+                }
             }
         }
 
@@ -990,8 +1013,12 @@ namespace PdfFileWriter
         {
             for (var Row = 0; Row < MatrixDimension; Row += 2)
             for (var Col = 0; Col < MatrixDimension; Col++)
+            {
                 if ((MaskMatrix[Row, Col] & NonData) == 0)
+                {
                     MaskMatrix[Row, Col] ^= 1;
+                }
+            }
         }
 
         ////////////////////////////////////////////////////////////////////
@@ -1003,8 +1030,12 @@ namespace PdfFileWriter
         {
             for (var Row = 0; Row < MatrixDimension; Row++)
             for (var Col = 0; Col < MatrixDimension; Col += 3)
+            {
                 if ((MaskMatrix[Row, Col] & NonData) == 0)
+                {
                     MaskMatrix[Row, Col] ^= 1;
+                }
+            }
         }
 
         ////////////////////////////////////////////////////////////////////
@@ -1017,11 +1048,20 @@ namespace PdfFileWriter
             for (var Row = 0; Row < MatrixDimension; Row += 3)
             for (var Col = 0; Col < MatrixDimension; Col += 3)
             {
-                if ((MaskMatrix[Row, Col] & NonData) == 0) MaskMatrix[Row, Col] ^= 1;
+                if ((MaskMatrix[Row, Col] & NonData) == 0)
+                {
+                    MaskMatrix[Row, Col] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 1, Col + 2] & NonData) == 0) MaskMatrix[Row + 1, Col + 2] ^= 1;
+                if ((MaskMatrix[Row + 1, Col + 2] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 1, Col + 2] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 2, Col + 1] & NonData) == 0) MaskMatrix[Row + 2, Col + 1] ^= 1;
+                if ((MaskMatrix[Row + 2, Col + 1] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 2, Col + 1] ^= 1;
+                }
             }
         }
 
@@ -1035,29 +1075,65 @@ namespace PdfFileWriter
             for (var Row = 0; Row < MatrixDimension; Row += 4)
             for (var Col = 0; Col < MatrixDimension; Col += 6)
             {
-                if ((MaskMatrix[Row, Col] & NonData) == 0) MaskMatrix[Row, Col] ^= 1;
+                if ((MaskMatrix[Row, Col] & NonData) == 0)
+                {
+                    MaskMatrix[Row, Col] ^= 1;
+                }
 
-                if ((MaskMatrix[Row, Col + 1] & NonData) == 0) MaskMatrix[Row, Col + 1] ^= 1;
+                if ((MaskMatrix[Row, Col + 1] & NonData) == 0)
+                {
+                    MaskMatrix[Row, Col + 1] ^= 1;
+                }
 
-                if ((MaskMatrix[Row, Col + 2] & NonData) == 0) MaskMatrix[Row, Col + 2] ^= 1;
+                if ((MaskMatrix[Row, Col + 2] & NonData) == 0)
+                {
+                    MaskMatrix[Row, Col + 2] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 1, Col] & NonData) == 0) MaskMatrix[Row + 1, Col] ^= 1;
+                if ((MaskMatrix[Row + 1, Col] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 1, Col] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 1, Col + 1] & NonData) == 0) MaskMatrix[Row + 1, Col + 1] ^= 1;
+                if ((MaskMatrix[Row + 1, Col + 1] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 1, Col + 1] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 1, Col + 2] & NonData) == 0) MaskMatrix[Row + 1, Col + 2] ^= 1;
+                if ((MaskMatrix[Row + 1, Col + 2] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 1, Col + 2] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 2, Col + 3] & NonData) == 0) MaskMatrix[Row + 2, Col + 3] ^= 1;
+                if ((MaskMatrix[Row + 2, Col + 3] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 2, Col + 3] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 2, Col + 4] & NonData) == 0) MaskMatrix[Row + 2, Col + 4] ^= 1;
+                if ((MaskMatrix[Row + 2, Col + 4] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 2, Col + 4] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 2, Col + 5] & NonData) == 0) MaskMatrix[Row + 2, Col + 5] ^= 1;
+                if ((MaskMatrix[Row + 2, Col + 5] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 2, Col + 5] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 3, Col + 3] & NonData) == 0) MaskMatrix[Row + 3, Col + 3] ^= 1;
+                if ((MaskMatrix[Row + 3, Col + 3] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 3, Col + 3] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 3, Col + 4] & NonData) == 0) MaskMatrix[Row + 3, Col + 4] ^= 1;
+                if ((MaskMatrix[Row + 3, Col + 4] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 3, Col + 4] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 3, Col + 5] & NonData) == 0) MaskMatrix[Row + 3, Col + 5] ^= 1;
+                if ((MaskMatrix[Row + 3, Col + 5] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 3, Col + 5] ^= 1;
+                }
             }
         }
 
@@ -1072,20 +1148,40 @@ namespace PdfFileWriter
             for (var Col = 0; Col < MatrixDimension; Col += 6)
             {
                 for (var Delta = 0; Delta < 6; Delta++)
+                {
                     if ((MaskMatrix[Row, Col + Delta] & NonData) == 0)
+                    {
                         MaskMatrix[Row, Col + Delta] ^= 1;
+                    }
+                }
 
                 for (var Delta = 1; Delta < 6; Delta++)
+                {
                     if ((MaskMatrix[Row + Delta, Col] & NonData) == 0)
+                    {
                         MaskMatrix[Row + Delta, Col] ^= 1;
+                    }
+                }
 
-                if ((MaskMatrix[Row + 2, Col + 3] & NonData) == 0) MaskMatrix[Row + 2, Col + 3] ^= 1;
+                if ((MaskMatrix[Row + 2, Col + 3] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 2, Col + 3] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 3, Col + 2] & NonData) == 0) MaskMatrix[Row + 3, Col + 2] ^= 1;
+                if ((MaskMatrix[Row + 3, Col + 2] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 3, Col + 2] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 3, Col + 4] & NonData) == 0) MaskMatrix[Row + 3, Col + 4] ^= 1;
+                if ((MaskMatrix[Row + 3, Col + 4] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 3, Col + 4] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 4, Col + 3] & NonData) == 0) MaskMatrix[Row + 4, Col + 3] ^= 1;
+                if ((MaskMatrix[Row + 4, Col + 3] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 4, Col + 3] ^= 1;
+                }
             }
         }
 
@@ -1100,36 +1196,80 @@ namespace PdfFileWriter
             for (var Col = 0; Col < MatrixDimension; Col += 6)
             {
                 for (var Delta = 0; Delta < 6; Delta++)
+                {
                     if ((MaskMatrix[Row, Col + Delta] & NonData) == 0)
+                    {
                         MaskMatrix[Row, Col + Delta] ^= 1;
+                    }
+                }
 
                 for (var Delta = 1; Delta < 6; Delta++)
+                {
                     if ((MaskMatrix[Row + Delta, Col] & NonData) == 0)
+                    {
                         MaskMatrix[Row + Delta, Col] ^= 1;
+                    }
+                }
 
-                if ((MaskMatrix[Row + 1, Col + 1] & NonData) == 0) MaskMatrix[Row + 1, Col + 1] ^= 1;
+                if ((MaskMatrix[Row + 1, Col + 1] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 1, Col + 1] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 1, Col + 2] & NonData) == 0) MaskMatrix[Row + 1, Col + 2] ^= 1;
+                if ((MaskMatrix[Row + 1, Col + 2] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 1, Col + 2] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 2, Col + 1] & NonData) == 0) MaskMatrix[Row + 2, Col + 1] ^= 1;
+                if ((MaskMatrix[Row + 2, Col + 1] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 2, Col + 1] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 2, Col + 3] & NonData) == 0) MaskMatrix[Row + 2, Col + 3] ^= 1;
+                if ((MaskMatrix[Row + 2, Col + 3] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 2, Col + 3] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 2, Col + 4] & NonData) == 0) MaskMatrix[Row + 2, Col + 4] ^= 1;
+                if ((MaskMatrix[Row + 2, Col + 4] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 2, Col + 4] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 3, Col + 2] & NonData) == 0) MaskMatrix[Row + 3, Col + 2] ^= 1;
+                if ((MaskMatrix[Row + 3, Col + 2] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 3, Col + 2] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 3, Col + 4] & NonData) == 0) MaskMatrix[Row + 3, Col + 4] ^= 1;
+                if ((MaskMatrix[Row + 3, Col + 4] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 3, Col + 4] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 4, Col + 2] & NonData) == 0) MaskMatrix[Row + 4, Col + 2] ^= 1;
+                if ((MaskMatrix[Row + 4, Col + 2] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 4, Col + 2] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 4, Col + 3] & NonData) == 0) MaskMatrix[Row + 4, Col + 3] ^= 1;
+                if ((MaskMatrix[Row + 4, Col + 3] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 4, Col + 3] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 4, Col + 5] & NonData) == 0) MaskMatrix[Row + 4, Col + 5] ^= 1;
+                if ((MaskMatrix[Row + 4, Col + 5] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 4, Col + 5] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 5, Col + 4] & NonData) == 0) MaskMatrix[Row + 5, Col + 4] ^= 1;
+                if ((MaskMatrix[Row + 5, Col + 4] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 5, Col + 4] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 5, Col + 5] & NonData) == 0) MaskMatrix[Row + 5, Col + 5] ^= 1;
+                if ((MaskMatrix[Row + 5, Col + 5] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 5, Col + 5] ^= 1;
+                }
             }
         }
 
@@ -1143,41 +1283,95 @@ namespace PdfFileWriter
             for (var Row = 0; Row < MatrixDimension; Row += 6)
             for (var Col = 0; Col < MatrixDimension; Col += 6)
             {
-                if ((MaskMatrix[Row, Col] & NonData) == 0) MaskMatrix[Row, Col] ^= 1;
+                if ((MaskMatrix[Row, Col] & NonData) == 0)
+                {
+                    MaskMatrix[Row, Col] ^= 1;
+                }
 
-                if ((MaskMatrix[Row, Col + 2] & NonData) == 0) MaskMatrix[Row, Col + 2] ^= 1;
+                if ((MaskMatrix[Row, Col + 2] & NonData) == 0)
+                {
+                    MaskMatrix[Row, Col + 2] ^= 1;
+                }
 
-                if ((MaskMatrix[Row, Col + 4] & NonData) == 0) MaskMatrix[Row, Col + 4] ^= 1;
+                if ((MaskMatrix[Row, Col + 4] & NonData) == 0)
+                {
+                    MaskMatrix[Row, Col + 4] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 1, Col + 3] & NonData) == 0) MaskMatrix[Row + 1, Col + 3] ^= 1;
+                if ((MaskMatrix[Row + 1, Col + 3] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 1, Col + 3] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 1, Col + 4] & NonData) == 0) MaskMatrix[Row + 1, Col + 4] ^= 1;
+                if ((MaskMatrix[Row + 1, Col + 4] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 1, Col + 4] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 1, Col + 5] & NonData) == 0) MaskMatrix[Row + 1, Col + 5] ^= 1;
+                if ((MaskMatrix[Row + 1, Col + 5] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 1, Col + 5] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 2, Col] & NonData) == 0) MaskMatrix[Row + 2, Col] ^= 1;
+                if ((MaskMatrix[Row + 2, Col] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 2, Col] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 2, Col + 4] & NonData) == 0) MaskMatrix[Row + 2, Col + 4] ^= 1;
+                if ((MaskMatrix[Row + 2, Col + 4] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 2, Col + 4] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 2, Col + 5] & NonData) == 0) MaskMatrix[Row + 2, Col + 5] ^= 1;
+                if ((MaskMatrix[Row + 2, Col + 5] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 2, Col + 5] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 3, Col + 1] & NonData) == 0) MaskMatrix[Row + 3, Col + 1] ^= 1;
+                if ((MaskMatrix[Row + 3, Col + 1] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 3, Col + 1] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 3, Col + 3] & NonData) == 0) MaskMatrix[Row + 3, Col + 3] ^= 1;
+                if ((MaskMatrix[Row + 3, Col + 3] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 3, Col + 3] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 3, Col + 5] & NonData) == 0) MaskMatrix[Row + 3, Col + 5] ^= 1;
+                if ((MaskMatrix[Row + 3, Col + 5] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 3, Col + 5] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 4, Col] & NonData) == 0) MaskMatrix[Row + 4, Col] ^= 1;
+                if ((MaskMatrix[Row + 4, Col] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 4, Col] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 4, Col + 1] & NonData) == 0) MaskMatrix[Row + 4, Col + 1] ^= 1;
+                if ((MaskMatrix[Row + 4, Col + 1] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 4, Col + 1] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 4, Col + 2] & NonData) == 0) MaskMatrix[Row + 4, Col + 2] ^= 1;
+                if ((MaskMatrix[Row + 4, Col + 2] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 4, Col + 2] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 5, Col + 1] & NonData) == 0) MaskMatrix[Row + 5, Col + 1] ^= 1;
+                if ((MaskMatrix[Row + 5, Col + 1] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 5, Col + 1] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 5, Col + 2] & NonData) == 0) MaskMatrix[Row + 5, Col + 2] ^= 1;
+                if ((MaskMatrix[Row + 5, Col + 2] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 5, Col + 2] ^= 1;
+                }
 
-                if ((MaskMatrix[Row + 5, Col + 3] & NonData) == 0) MaskMatrix[Row + 5, Col + 3] ^= 1;
+                if ((MaskMatrix[Row + 5, Col + 3] & NonData) == 0)
+                {
+                    MaskMatrix[Row + 5, Col + 3] ^= 1;
+                }
             }
         }
 
@@ -1190,16 +1384,21 @@ namespace PdfFileWriter
             for (var Index = 0; Index < DataCodewords; Index++)
             {
                 // current first codeword is zero
-                if (Polynomial[Index] == 0) continue;
+                if (Polynomial[Index] == 0)
+                {
+                    continue;
+                }
 
                 // current first codeword is not zero
                 int Multiplier = IntToExp[Polynomial[Index]];
 
                 // loop for error correction coofficients
                 for (var GeneratorIndex = 0; GeneratorIndex < ErrCorrCodewords; GeneratorIndex++)
+                {
                     Polynomial[Index + 1 + GeneratorIndex] =
                         (byte) (Polynomial[Index + 1 + GeneratorIndex] ^
                                 ExpToInt[Generator[GeneratorIndex] + Multiplier]);
+                }
             }
         }
     }

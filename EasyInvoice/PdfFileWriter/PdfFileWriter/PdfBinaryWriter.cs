@@ -65,7 +65,10 @@ namespace PdfFileWriter
 
             // convert content from string to binary
             // do not use Encoding.ASCII.GetBytes(...)
-            for (var Index = 0; Index < ByteArray.Length; Index++) ByteArray[Index] = (byte) Str[Index];
+            for (var Index = 0; Index < ByteArray.Length; Index++)
+            {
+                ByteArray[Index] = (byte) Str[Index];
+            }
 
             // write to pdf file
             Write(ByteArray);
@@ -88,7 +91,10 @@ namespace PdfFileWriter
 
             // convert content from string to binary
             // do not use Encoding.ASCII.GetBytes(...)
-            for (var Index = 0; Index < ByteArray.Length; Index++) ByteArray[Index] = (byte) Str[Index];
+            for (var Index = 0; Index < ByteArray.Length; Index++)
+            {
+                ByteArray[Index] = (byte) Str[Index];
+            }
 
             // write to pdf file
             Write(ByteArray);
@@ -112,7 +118,10 @@ namespace PdfFileWriter
 
             // convert content from string to binary
             // do not use Encoding.ASCII.GetBytes(...)
-            for (var Index = 0; Index < ByteArray.Length; Index++) ByteArray[Index] = (byte) Str[Index];
+            for (var Index = 0; Index < ByteArray.Length; Index++)
+            {
+                ByteArray[Index] = (byte) Str[Index];
+            }
 
             // write to pdf file
             Write(ByteArray);

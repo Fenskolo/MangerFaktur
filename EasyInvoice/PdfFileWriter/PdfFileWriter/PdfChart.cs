@@ -123,7 +123,10 @@ namespace PdfFileWriter
         ) : base(Document)
         {
             // image control
-            if (ImageControl == null) ImageControl = new PdfImageControl();
+            if (ImageControl == null)
+            {
+                ImageControl = new PdfImageControl();
+            }
 
             this.ImageControl = ImageControl;
 
@@ -135,9 +138,13 @@ namespace PdfFileWriter
             // save resolution
             if (ImageControl.Resolution != 0)
                 // chart resolution in pixels per inch
+            {
                 this.Chart.RenderingDpiY = ImageControl.Resolution;
+            }
             else
+            {
                 ImageControl.Resolution = this.Chart.RenderingDpiY;
+            }
 
             // calculate chart size in user coordinates
             Width = WidthPix * 72.0 / (ImageControl.Resolution * Document.ScaleFactor);
@@ -186,7 +193,10 @@ namespace PdfFileWriter
             var Chart = new Chart();
 
             // save resolution
-            if (Resolution != 0) Chart.RenderingDpiY = Resolution;
+            if (Resolution != 0)
+            {
+                Chart.RenderingDpiY = Resolution;
+            }
 
             // image size in pixels
             Chart.Width = (int) (Chart.RenderingDpiY * Width * Document.ScaleFactor / 72.0 + 0.5);
@@ -272,7 +282,10 @@ namespace PdfFileWriter
                 }
 
                 // activate garbage collector
-                if (GCCollect) GC.Collect();
+                if (GCCollect)
+                {
+                    GC.Collect();
+                }
             }
 
             // exit

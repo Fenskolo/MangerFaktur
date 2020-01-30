@@ -103,7 +103,10 @@ namespace PdfFileWriter
             Dictionary.AddInteger("/Length1", ObjectValueArray.Length);
 
             // debug
-            if (Document.Debug) ObjectValueArray = Document.TextToByteArray("*** FONT FILE PLACE HOLDER ***");
+            if (Document.Debug)
+            {
+                ObjectValueArray = Document.TextToByteArray("*** FONT FILE PLACE HOLDER ***");
+            }
 
             // write stream
             WriteObjectToPdfFile();
@@ -128,7 +131,10 @@ namespace PdfFileWriter
             GetmaxpTable();
 
             // get character code to glyph code table
-            if (!GlyphIndexFont) GetcmapTable();
+            if (!GlyphIndexFont)
+            {
+                GetcmapTable();
+            }
 
             // get horizontal metrics table
             GethmtxTable();
@@ -138,9 +144,13 @@ namespace PdfFileWriter
 
             // get glyph data
             if (!GlyphIndexFont)
+            {
                 BuildGlyphArray();
+            }
             else
+            {
                 BuildGlyphArray1();
+            }
 
             // replace old glyph codes with new ones for composite glyphs
             ReplaceGlyphCode();
@@ -152,7 +162,10 @@ namespace PdfFileWriter
             BuildLocaTable();
 
             // build new character map table
-            if (!GlyphIndexFont) BuildCharMapTable();
+            if (!GlyphIndexFont)
+            {
+                BuildCharMapTable();
+            }
 
             // build new horizontal metrics table
             BuildhmtxTable();
@@ -206,7 +219,10 @@ namespace PdfFileWriter
 
                 // search table record
                 int Index;
-                for (Index = 0; Index < TableRecordArray.Length && TableTag != TableRecordArray[Index].Tag; Index++) ;
+                for (Index = 0; Index < TableRecordArray.Length && TableTag != TableRecordArray[Index].Tag; Index++)
+                {
+                    ;
+                }
 
                 // we do not need this table
                 if (Index == TableRecordArray.Length)
@@ -220,7 +236,10 @@ namespace PdfFileWriter
                 var TR = TableRecordArray[Index];
 
                 // test for duplicate
-                if (TR.Offset != 0) throw new ApplicationException("Font file in error duplicate table");
+                if (TR.Offset != 0)
+                {
+                    throw new ApplicationException("Font file in error duplicate table");
+                }
 
                 // read info for this table
                 TR.Checksum = ReadUInt32BigEndian();
@@ -232,19 +251,29 @@ namespace PdfFileWriter
             // three tables are optional cvt, fpgm and prep
             // these tables are programming hints
             foreach (var TR in TableRecordArray)
+            {
                 if (TR.Offset == 0 && TR.Tag != cvtTag && TR.Tag != fpgmTag && TR.Tag != prepTag)
+                {
                     throw new ApplicationException("Required font file table is missing");
+                }
+            }
 
             // load all tables except for glyf table
             foreach (var TR in TableRecordArray)
                 // ignore glyf table for now
                 // save file offset of glyph table
+            {
                 if (TR.Tag == glyfTag)
+                {
                     OldGlyphTableOffset = TR.Offset;
+                }
 
                 // load all other tables
                 else
+                {
                     TR.Data = FontInfo.GetFontDataApi(TR.Offset, TR.Length);
+                }
+            }
 
             // exit
         }
@@ -361,7 +390,10 @@ namespace PdfFileWriter
             BufPtr = 0;
 
             // create cmap object
-            if (ReadUInt16BigEndian() != 0) throw new ApplicationException("CMAP table version number is not zero");
+            if (ReadUInt16BigEndian() != 0)
+            {
+                throw new ApplicationException("CMAP table version number is not zero");
+            }
 
             int NumberOfTables = ReadUInt16BigEndian();
             var SubTblArray = new cmapSubTbl[NumberOfTables];
@@ -390,7 +422,10 @@ namespace PdfFileWriter
                     SubTbl.Length = ReadUInt16BigEndian();
                     SubTbl.Language = ReadUInt16BigEndian();
                     SubTbl.GlyphArray = new ushort[256];
-                    for (var Code = 0; Code < 256; Code++) SubTbl.GlyphArray[Code] = Buffer[BufPtr++];
+                    for (var Code = 0; Code < 256; Code++)
+                    {
+                        SubTbl.GlyphArray[Code] = Buffer[BufPtr++];
+                    }
                 }
 
                 // process format 4
@@ -402,20 +437,32 @@ namespace PdfFileWriter
                     BufPtr += 6; // skip search range, entry selector and range shift
                     SubTbl.SegArray = new cmapSeg[SubTbl.SegCount];
                     for (var Seg = 0; Seg < SubTbl.SegCount; Seg++)
+                    {
                         SubTbl.SegArray[Seg] = new cmapSeg(ReadUInt16BigEndian()); // EndChar
+                    }
 
                     ReadUInt16BigEndian(); // skip reserved padding
                     for (var Seg = 0; Seg < SubTbl.SegCount; Seg++)
+                    {
                         SubTbl.SegArray[Seg].StartChar = ReadUInt16BigEndian();
-
-                    for (var Seg = 0; Seg < SubTbl.SegCount; Seg++) SubTbl.SegArray[Seg].IDDelta = ReadInt16BigEndian();
+                    }
 
                     for (var Seg = 0; Seg < SubTbl.SegCount; Seg++)
+                    {
+                        SubTbl.SegArray[Seg].IDDelta = ReadInt16BigEndian();
+                    }
+
+                    for (var Seg = 0; Seg < SubTbl.SegCount; Seg++)
+                    {
                         SubTbl.SegArray[Seg].IDRangeOffset = (ushort) (ReadUInt16BigEndian() / 2);
+                    }
 
                     var GlyphCount = (SubTbl.Length - 16 - 8 * SubTbl.SegCount) / 2;
                     SubTbl.GlyphArray = new ushort[GlyphCount];
-                    for (var Glyph = 0; Glyph < GlyphCount; Glyph++) SubTbl.GlyphArray[Glyph] = ReadUInt16BigEndian();
+                    for (var Glyph = 0; Glyph < GlyphCount; Glyph++)
+                    {
+                        SubTbl.GlyphArray[Glyph] = ReadUInt16BigEndian();
+                    }
                 }
 
                 // restore buffer pointer
@@ -443,12 +490,18 @@ namespace PdfFileWriter
             // search for platform ID = 3 Windows, encoding ID = 0 or 1 Unicode and format 4
             var SearchSubTbl = new cmapSubTbl(3, (ushort) (SymbolicFont ? 0 : 1), 4);
             var Index = Array.BinarySearch(SubTblArray, SearchSubTbl);
-            if (Index >= 0) return SubTblArray[Index];
+            if (Index >= 0)
+            {
+                return SubTblArray[Index];
+            }
 
             // search for platform ID = 3 Windows, encoding ID = 0 or 1 Unicode and format 0
             SearchSubTbl.Format = 0;
             Index = Array.BinarySearch(SubTblArray, SearchSubTbl);
-            if (Index >= 0) return SubTblArray[Index];
+            if (Index >= 0)
+            {
+                return SubTblArray[Index];
+            }
 
             // not found
             throw new ApplicationException("Required cmap sub-table is missing");
@@ -498,13 +551,21 @@ namespace PdfFileWriter
 
             // load short table
             if (headTable.IndexToLocFormat == 0)
+            {
                 for (var Index = 0; Index < TblSize; Index++)
+                {
                     locaTable[Index] = 2 * ReadUInt16BigEndian();
+                }
+            }
 
             // long format
             else
+            {
                 for (var Index = 0; Index < TblSize; Index++)
+                {
                     locaTable[Index] = (int) ReadUInt32BigEndian();
+                }
+            }
 
             // exit
         }
@@ -544,7 +605,10 @@ namespace PdfFileWriter
                 var CharInfo = ZeroRow[Col];
 
                 // character is not active
-                if (CharInfo == null || !CharInfo.ActiveChar) continue;
+                if (CharInfo == null || !CharInfo.ActiveChar)
+                {
+                    continue;
+                }
 
                 // this old glyph index is in the list already (two character codes withe the same glyph)
                 var Index = GlyphList.BinarySearch(CharInfo);
@@ -572,7 +636,10 @@ namespace PdfFileWriter
             }
 
             // add composite glyphs
-            if (CompList.Count != 0) AddCompositeGlyphs(GlyphList, CompList);
+            if (CompList.Count != 0)
+            {
+                AddCompositeGlyphs(GlyphList, CompList);
+            }
 
             // convert list to array		
             GlyphArray = GlyphList.ToArray();
@@ -612,22 +679,32 @@ namespace PdfFileWriter
             {
                 // get one row of char info
                 var OneRow = CharInfoArray[Row];
-                if (OneRow == null) continue;
+                if (OneRow == null)
+                {
+                    continue;
+                }
 
                 for (var Col = 0; Col < 256; Col++)
                 {
                     // get one char info
                     var CharInfo = OneRow[Col];
-                    if (CharInfo == null || !CharInfo.ActiveChar) continue;
+                    if (CharInfo == null || !CharInfo.ActiveChar)
+                    {
+                        continue;
+                    }
 
                     // this old glyph index is in the list already (two character codes withe the same glyph)
                     var Index = GlyphList.BinarySearch(CharInfo);
                     if (Index >= 0)
                         // we have two char with the same old glyph number but two different new glyph number
+                    {
                         GlyphList.Insert(Index, CharInfo);
+                    }
                     else
                         // add it to the glyph list 
+                    {
                         GlyphList.Insert(~Index, CharInfo);
+                    }
 
                     // add char/glyph to glyph list
                     AddGlyph(CharInfo, GlyphList, CompList);
@@ -635,7 +712,10 @@ namespace PdfFileWriter
             }
 
             // add composite glyphs
-            if (CompList.Count != 0) AddCompositeGlyphs(GlyphList, CompList);
+            if (CompList.Count != 0)
+            {
+                AddCompositeGlyphs(GlyphList, CompList);
+            }
 
             // convert list to array		
             GlyphArray = GlyphList.ToArray();
@@ -694,7 +774,10 @@ namespace PdfFileWriter
             {
                 // test if this old glyph index is already in the list
                 var Index = GlyphList.BinarySearch(new CharInfo(GlyphIndex));
-                if (Index >= 0) continue;
+                if (Index >= 0)
+                {
+                    continue;
+                }
 
                 // create new char info with no char code
                 var CharInfo = FontInfo.GetGlyphMetricsApiByGlyphIndex(GlyphIndex);
@@ -710,7 +793,10 @@ namespace PdfFileWriter
             }
 
             // add extra glyphs
-            if (CompList.Count != 0) AddCompositeGlyphs(GlyphList, CompList);
+            if (CompList.Count != 0)
+            {
+                AddCompositeGlyphs(GlyphList, CompList);
+            }
 
             // exit
         }
@@ -738,7 +824,10 @@ namespace PdfFileWriter
             CharInfo.GlyphData = Buffer;
 
             // blank glyph
-            if (Buffer == null) return;
+            if (Buffer == null)
+            {
+                return;
+            }
 
             // decode number of contours
             var Contours = ReadInt16BigEndian();
@@ -751,27 +840,53 @@ namespace PdfFileWriter
             var yMax = (short) CharInfo.DesignBBoxTop;
 
             // update head table
-            if (xMin < headTable.xMin) headTable.xMin = xMin;
+            if (xMin < headTable.xMin)
+            {
+                headTable.xMin = xMin;
+            }
 
-            if (yMin < headTable.yMin) headTable.yMin = yMin;
+            if (yMin < headTable.yMin)
+            {
+                headTable.yMin = yMin;
+            }
 
-            if (xMax > headTable.xMax) headTable.xMax = xMax;
+            if (xMax > headTable.xMax)
+            {
+                headTable.xMax = xMax;
+            }
 
-            if (yMax > headTable.yMax) headTable.yMax = yMax;
+            if (yMax > headTable.yMax)
+            {
+                headTable.yMax = yMax;
+            }
 
             // update hhea table
             if (CharInfo.DesignWidth > hheaTable.advanceWidthMax)
+            {
                 hheaTable.advanceWidthMax = (ushort) CharInfo.DesignWidth;
+            }
 
-            if (xMin < hheaTable.minLeftSideBearing) hheaTable.minLeftSideBearing = xMin;
+            if (xMin < hheaTable.minLeftSideBearing)
+            {
+                hheaTable.minLeftSideBearing = xMin;
+            }
 
             var Rsb = (short) (CharInfo.DesignWidth - xMax);
-            if (Rsb < hheaTable.minRightSideBearing) hheaTable.minRightSideBearing = Rsb;
+            if (Rsb < hheaTable.minRightSideBearing)
+            {
+                hheaTable.minRightSideBearing = Rsb;
+            }
 
-            if (xMax > hheaTable.xMaxExtent) hheaTable.xMaxExtent = xMax;
+            if (xMax > hheaTable.xMaxExtent)
+            {
+                hheaTable.xMaxExtent = xMax;
+            }
 
             // add component glyphs of a composite glyph to the list
-            if (Contours < 0) GetCompositeGlyph(GlyphList, CompList);
+            if (Contours < 0)
+            {
+                GetCompositeGlyph(GlyphList, CompList);
+            }
 
             // exit
         }
@@ -799,27 +914,44 @@ namespace PdfFileWriter
                 // the glyph is not in main or composit lists, add it to the composit list
                 int Index;
                 if (MainList.BinarySearch(new CharInfo(GlyphIndex)) < 0 &&
-                    (Index = CompList.BinarySearch(GlyphIndex)) < 0) CompList.Insert(~Index, GlyphIndex);
+                    (Index = CompList.BinarySearch(GlyphIndex)) < 0)
+                {
+                    CompList.Insert(~Index, GlyphIndex);
+                }
 
                 // read argument1 and 2
                 if ((Flags & CompFlag.Arg1AndArg2AreWords) == 0)
+                {
                     BufPtr += 2;
+                }
                 else
+                {
                     BufPtr += 4;
+                }
 
                 // we have one scale factor
                 if ((Flags & CompFlag.WeHaveAScale) != 0)
+                {
                     BufPtr += 2;
+                }
 
                 // we have two scale factors
                 else if ((Flags & CompFlag.WeHaveXYScale) != 0)
+                {
                     BufPtr += 4;
+                }
 
                 // we have a transformation matrix
-                else if ((Flags & CompFlag.WeHave2By2) != 0) BufPtr += 8;
+                else if ((Flags & CompFlag.WeHave2By2) != 0)
+                {
+                    BufPtr += 8;
+                }
 
                 // no more components
-                if ((Flags & CompFlag.MoreComponents) == 0) break;
+                if ((Flags & CompFlag.MoreComponents) == 0)
+                {
+                    break;
+                }
             }
         }
 
@@ -833,7 +965,10 @@ namespace PdfFileWriter
             foreach (var CharInfo in GlyphArray)
             {
                 // not a composite glyph
-                if (!CharInfo.Composite) continue;
+                if (!CharInfo.Composite)
+                {
+                    continue;
+                }
 
                 // get buffer
                 Buffer = CharInfo.GlyphData;
@@ -848,7 +983,10 @@ namespace PdfFileWriter
 
                     // translate old glyph code to new one
                     var Index = Array.BinarySearch(GlyphArray, new CharInfo(GlyphIndex));
-                    if (Index < 0) throw new ApplicationException("Composite glyph number change");
+                    if (Index < 0)
+                    {
+                        throw new ApplicationException("Composite glyph number change");
+                    }
 
                     // replace glyph code
                     BufPtr -= 2;
@@ -856,23 +994,37 @@ namespace PdfFileWriter
 
                     // read argument1 and 2
                     if ((Flags & CompFlag.Arg1AndArg2AreWords) == 0)
+                    {
                         BufPtr += 2;
+                    }
                     else
+                    {
                         BufPtr += 4;
+                    }
 
                     // we have one scale factor
                     if ((Flags & CompFlag.WeHaveAScale) != 0)
+                    {
                         BufPtr += 2;
+                    }
 
                     // we have two scale factors
                     else if ((Flags & CompFlag.WeHaveXYScale) != 0)
+                    {
                         BufPtr += 4;
+                    }
 
                     // we have a transformation matrix
-                    else if ((Flags & CompFlag.WeHave2By2) != 0) BufPtr += 8;
+                    else if ((Flags & CompFlag.WeHave2By2) != 0)
+                    {
+                        BufPtr += 8;
+                    }
 
                     // no more components
-                    if ((Flags & CompFlag.MoreComponents) == 0) break;
+                    if ((Flags & CompFlag.MoreComponents) == 0)
+                    {
+                        break;
+                    }
                 }
             }
         }
@@ -888,9 +1040,15 @@ namespace PdfFileWriter
 
             // loop for all glyphs
             foreach (var CharInfo in GlyphArray)
+            {
                 if (CharInfo.GlyphData != null)
+                {
                     foreach (var B in CharInfo.GlyphData)
+                    {
                         Checksum += (uint) B << (24 - 8 * (Ptr++ & 3));
+                    }
+                }
+            }
 
             // save total length in table record array
             TableRecordArray[(int) Tag.glyf].Length = Ptr;
@@ -920,10 +1078,16 @@ namespace PdfFileWriter
                 // save file location in array
                 LocArray[CharInfo.NewGlyphIndex] = GlyphTableLength;
 
-                if ((GlyphTableLength & 1) != 0) throw new ApplicationException("Glyph table length must be even");
+                if ((GlyphTableLength & 1) != 0)
+                {
+                    throw new ApplicationException("Glyph table length must be even");
+                }
 
                 // update file location (for non blank glyphs)
-                if (CharInfo.GlyphData != null) GlyphTableLength += CharInfo.GlyphData.Length;
+                if (CharInfo.GlyphData != null)
+                {
+                    GlyphTableLength += CharInfo.GlyphData.Length;
+                }
             }
 
             // save final length at the last array location
@@ -931,7 +1095,9 @@ namespace PdfFileWriter
 
             // save it in table record
             if (TableRecordArray[(int) Tag.glyf].Length != GlyphTableLength)
+            {
                 throw new ApplicationException("Glyph table length does not match header");
+            }
 
             // test if the table can be stored in short integer
             headTable.IndexToLocFormat = (GlyphTableLength & 0xfffe0000) == 0 ? (short) 0 : (short) 1;
@@ -942,13 +1108,19 @@ namespace PdfFileWriter
                 // short format
                 Buffer = new byte[2 * LocArray.Length];
                 BufPtr = 0;
-                foreach (var Loc in LocArray) WriteInt16BigEndian(Loc >> 1);
+                foreach (var Loc in LocArray)
+                {
+                    WriteInt16BigEndian(Loc >> 1);
+                }
             }
             else
             {
                 // long format
                 Buffer = new byte[4 * LocArray.Length];
-                foreach (var Loc in LocArray) WriteUInt32BigEndian((uint) Loc);
+                foreach (var Loc in LocArray)
+                {
+                    WriteUInt32BigEndian((uint) Loc);
+                }
             }
 
             // save in table record array
@@ -978,10 +1150,14 @@ namespace PdfFileWriter
             // test type of font
             if (cmapSubTbl.EncodingID != 0)
                 // alphabetic font
+            {
                 NewSubTbl.SegArray[0] = new cmapSeg(FirstChar, LastChar, 0, 2);
+            }
             else
                 // symbolic font
+            {
                 NewSubTbl.SegArray[0] = new cmapSeg(0xf000 + FirstChar, 0xf000 + LastChar, 0, 2);
+            }
 
             NewSubTbl.SegArray[1] = new cmapSeg(0xffff, 0xffff, 1, 0);
 
@@ -1027,24 +1203,37 @@ namespace PdfFileWriter
             WriteUInt16BigEndian(NewSubTbl.RangeShift);
 
             // end character
-            for (var Seg = 0; Seg < NewSubTbl.SegCount; Seg++) WriteUInt16BigEndian(NewSubTbl.SegArray[Seg].EndChar);
+            for (var Seg = 0; Seg < NewSubTbl.SegCount; Seg++)
+            {
+                WriteUInt16BigEndian(NewSubTbl.SegArray[Seg].EndChar);
+            }
 
             // padding
             WriteUInt16BigEndian(0);
 
             // start character
-            for (var Seg = 0; Seg < NewSubTbl.SegCount; Seg++) WriteUInt16BigEndian(NewSubTbl.SegArray[Seg].StartChar);
+            for (var Seg = 0; Seg < NewSubTbl.SegCount; Seg++)
+            {
+                WriteUInt16BigEndian(NewSubTbl.SegArray[Seg].StartChar);
+            }
 
             // IDDelta
-            for (var Seg = 0; Seg < NewSubTbl.SegCount; Seg++) WriteInt16BigEndian(NewSubTbl.SegArray[Seg].IDDelta);
+            for (var Seg = 0; Seg < NewSubTbl.SegCount; Seg++)
+            {
+                WriteInt16BigEndian(NewSubTbl.SegArray[Seg].IDDelta);
+            }
 
             // IDRangeOffset
             for (var Seg = 0; Seg < NewSubTbl.SegCount; Seg++)
+            {
                 WriteUInt16BigEndian((ushort) (NewSubTbl.SegArray[Seg].IDRangeOffset * 2));
+            }
 
             // char to glyph translation
             for (var Glyph = 0; Glyph < NewSubTbl.GlyphArray.Length; Glyph++)
+            {
                 WriteUInt16BigEndian(NewSubTbl.GlyphArray[Glyph]);
+            }
 
             // save
             TableRecordArray[(int) Tag.cmap].Data = Buffer;
@@ -1064,13 +1253,19 @@ namespace PdfFileWriter
             // number of advance width and left bearing pairs
             var HMSize = GlyphArray.Length - 1;
             var AdvanceWidth = GlyphArray[HMSize].DesignWidth;
-            for (HMSize--; HMSize >= 0 && GlyphArray[HMSize].DesignWidth == AdvanceWidth; HMSize--) ;
+            for (HMSize--; HMSize >= 0 && GlyphArray[HMSize].DesignWidth == AdvanceWidth; HMSize--)
+            {
+                ;
+            }
 
             HMSize += 2;
 
             // calculate size of new table
             var TableSize = 4 * HMSize;
-            if (HMSize < GlyphArray.Length) TableSize += 2 * (GlyphArray.Length - HMSize);
+            if (HMSize < GlyphArray.Length)
+            {
+                TableSize += 2 * (GlyphArray.Length - HMSize);
+            }
 
             // allocate buffer
             Buffer = new byte[TableSize];
@@ -1085,7 +1280,10 @@ namespace PdfFileWriter
             }
 
             // output left bearing pairs
-            for (; Index < GlyphArray.Length; Index++) WriteInt16BigEndian(GlyphArray[Index].DesignBBoxLeft);
+            for (; Index < GlyphArray.Length; Index++)
+            {
+                WriteInt16BigEndian(GlyphArray[Index].DesignBBoxLeft);
+            }
 
             // save number of advance width and left bearing pairs
             hheaTable.numberOfHMetrics = (ushort) HMSize;
@@ -1221,13 +1419,19 @@ namespace PdfFileWriter
             // recalculate checksum
             // in some cases the calculated checksum does not agree with the one returned by the api
             if (TableRecordArray[(int) Tag.cvt].Offset != 0)
+            {
                 TableRecordArray[(int) Tag.cvt].Checksum = TableChecksum(TableRecordArray[(int) Tag.cvt].Data);
+            }
 
             if (TableRecordArray[(int) Tag.fpgm].Offset != 0)
+            {
                 TableRecordArray[(int) Tag.fpgm].Checksum = TableChecksum(TableRecordArray[(int) Tag.fpgm].Data);
+            }
 
             if (TableRecordArray[(int) Tag.prep].Offset != 0)
+            {
                 TableRecordArray[(int) Tag.prep].Checksum = TableChecksum(TableRecordArray[(int) Tag.prep].Data);
+            }
         }
 
         ////////////////////////////////////////////////////////////////////
@@ -1246,8 +1450,12 @@ namespace PdfFileWriter
             // replace number of tables in file header
             var Tables = 0;
             foreach (var TR in TableRecordArray)
+            {
                 if (TR.Offset != 0)
+                {
                     Tables++;
+                }
+            }
 
             FileHeader.NumTables = (ushort) Tables;
 
@@ -1273,7 +1481,10 @@ namespace PdfFileWriter
             foreach (var TR in TableRecordArray)
             {
                 // skip unused table
-                if (TR.Offset == 0) continue;
+                if (TR.Offset == 0)
+                {
+                    continue;
+                }
 
                 // table tag
                 WriteUInt32BigEndian(TR.Tag);
@@ -1314,10 +1525,16 @@ namespace PdfFileWriter
             foreach (var TR in TableRecordArray)
             {
                 // skip unused table
-                if (TR.Offset == 0) continue;
+                if (TR.Offset == 0)
+                {
+                    continue;
+                }
 
                 // test program logic
-                if (BufPtr != TR.Offset) throw new ApplicationException("Table offset");
+                if (BufPtr != TR.Offset)
+                {
+                    throw new ApplicationException("Table offset");
+                }
 
                 // all tables but glyph
                 if (TR.Tag != glyfTag)
@@ -1331,7 +1548,10 @@ namespace PdfFileWriter
                 {
                     foreach (var CharInfo in GlyphArray)
                     {
-                        if (CharInfo.GlyphData == null) continue;
+                        if (CharInfo.GlyphData == null)
+                        {
+                            continue;
+                        }
 
                         Array.Copy(CharInfo.GlyphData, 0, Buffer, BufPtr, CharInfo.GlyphData.Length);
                         BufPtr += CharInfo.GlyphData.Length;
@@ -1339,10 +1559,16 @@ namespace PdfFileWriter
                 }
 
                 // make sure buffer pointer is on 4 bytes boundry
-                for (; (BufPtr & 3) != 0; BufPtr++) Buffer[BufPtr] = 0;
+                for (; (BufPtr & 3) != 0; BufPtr++)
+                {
+                    Buffer[BufPtr] = 0;
+                }
             }
 
-            if (BufPtr != FileLength) throw new ApplicationException("Table offset");
+            if (BufPtr != FileLength)
+            {
+                throw new ApplicationException("Table offset");
+            }
 
             // insert checksum adjustment to head table
             BufPtr = TableRecordArray[(int) Tag.head].Offset + 8;
@@ -1462,7 +1688,10 @@ namespace PdfFileWriter
         )
         {
             uint ChkSum = 0;
-            for (var Ptr = 0; Ptr < Table.Length; Ptr++) ChkSum += (uint) Table[Ptr] << (24 - 8 * (Ptr & 3));
+            for (var Ptr = 0; Ptr < Table.Length; Ptr++)
+            {
+                ChkSum += (uint) Table[Ptr] << (24 - 8 * (Ptr & 3));
+            }
 
             return ChkSum;
         }
@@ -1480,7 +1709,10 @@ namespace PdfFileWriter
             for (var Index = 0; Index < 4; Index++)
             {
                 var Ch = (byte) (BinTag >> (24 - 8 * Index));
-                if (Ch >= 32 && Ch <= 126) StrTag[Index] = (char) Ch;
+                if (Ch >= 32 && Ch <= 126)
+                {
+                    StrTag[Index] = (char) Ch;
+                }
             }
 
             return StrTag.ToString();

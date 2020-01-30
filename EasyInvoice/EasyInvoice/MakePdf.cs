@@ -14,14 +14,16 @@ namespace EasyInvoice
         {
             var fileName = Path.Combine(Settings.Default.pathDest,
                 $"{DateTime.Now:yyyyMMddHHmmss}plik.pdf");
-            new GenerujPolaWDokumencie(fileName, fakturaProperty);
+            var generujPolaWDokumencie = new GenerujPolaWDokumencie(fileName, fakturaProperty);
 
             Process.Start(fileName);
 
             var idFaktura = AddInvoiceValuesDb(mw, Settings.Default.dbConn, fakturaProperty.Work);
 
             foreach (DataRow row in fakturaProperty.Work.Dt.Rows)
+            {
                 AddInvoiceExternalValuesDb(mw, Settings.Default.dbConn, idFaktura, row);
+            }
 
             fakturaProperty.Work.MyDtString = fakturaProperty.Work.Dt.Serialize();
 

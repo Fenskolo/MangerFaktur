@@ -165,14 +165,18 @@ namespace PdfFileWriter
         )
         {
             if (SideArg.Length != FitArguments[(int) FitArg])
+            {
                 throw new ApplicationException("AddDestination invalid number of arguments");
+            }
 
             this.LocMarkerName = LocMarkerName;
             this.Scope = Scope;
             var BuildDest = new StringBuilder();
             BuildDest.AppendFormat("[{0} 0 R {1}", LoctionMarkerPage.ObjectNumber, FitString[(int) FitArg]);
             foreach (var Side in SideArg)
+            {
                 BuildDest.AppendFormat(NFI.PeriodDecSep, " {0}", LoctionMarkerPage.ToPt(Side));
+            }
 
             BuildDest.Append("]");
             DestStr = BuildDest.ToString();
@@ -212,10 +216,15 @@ namespace PdfFileWriter
         )
         {
             if (LocMarkerPage.Document.LocMarkerArray == null)
+            {
                 LocMarkerPage.Document.LocMarkerArray = new List<LocationMarker>();
+            }
 
             var Index = LocMarkerPage.Document.LocMarkerArray.BinarySearch(new LocationMarker(LocMarkerName));
-            if (Index >= 0) throw new ApplicationException("Duplicate location marker");
+            if (Index >= 0)
+            {
+                throw new ApplicationException("Duplicate location marker");
+            }
 
             LocMarkerPage.Document.LocMarkerArray.Insert(~Index,
                 new LocationMarker(LocMarkerName, LocMarkerPage, Scope, FitArg, SideArg));

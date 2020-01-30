@@ -18,21 +18,26 @@ namespace EasyInvoice
         {
             get
             {
-                if (_mDt == null)
+                if (_mDt != null)
                 {
-                    _mDt = new DataTable
-                    {
-                        TableName = "TabelaFaktura"
-                    };
-                    _mDt.Columns.Add(DictionaryMain.KolumnaTowar, typeof(string));
-                    _mDt.Columns.Add(DictionaryMain.KolumnaJm);
-                    _mDt.Columns.Add(DictionaryMain.KolumnaIlosc, typeof(int));
-                    _mDt.Columns.Add(DictionaryMain.KolumnaCenaNetto, typeof(decimal));
-                    _mDt.Columns.Add(DictionaryMain.KolumnaWartoscNetto, typeof(decimal));
-                    _mDt.Columns.Add(DictionaryMain.KolumnaStawkaVat);
-                    _mDt.Columns.Add(DictionaryMain.KolumnaKwotaVat, typeof(decimal));
-                    _mDt.Columns.Add(DictionaryMain.KolumnaWartoscBrutto, typeof(decimal));
-                    if (!string.IsNullOrEmpty(MyDtString)) _mDt = HelperXml.DeserializeObject<DataTable>(MyDtString);
+                    return _mDt;
+                }
+
+                _mDt = new DataTable
+                {
+                    TableName = "TabelaFaktura"
+                };
+                _mDt.Columns.Add(DictionaryMain.KolumnaTowar, typeof(string));
+                _mDt.Columns.Add(DictionaryMain.KolumnaJm);
+                _mDt.Columns.Add(DictionaryMain.KolumnaIlosc, typeof(int));
+                _mDt.Columns.Add(DictionaryMain.KolumnaCenaNetto, typeof(decimal));
+                _mDt.Columns.Add(DictionaryMain.KolumnaWartoscNetto, typeof(decimal));
+                _mDt.Columns.Add(DictionaryMain.KolumnaStawkaVat);
+                _mDt.Columns.Add(DictionaryMain.KolumnaKwotaVat, typeof(decimal));
+                _mDt.Columns.Add(DictionaryMain.KolumnaWartoscBrutto, typeof(decimal));
+                if (!string.IsNullOrEmpty(MyDtString))
+                {
+                    _mDt = HelperXml.DeserializeObject<DataTable>(MyDtString);
                 }
 
                 return _mDt;
@@ -63,20 +68,22 @@ namespace EasyInvoice
         {
             get
             {
-                if (_mNaglowek == null)
+                if (_mNaglowek != null)
                 {
-                    var month = DateTime.Now.Month;
-                    var year = DateTime.Now.Year;
-                    var day = DateTime.DaysInMonth(year, month);
-                    _mNaglowek = new Naglowek
-                    {
-                        DataSprzedazy = new DateTime(year, month, day),
-                        DataWystawienia = new DateTime(year, month, day)
-                    };
-                    _mNaglowek.TerminZaplaty = _mNaglowek.DataSprzedazy.AddDays(14);
-                    _mNaglowek.NumerFaktury = "0001/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.Year;
-                    _mNaglowek.DataUtworzenia = DateTime.Now;
+                    return _mNaglowek;
                 }
+
+                var month = DateTime.Now.Month;
+                var year = DateTime.Now.Year;
+                var day = DateTime.DaysInMonth(year, month);
+                _mNaglowek = new Naglowek
+                {
+                    DataSprzedazy = new DateTime(year, month, day),
+                    DataWystawienia = new DateTime(year, month, day)
+                };
+                _mNaglowek.TerminZaplaty = _mNaglowek.DataSprzedazy.AddDays(14);
+                _mNaglowek.NumerFaktury = "0001/" + DateTime.Now.ToString("MM") + "/" + DateTime.Now.Year;
+                _mNaglowek.DataUtworzenia = DateTime.Now;
 
                 return _mNaglowek;
             }

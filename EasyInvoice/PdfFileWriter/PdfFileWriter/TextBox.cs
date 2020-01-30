@@ -230,12 +230,17 @@ namespace PdfFileWriter
             double LineBreakFactor = 0.5
         )
         {
-            if (BoxWidth <= 0.0) throw new ApplicationException("Box width must be greater than zero");
+            if (BoxWidth <= 0.0)
+            {
+                throw new ApplicationException("Box width must be greater than zero");
+            }
 
             this.BoxWidth = BoxWidth;
             this.FirstLineIndent = FirstLineIndent;
             if (LineBreakFactor < 0.1 || LineBreakFactor > 0.9)
+            {
                 throw new ApplicationException("LineBreakFactor must be between 0.1 and 0.9");
+            }
 
             this.LineBreakFactor = LineBreakFactor;
             SegArray = new List<TextBoxSeg>();
@@ -286,9 +291,15 @@ namespace PdfFileWriter
                 foreach (var Line in LineArray)
                 {
                     double LineWidth = 0;
-                    foreach (var Seg in Line.SegArray) LineWidth += Seg.SegWidth;
+                    foreach (var Seg in Line.SegArray)
+                    {
+                        LineWidth += Seg.SegWidth;
+                    }
 
-                    if (LineWidth > MaxWidth) MaxWidth = LineWidth;
+                    if (LineWidth > MaxWidth)
+                    {
+                        MaxWidth = LineWidth;
+                    }
                 }
 
                 return MaxWidth;
@@ -325,9 +336,15 @@ namespace PdfFileWriter
         )
         {
             var Height = BoxHeight;
-            if (LineArray.Count > 1 && LineExtraSpace != 0.0) Height += LineExtraSpace * (LineArray.Count - 1);
+            if (LineArray.Count > 1 && LineExtraSpace != 0.0)
+            {
+                Height += LineExtraSpace * (LineArray.Count - 1);
+            }
 
-            if (ParagraphCount > 1 && ParagraphExtraSpace != 0.0) Height += ParagraphExtraSpace * (ParagraphCount - 1);
+            if (ParagraphCount > 1 && ParagraphExtraSpace != 0.0)
+            {
+                Height += ParagraphExtraSpace * (ParagraphCount - 1);
+            }
 
             return Height;
         }
@@ -347,10 +364,16 @@ namespace PdfFileWriter
         )
         {
             // textbox is empty
-            if (LineArray.Count == 0) return 0.0;
+            if (LineArray.Count == 0)
+            {
+                return 0.0;
+            }
 
             // line count is greater than available lines
-            if (LineCount >= LineArray.Count) return BoxHeightExtra(LineExtraSpace, ParagraphExtraSpace);
+            if (LineCount >= LineArray.Count)
+            {
+                return BoxHeightExtra(LineExtraSpace, ParagraphExtraSpace);
+            }
 
             // calculate height for requested line count
             double Height = 0;
@@ -358,10 +381,16 @@ namespace PdfFileWriter
             {
                 var Line = LineArray[Index];
                 Height += Line.LineHeight;
-                if (Index + 1 == LineCount) break;
+                if (Index + 1 == LineCount)
+                {
+                    break;
+                }
 
                 Height += LineExtraSpace;
-                if (Line.EndOfParagraph) Height += ParagraphExtraSpace;
+                if (Line.EndOfParagraph)
+                {
+                    Height += ParagraphExtraSpace;
+                }
             }
 
             return Height;
@@ -393,7 +422,10 @@ namespace PdfFileWriter
             for (; LineStart < LineArray.Count; LineStart++)
             {
                 var Line = LineArray[LineStart];
-                if (!Line.EndOfParagraph || Line.SegArray.Length > 1 || Line.SegArray[0].SegWidth != 0) break;
+                if (!Line.EndOfParagraph || Line.SegArray.Length > 1 || Line.SegArray[0].SegWidth != 0)
+                {
+                    break;
+                }
             }
 
             // end of textbox
@@ -410,7 +442,10 @@ namespace PdfFileWriter
             for (;;)
             {
                 var Line = LineArray[End];
-                if (Total + Line.LineHeight > RequestHeight) break;
+                if (Total + Line.LineHeight > RequestHeight)
+                {
+                    break;
+                }
 
                 Total += Line.LineHeight;
                 End++;
@@ -420,10 +455,16 @@ namespace PdfFileWriter
                     Height = Total;
                 }
 
-                if (End == LineCount) break;
+                if (End == LineCount)
+                {
+                    break;
+                }
 
                 Total += LineExtraSpace;
-                if (Line.EndOfParagraph) Total += ParagraphExtraSpace;
+                if (Line.EndOfParagraph)
+                {
+                    Total += ParagraphExtraSpace;
+                }
             }
 
             return Height;
@@ -435,13 +476,19 @@ namespace PdfFileWriter
         public void Terminate()
         {
             // terminate last line
-            if (SegArray.Count != 0) AddLine(true);
+            if (SegArray.Count != 0)
+            {
+                AddLine(true);
+            }
 
             // remove trailing empty paragraphs
             for (var Index = LineArray.Count - 1; Index >= 0; Index--)
             {
                 var Line = LineArray[Index];
-                if (!Line.EndOfParagraph || Line.SegArray.Length > 1 || Line.SegArray[0].SegWidth != 0) break;
+                if (!Line.EndOfParagraph || Line.SegArray.Length > 1 || Line.SegArray[0].SegWidth != 0)
+                {
+                    break;
+                }
 
                 BoxHeight -= Line.Ascent + Line.Descent;
                 ParagraphCount--;
@@ -601,7 +648,10 @@ namespace PdfFileWriter
         )
         {
             // text is null or empty
-            if (string.IsNullOrEmpty(Text)) return;
+            if (string.IsNullOrEmpty(Text))
+            {
+                return;
+            }
 
             // create new text segment
             TextBoxSeg Seg;
@@ -636,7 +686,10 @@ namespace PdfFileWriter
                     Seg.Text += Text.Substring(TextStart, TextPtr - TextStart);
 
                     // test for new line after carriage return
-                    if (CurChar == '\r' && TextPtr + 1 < Text.Length && Text[TextPtr + 1] == '\n') TextPtr++;
+                    if (CurChar == '\r' && TextPtr + 1 < Text.Length && Text[TextPtr + 1] == '\n')
+                    {
+                        TextPtr++;
+                    }
 
                     // move pointer to one after the eol
                     TextStart = TextPtr + 1;
@@ -648,7 +701,10 @@ namespace PdfFileWriter
                     PrevChar = ' ';
 
                     // end of text
-                    if (TextPtr + 1 == Text.Length) return;
+                    if (TextPtr + 1 == Text.Length)
+                    {
+                        return;
+                    }
 
                     // add new empty segment
                     Seg = new TextBoxSeg(Font, FontSize, DrawStyle, FontColor, AnnotAction);
@@ -692,10 +748,15 @@ namespace PdfFileWriter
                 // box width
                 var Width = BoxWidth;
                 if (FirstLineIndent != 0 && (LineArray.Count == 0 || LineArray[LineArray.Count - 1].EndOfParagraph))
+                {
                     Width -= FirstLineIndent;
+                }
 
                 // current line width is less than or equal box width
-                if (LineWidth <= Width) continue;
+                if (LineWidth <= Width)
+                {
+                    continue;
+                }
 
                 // append text to current segemnt
                 Seg.Text += Text.Substring(TextStart, TextPtr - TextStart + 1);
@@ -740,7 +801,10 @@ namespace PdfFileWriter
             }
 
             // remove blanks from the area between the two sides of the segment
-            for (; BreakPtr < BreakSeg.Text.Length && BreakSeg.Text[BreakPtr] == ' '; BreakPtr++) ;
+            for (; BreakPtr < BreakSeg.Text.Length && BreakSeg.Text[BreakPtr] == ' '; BreakPtr++)
+            {
+                ;
+            }
 
             // save the area after the first line
             if (BreakPtr < BreakSeg.Text.Length)
@@ -764,24 +828,35 @@ namespace PdfFileWriter
         )
         {
             // end of paragraph
-            if (EndOfParagraph) BreakSegIndex = SegArray.Count;
+            if (EndOfParagraph)
+            {
+                BreakSegIndex = SegArray.Count;
+            }
 
             // test for box too narrow
-            if (BreakSegIndex < 1) throw new ApplicationException("TextBox is too narrow.");
+            if (BreakSegIndex < 1)
+            {
+                throw new ApplicationException("TextBox is too narrow.");
+            }
 
             // test for possible trailing blanks
             if (SegArray[BreakSegIndex - 1].Text.EndsWith(" "))
                 // remove trailing blanks
+            {
                 while (BreakSegIndex > 0)
                 {
                     var TempSeg = SegArray[BreakSegIndex - 1];
                     TempSeg.Text = TempSeg.Text.TrimEnd(' ');
                     TempSeg.SegWidth = TempSeg.Font.TextWidth(TempSeg.FontSize, TempSeg.Text);
-                    if (TempSeg.Text.Length != 0 || BreakSegIndex == 1 && EndOfParagraph) break;
+                    if (TempSeg.Text.Length != 0 || BreakSegIndex == 1 && EndOfParagraph)
+                    {
+                        break;
+                    }
 
                     BreakSegIndex--;
                     SegArray.RemoveAt(BreakSegIndex);
                 }
+            }
 
             // test for abnormal case of a blank line and not end of paragraph
             if (BreakSegIndex > 0)
@@ -800,15 +875,25 @@ namespace PdfFileWriter
                 foreach (var Seg in LineSegArray)
                 {
                     var Ascent = Seg.Font.AscentPlusLeading(Seg.FontSize);
-                    if (Ascent > LineAscent) LineAscent = Ascent;
+                    if (Ascent > LineAscent)
+                    {
+                        LineAscent = Ascent;
+                    }
 
                     var Descent = Seg.Font.DescentPlusLeading(Seg.FontSize);
-                    if (Descent > LineDescent) LineDescent = Descent;
+                    if (Descent > LineDescent)
+                    {
+                        LineDescent = Descent;
+                    }
 
                     var SpaceCount = 0;
                     foreach (var Chr in Seg.Text)
+                    {
                         if (Chr == ' ')
+                        {
                             SpaceCount++;
+                        }
+                    }
 
                     Seg.SpaceCount = SpaceCount;
                 }
@@ -820,7 +905,10 @@ namespace PdfFileWriter
                 BoxHeight += LineAscent + LineDescent;
 
                 // update paragraph count
-                if (EndOfParagraph) ParagraphCount++;
+                if (EndOfParagraph)
+                {
+                    ParagraphCount++;
+                }
 
                 // remove segments
                 SegArray.RemoveRange(0, BreakSegIndex);
@@ -832,7 +920,10 @@ namespace PdfFileWriter
 
             // new line width
             LineWidth = 0.0;
-            foreach (var Seg in SegArray) LineWidth += Seg.SegWidth;
+            foreach (var Seg in SegArray)
+            {
+                LineWidth += Seg.SegWidth;
+            }
         }
     }
 }

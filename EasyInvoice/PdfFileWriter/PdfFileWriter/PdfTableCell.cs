@@ -381,7 +381,10 @@ namespace PdfFileWriter
         {
             get
             {
-                if (FrameWidth == 0.0) Parent.PdfTableInitialization();
+                if (FrameWidth == 0.0)
+                {
+                    Parent.PdfTableInitialization();
+                }
 
                 return FrameWidth - Style.Margin.Left - Style.Margin.Right;
             }
@@ -467,7 +470,9 @@ namespace PdfFileWriter
 
                     // test width
                     if (TextBox.BoxWidth - (ClientRight - ClientLeft) > Parent.Epsilon)
+                    {
                         throw new ApplicationException("PdfTableCell: TextBox width is greater than column width");
+                    }
 
                     // textbox initialization
                     TextBoxInitialization();
@@ -524,7 +529,10 @@ namespace PdfFileWriter
                     var Width = ClientWidth;
 
                     // calculate QR Code width
-                    if (QRCodeWidth == 0.0 || QRCodeWidth > Width) QRCodeWidth = Width;
+                    if (QRCodeWidth == 0.0 || QRCodeWidth > Width)
+                    {
+                        QRCodeWidth = Width;
+                    }
 
                     // adjust cell's height
                     CellHeight += QRCodeWidth;
@@ -541,7 +549,9 @@ namespace PdfFileWriter
 
                     // test barcode height
                     if (Style.BarcodeHeight <= 0.0)
+                    {
                         throw new ApplicationException("PdfTableStyle: BarcodeHeight must be defined.");
+                    }
 
                     // calculate total barcode height
                     BarcodeBox = Barcode.GetBarcodeBox(Style.BarcodeBarWidth, Style.BarcodeHeight, Style.Font,
@@ -560,33 +570,61 @@ namespace PdfFileWriter
                     var Format = Style.Format;
                     var NumberFormat = Style.NumberFormatInfo;
                     if (ValueType == typeof(int))
+                    {
                         FormattedText = ((int) Value).ToString(Format, NumberFormat);
+                    }
                     else if (ValueType == typeof(float))
+                    {
                         FormattedText = ((float) Value).ToString(Format, NumberFormat);
+                    }
                     else if (ValueType == typeof(double))
+                    {
                         FormattedText = ((double) Value).ToString(Format, NumberFormat);
+                    }
                     else if (ValueType == typeof(bool))
+                    {
                         FormattedText = ((bool) Value).ToString();
+                    }
                     else if (ValueType == typeof(char))
+                    {
                         FormattedText = ((char) Value).ToString();
+                    }
                     else if (ValueType == typeof(byte))
+                    {
                         FormattedText = ((byte) Value).ToString(Format, NumberFormat);
+                    }
                     else if (ValueType == typeof(sbyte))
+                    {
                         FormattedText = ((sbyte) Value).ToString(Format, NumberFormat);
+                    }
                     else if (ValueType == typeof(short))
+                    {
                         FormattedText = ((short) Value).ToString(Format, NumberFormat);
+                    }
                     else if (ValueType == typeof(ushort))
+                    {
                         FormattedText = ((ushort) Value).ToString(Format, NumberFormat);
+                    }
                     else if (ValueType == typeof(uint))
+                    {
                         FormattedText = ((uint) Value).ToString(Format, NumberFormat);
+                    }
                     else if (ValueType == typeof(long))
+                    {
                         FormattedText = ((long) Value).ToString(Format, NumberFormat);
+                    }
                     else if (ValueType == typeof(ulong))
+                    {
                         FormattedText = ((ulong) Value).ToString(Format, NumberFormat);
+                    }
                     else if (ValueType == typeof(decimal))
+                    {
                         FormattedText = ((decimal) Value).ToString(Format, NumberFormat);
+                    }
                     else
+                    {
                         throw new ApplicationException("PdfTableCell: Unknown object type");
+                    }
 
                     // add line spacing
                     CellHeight += Style.FontLineSpacing;
@@ -608,10 +646,16 @@ namespace PdfFileWriter
             }
 
             // test for minimum height requirement
-            if (CellHeight < Style.MinHeight) CellHeight = Style.MinHeight;
+            if (CellHeight < Style.MinHeight)
+            {
+                CellHeight = Style.MinHeight;
+            }
 
             // cell minimum height for all types but textbox
-            if (Type != CellType.TextBox) TextBoxCellHeight = CellHeight;
+            if (Type != CellType.TextBox)
+            {
+                TextBoxCellHeight = CellHeight;
+            }
 
             // return result
         }
@@ -628,8 +672,10 @@ namespace PdfFileWriter
             // textbox minimum height for page break calculations
             if (!Header && Style.TextBoxPageBreakLines != 0 && Style.TextBoxPageBreakLines < TextBox.LineCount)
                 // calculate TextBox height and add to cell height
+            {
                 TextBoxHeightPageBreak = TextBox.BoxHeightExtra(Style.TextBoxPageBreakLines,
                     Style.TextBoxLineExtraSpace, Style.TextBoxParagraphExtraSpace);
+            }
 
             // required cell height for page break calculations and for full textbox height
             TextBoxCellHeight = CellHeight + TextBoxHeightPageBreak;
@@ -673,9 +719,11 @@ namespace PdfFileWriter
                     // calculate textbox size and position
                     int LineEnd;
                     if (TextBoxLineNo != 0 || TextBoxHeight > ClientTop - ClientBottom + Parent.Epsilon)
+                    {
                         TextBoxHeight = TextBox.BoxHeightExtra(ref TextBoxLineNo, out LineEnd,
                             ClientTop - ClientBottom + Parent.Epsilon, Style.TextBoxLineExtraSpace,
                             Style.TextBoxParagraphExtraSpace);
+                    }
 
                     var YPos = TopPos(TextBoxHeight);
 
@@ -725,8 +773,10 @@ namespace PdfFileWriter
 
             // cell has a web link
             if (AnnotAction != null)
+            {
                 Parent.Page.AddAnnotation(new PdfRectangle(ClientLeft, ClientBottom, ClientRight, ClientTop),
                     AnnotAction);
+            }
         }
 
         ////////////////////////////////////////////////////////////////////
@@ -772,15 +822,24 @@ namespace PdfFileWriter
         {
             if ((Style.Alignment &
                  (ContentAlignment.TopLeft | ContentAlignment.MiddleLeft | ContentAlignment.BottomLeft)) !=
-                0) return ClientLeft;
+                0)
+            {
+                return ClientLeft;
+            }
 
             if ((Style.Alignment & (ContentAlignment.TopCenter | ContentAlignment.MiddleCenter |
                                     ContentAlignment.BottomCenter)) !=
-                0) return 0.5 * (ClientLeft + ClientRight - Width);
+                0)
+            {
+                return 0.5 * (ClientLeft + ClientRight - Width);
+            }
 
             if ((Style.Alignment &
                  (ContentAlignment.TopRight | ContentAlignment.MiddleRight | ContentAlignment.BottomRight)) !=
-                0) return ClientRight - Width;
+                0)
+            {
+                return ClientRight - Width;
+            }
 
             return ClientLeft;
         }
@@ -792,14 +851,23 @@ namespace PdfFileWriter
         {
             if ((Style.Alignment &
                  (ContentAlignment.TopLeft | ContentAlignment.TopCenter | ContentAlignment.TopRight)) !=
-                0) return ClientTop - Style.FontAscent;
+                0)
+            {
+                return ClientTop - Style.FontAscent;
+            }
 
             if ((Style.Alignment & (ContentAlignment.BottomLeft | ContentAlignment.BottomCenter |
-                                    ContentAlignment.BottomRight)) != 0) return ClientBottom + Style.FontDescent;
+                                    ContentAlignment.BottomRight)) != 0)
+            {
+                return ClientBottom + Style.FontDescent;
+            }
 
             if ((Style.Alignment & (ContentAlignment.MiddleLeft | ContentAlignment.MiddleCenter |
                                     ContentAlignment.MiddleRight)) !=
-                0) return 0.5 * (ClientTop + ClientBottom - Style.FontAscent + Style.FontDescent);
+                0)
+            {
+                return 0.5 * (ClientTop + ClientBottom - Style.FontAscent + Style.FontDescent);
+            }
 
             return ClientTop - Style.FontAscent;
         }
@@ -814,14 +882,23 @@ namespace PdfFileWriter
         {
             if ((Style.Alignment &
                  (ContentAlignment.TopLeft | ContentAlignment.TopCenter | ContentAlignment.TopRight)) !=
-                0) return ClientTop;
+                0)
+            {
+                return ClientTop;
+            }
 
             if ((Style.Alignment & (ContentAlignment.MiddleLeft | ContentAlignment.MiddleCenter |
                                     ContentAlignment.MiddleRight)) !=
-                0) return 0.5 * (ClientTop + ClientBottom + Height);
+                0)
+            {
+                return 0.5 * (ClientTop + ClientBottom + Height);
+            }
 
             if ((Style.Alignment & (ContentAlignment.BottomLeft | ContentAlignment.BottomCenter |
-                                    ContentAlignment.BottomRight)) != 0) return ClientBottom + Height;
+                                    ContentAlignment.BottomRight)) != 0)
+            {
+                return ClientBottom + Height;
+            }
 
             return ClientTop;
         }

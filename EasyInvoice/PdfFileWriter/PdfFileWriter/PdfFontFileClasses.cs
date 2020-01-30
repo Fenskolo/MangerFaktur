@@ -43,7 +43,10 @@ namespace PdfFileWriter
             get
             {
                 int Mask;
-                for (Mask = 1; Mask <= NumTables; Mask <<= 1) ;
+                for (Mask = 1; Mask <= NumTables; Mask <<= 1)
+                {
+                    ;
+                }
 
                 return (ushort) (Mask << 3);
             }
@@ -55,7 +58,10 @@ namespace PdfFileWriter
             get
             {
                 int Power;
-                for (Power = 1; 1 << Power <= NumTables; Power++) ;
+                for (Power = 1; 1 << Power <= NumTables; Power++)
+                {
+                    ;
+                }
 
                 return (ushort) (Power - 1);
             }
@@ -133,7 +139,10 @@ namespace PdfFileWriter
             get
             {
                 int Mask;
-                for (Mask = 1; Mask <= SegCount; Mask <<= 1) ;
+                for (Mask = 1; Mask <= SegCount; Mask <<= 1)
+                {
+                    ;
+                }
 
                 return (ushort) Mask;
             }
@@ -145,7 +154,10 @@ namespace PdfFileWriter
             get
             {
                 int Power;
-                for (Power = 1; 1 << Power <= SegCount; Power++) ;
+                for (Power = 1; 1 << Power <= SegCount; Power++)
+                {
+                    ;
+                }
 
                 return (ushort) (Power - 1);
             }
@@ -160,9 +172,15 @@ namespace PdfFileWriter
             cmapSubTbl Other
         )
         {
-            if (PlatformID != Other.PlatformID) return PlatformID - Other.PlatformID;
+            if (PlatformID != Other.PlatformID)
+            {
+                return PlatformID - Other.PlatformID;
+            }
 
-            if (EncodingID != Other.EncodingID) return EncodingID - Other.EncodingID;
+            if (EncodingID != Other.EncodingID)
+            {
+                return EncodingID - Other.EncodingID;
+            }
 
             return Format - Other.Format;
         }

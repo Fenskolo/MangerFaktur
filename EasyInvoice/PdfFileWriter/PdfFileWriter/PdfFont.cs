@@ -215,7 +215,9 @@ namespace PdfFileWriter
 
             // font style cannot be underline or strikeout
             if ((FontStyle & (FontStyle.Underline | FontStyle.Strikeout)) != 0)
+            {
                 throw new ApplicationException("Font resource cannot have underline or strikeout");
+            }
 
             // create two resource codes
             ResourceCode = Document.GenerateResourceNumber('F');
@@ -229,7 +231,9 @@ namespace PdfFileWriter
 
             // test font style availability
             if (!FontFamily.IsStyleAvailable(FontStyle))
+            {
                 throw new ApplicationException("Font style not available for font family");
+            }
 
             // design height
             DesignHeight = FontFamily.GetEmHeight(FontStyle);
@@ -258,15 +262,28 @@ namespace PdfFileWriter
 
             // make sure we have true type font and not device font
             if ((OTM.otmTextMetric.tmPitchAndFamily & 0xe) != 6)
+            {
                 throw new ApplicationException("Font must be True Type and vector");
+            }
 
             // PDF font flags
             FontFlags = 0;
-            if ((OTM.otmfsSelection & 1) != 0) FontFlags |= PdfFontFlags.Italic;
-            // roman font is a serif font
-            if (OTM.otmTextMetric.tmPitchAndFamily >> 4 == 1) FontFlags |= PdfFontFlags.Serif;
+            if ((OTM.otmfsSelection & 1) != 0)
+            {
+                FontFlags |= PdfFontFlags.Italic;
+            }
 
-            if (OTM.otmTextMetric.tmPitchAndFamily >> 4 == 4) FontFlags |= PdfFontFlags.Script;
+            // roman font is a serif font
+            if (OTM.otmTextMetric.tmPitchAndFamily >> 4 == 1)
+            {
+                FontFlags |= PdfFontFlags.Serif;
+            }
+
+            if (OTM.otmTextMetric.tmPitchAndFamily >> 4 == 4)
+            {
+                FontFlags |= PdfFontFlags.Script;
+            }
+
             // #define SYMBOL_CHARSET 2
             if (OTM.otmTextMetric.tmCharSet == 2)
             {
@@ -280,7 +297,10 @@ namespace PdfFileWriter
             }
 
             // #define TMPF_FIXED_PITCH 0x01 (Note very carefully that those meanings are the opposite of what the constant name implies.)
-            if ((OTM.otmTextMetric.tmPitchAndFamily & 1) == 0) FontFlags |= PdfFontFlags.FixedPitch;
+            if ((OTM.otmTextMetric.tmPitchAndFamily & 1) == 0)
+            {
+                FontFlags |= PdfFontFlags.FixedPitch;
+            }
 
             // strikeout
             DesignStrikeoutPosition = OTM.otmsStrikeoutPosition;
@@ -320,10 +340,16 @@ namespace PdfFileWriter
         )
         {
             var Cmp = string.Compare(FontFamilyName, Other.FontFamilyName, true);
-            if (Cmp != 0) return Cmp;
+            if (Cmp != 0)
+            {
+                return Cmp;
+            }
 
             Cmp = FontStyle - Other.FontStyle;
-            if (Cmp != 0) return Cmp;
+            if (Cmp != 0)
+            {
+                return Cmp;
+            }
 
             return (EmbeddedFont ? 1 : 0) - (Other.EmbeddedFont ? 1 : 0);
         }
@@ -362,10 +388,16 @@ namespace PdfFileWriter
             bool EmbeddedFont = true // embed font in PDF document file
         )
         {
-            if (Document.FontArray == null) Document.FontArray = new List<PdfFont>();
+            if (Document.FontArray == null)
+            {
+                Document.FontArray = new List<PdfFont>();
+            }
 
             var Index = Document.FontArray.BinarySearch(new PdfFont(FontFamilyName, FontStyle, EmbeddedFont));
-            if (Index >= 0) return Document.FontArray[Index];
+            if (Index >= 0)
+            {
+                return Document.FontArray[Index];
+            }
 
             var NewFont = new PdfFont(Document, FontFamilyName, FontStyle, EmbeddedFont);
             Document.FontArray.Insert(~Index, NewFont);
@@ -394,7 +426,9 @@ namespace PdfFileWriter
         {
             // no support for control characters 
             if (CharValue < ' ' || CharValue > '~' && CharValue < 160 || CharValue > 0xffff)
+            {
                 throw new ApplicationException("No support for control characters 0-31 or 127-159");
+            }
 
             // split input character
             var RowIndex = CharValue >> 8;
@@ -404,7 +438,10 @@ namespace PdfFileWriter
             if (CharInfoArray[RowIndex] == null)
             {
                 // we know that this block is empty
-                if (CharInfoBlockEmpty[RowIndex]) return UndefinedCharInfo;
+                if (CharInfoBlockEmpty[RowIndex])
+                {
+                    return UndefinedCharInfo;
+                }
 
                 // get block array
                 var Block = FontApi.GetGlyphMetricsApi(CharValue);
@@ -422,7 +459,10 @@ namespace PdfFileWriter
             var Info = CharInfoArray[RowIndex][ColIndex];
 
             // undefined
-            if (Info == null) return UndefinedCharInfo;
+            if (Info == null)
+            {
+                return UndefinedCharInfo;
+            }
 
             // character info
             return Info;
@@ -707,11 +747,15 @@ namespace PdfFileWriter
         {
             // character style is not superscript or subscript
             if ((DrawStyle & (DrawStyle.Subscript | DrawStyle.Superscript)) == 0)
+            {
                 return FontDesignToUserUnits(FontSize, GetCharInfo(CharValue).DesignWidth);
+            }
 
             // superscript
             if ((DrawStyle & DrawStyle.Superscript) != 0)
+            {
                 return FontDesignToUserUnits(SubscriptSize(FontSize), GetCharInfo(CharValue).DesignWidth);
+            }
 
             // subscript
             return FontDesignToUserUnits(SuperscriptSize(FontSize), GetCharInfo(CharValue).DesignWidth);
@@ -756,7 +800,10 @@ namespace PdfFileWriter
         {
             // text width
             var Width = 0;
-            foreach (var CharValue in Text) Width += GetCharInfo(CharValue).DesignWidth;
+            foreach (var CharValue in Text)
+            {
+                Width += GetCharInfo(CharValue).DesignWidth;
+            }
 
             // to user unit of measure
             return FontDesignToUserUnits(FontSize, Width);
@@ -784,7 +831,10 @@ namespace PdfFileWriter
         {
             WordSpacing = 0;
             CharSpacing = 0;
-            if (Text == null || Text.Length < 2) return false;
+            if (Text == null || Text.Length < 2)
+            {
+                return false;
+            }
 
             var Width = 0;
             var SpaceCount = 0;
@@ -794,7 +844,10 @@ namespace PdfFileWriter
                 Width += GetCharInfo(CharValue).DesignWidth;
 
                 // space count
-                if (CharValue == ' ') SpaceCount++;
+                if (CharValue == ' ')
+                {
+                    SpaceCount++;
+                }
             }
 
             // to user unit of measure
@@ -804,10 +857,16 @@ namespace PdfFileWriter
             var ExtraSpace = ReqWidth - UserUnitsWidth;
 
             // string is too wide
-            if (ExtraSpace < -Document.Epsilon) return false;
+            if (ExtraSpace < -Document.Epsilon)
+            {
+                return false;
+            }
 
             // string is just right
-            if (ExtraSpace < Document.Epsilon) return true;
+            if (ExtraSpace < Document.Epsilon)
+            {
+                return true;
+            }
 
             // String does not have any spacesS
             if (SpaceCount == 0)
@@ -820,7 +879,10 @@ namespace PdfFileWriter
             WordSpacing = ExtraSpace / SpaceCount;
 
             // extra space is equal or less than one blank
-            if (WordSpacing <= FontDesignToUserUnits(FontSize, GetCharInfo(' ').DesignWidth)) return true;
+            if (WordSpacing <= FontDesignToUserUnits(FontSize, GetCharInfo(' ').DesignWidth))
+            {
+                return true;
+            }
 
             // extra space is larger that one blank
             // increase character and word spacing
@@ -843,7 +905,10 @@ namespace PdfFileWriter
             string Text
         )
         {
-            if (string.IsNullOrEmpty(Text)) return null;
+            if (string.IsNullOrEmpty(Text))
+            {
+                return null;
+            }
 
             // initialize result box to first character
             var FirstChar = GetCharInfo(Text[0]);
@@ -863,10 +928,16 @@ namespace PdfFileWriter
                     var Info = GetCharInfo(Text[Index]);
 
                     // update bottom
-                    if (Info.DesignBBoxBottom < Bottom) Bottom = Info.DesignBBoxBottom;
+                    if (Info.DesignBBoxBottom < Bottom)
+                    {
+                        Bottom = Info.DesignBBoxBottom;
+                    }
 
                     // update top
-                    if (Info.DesignBBoxTop > Top) Top = Info.DesignBBoxTop;
+                    if (Info.DesignBBoxTop > Top)
+                    {
+                        Top = Info.DesignBBoxTop;
+                    }
 
                     // accumulate width
                     Width += Info.DesignWidth;
@@ -895,21 +966,34 @@ namespace PdfFileWriter
         )
         {
             // string is empty or one character
-            if (string.IsNullOrEmpty(Text) || Text.Length == 1) return null;
+            if (string.IsNullOrEmpty(Text) || Text.Length == 1)
+            {
+                return null;
+            }
 
             // find first and last characters of the text
             int First = Text[0];
             int Last = Text[0];
             foreach (var Chr in Text)
+            {
                 if (Chr < First)
+                {
                     First = Chr;
-                else if (Chr > Last) Last = Chr;
+                }
+                else if (Chr > Last)
+                {
+                    Last = Chr;
+                }
+            }
 
             // get kerning information
             var KP = FontApi.GetKerningPairsApi(First, Last);
 
             // no kerning info available for this font or for this range
-            if (KP == null) return null;
+            if (KP == null)
+            {
+                return null;
+            }
 
             // prepare a list of kerning adjustments
             var KA = new List<KerningAdjust>();
@@ -922,7 +1006,10 @@ namespace PdfFileWriter
                 var Index = Array.BinarySearch(KP, new WinKerningPair(Text[Ptr2 - 1], Text[Ptr2]));
 
                 // not kerning information for this pair
-                if (Index < 0) continue;
+                if (Index < 0)
+                {
+                    continue;
+                }
 
                 // add kerning adjustment in PDF font units (windows design units divided by windows font design height)
                 KA.Add(new KerningAdjust(Text.Substring(Ptr1, Ptr2 - Ptr1),
@@ -933,7 +1020,10 @@ namespace PdfFileWriter
             }
 
             // list is empty
-            if (KA.Count == 0) return null;
+            if (KA.Count == 0)
+            {
+                return null;
+            }
 
             // add last
             KA.Add(new KerningAdjust(Text.Substring(Ptr1, Text.Length - Ptr1), 0));
@@ -957,7 +1047,10 @@ namespace PdfFileWriter
         )
         {
             // text is null or empty
-            if (KerningArray == null || KerningArray.Length == 0) return 0;
+            if (KerningArray == null || KerningArray.Length == 0)
+            {
+                return 0;
+            }
 
             // total width
             double Width = 0;
@@ -990,7 +1083,9 @@ namespace PdfFileWriter
                 PdfFontName.Append("PFWAAA+");
                 var Ptr1 = 6;
                 for (var Ptr2 = ResourceCode.Length - 1; Ptr2 >= 0 && char.IsDigit(ResourceCode[Ptr2]); Ptr2--)
+                {
                     PdfFontName[Ptr1--] = (char) (ResourceCode[Ptr2] + ('A' - '0'));
+                }
             }
 
             // PDF readers are not happy with space in font name
@@ -1000,9 +1095,13 @@ namespace PdfFileWriter
             if ((DesignFont.Style & FontStyle.Bold) != 0)
             {
                 if ((DesignFont.Style & FontStyle.Italic) != 0)
+                {
                     PdfFontName.Append(",BoldItalic");
+                }
                 else
+                {
                     PdfFontName.Append(",Bold");
+                }
             }
             else if ((DesignFont.Style & FontStyle.Italic) != 0)
             {
@@ -1010,10 +1109,16 @@ namespace PdfFileWriter
             }
 
             // we have one byte characters 
-            if (FontResCodeUsed) CharCodeToPdfFile(PdfFontName.ToString());
+            if (FontResCodeUsed)
+            {
+                CharCodeToPdfFile(PdfFontName.ToString());
+            }
 
             // we have two bytes characters 
-            if (FontResGlyphUsed) GlyphIndexToPdfFile(PdfFontName.ToString());
+            if (FontResGlyphUsed)
+            {
+                GlyphIndexToPdfFile(PdfFontName.ToString());
+            }
 
             // dispose resources
             Dispose();
@@ -1033,13 +1138,22 @@ namespace PdfFileWriter
             int LastChar;
             for (FirstChar = 0;
                 FirstChar < 256 && (CharInfoArray[0][FirstChar] == null || !CharInfoArray[0][FirstChar].ActiveChar);
-                FirstChar++) ;
+                FirstChar++)
+            {
+                ;
+            }
 
-            if (FirstChar == 256) return;
+            if (FirstChar == 256)
+            {
+                return;
+            }
 
             for (LastChar = 255;
                 CharInfoArray[0][LastChar] == null || !CharInfoArray[0][LastChar].ActiveChar;
-                LastChar--) ;
+                LastChar--)
+            {
+                ;
+            }
 
             // add items to dictionary
             Dictionary.Add("/Subtype", "/TrueType");
@@ -1091,19 +1205,37 @@ namespace PdfFileWriter
                 var CharInfo = CharInfoArray[0][Index];
 
                 // not used
-                if (CharInfo == null || !CharInfo.ActiveChar) continue;
+                if (CharInfo == null || !CharInfo.ActiveChar)
+                {
+                    continue;
+                }
 
                 // bounding box
-                if (CharInfo.DesignBBoxLeft < Left) Left = CharInfo.DesignBBoxLeft;
+                if (CharInfo.DesignBBoxLeft < Left)
+                {
+                    Left = CharInfo.DesignBBoxLeft;
+                }
 
-                if (CharInfo.DesignBBoxBottom < Bottom) Bottom = CharInfo.DesignBBoxBottom;
+                if (CharInfo.DesignBBoxBottom < Bottom)
+                {
+                    Bottom = CharInfo.DesignBBoxBottom;
+                }
 
-                if (CharInfo.DesignBBoxRight > Right) Right = CharInfo.DesignBBoxRight;
+                if (CharInfo.DesignBBoxRight > Right)
+                {
+                    Right = CharInfo.DesignBBoxRight;
+                }
 
-                if (CharInfo.DesignBBoxTop > Top) Top = CharInfo.DesignBBoxTop;
+                if (CharInfo.DesignBBoxTop > Top)
+                {
+                    Top = CharInfo.DesignBBoxTop;
+                }
 
                 // max width
-                if (CharInfo.DesignWidth > MaxWidth) MaxWidth = CharInfo.DesignWidth;
+                if (CharInfo.DesignWidth > MaxWidth)
+                {
+                    MaxWidth = CharInfo.DesignWidth;
+                }
             }
 
             // add to font descriptor array
@@ -1198,11 +1330,15 @@ namespace PdfFileWriter
 
                 // not used
                 if (CharInfo == null || !CharInfo.ActiveChar)
+                {
                     FontWidthArray.ObjectValueAppend("0 ");
+                }
                 // used
                 else
                     // add width to width array
+                {
                     FontWidthArray.ObjectValueFormat("{0} ", (float) FontDesignToPdfUnits(CharInfo.DesignWidth));
+                }
             }
 
             // terminate width array
@@ -1283,24 +1419,45 @@ namespace PdfFileWriter
             for (var Row = 1; Row < 256; Row++)
             {
                 var OneRow = CharInfoArray[Row];
-                if (OneRow == null) continue;
+                if (OneRow == null)
+                {
+                    continue;
+                }
 
                 for (var Col = 0; Col < 256; Col++)
                 {
                     var CharInfo = OneRow[Col];
-                    if (CharInfo == null || !CharInfo.ActiveChar) continue;
+                    if (CharInfo == null || !CharInfo.ActiveChar)
+                    {
+                        continue;
+                    }
 
                     // bounding box
-                    if (CharInfo.DesignBBoxLeft < Left) Left = CharInfo.DesignBBoxLeft;
+                    if (CharInfo.DesignBBoxLeft < Left)
+                    {
+                        Left = CharInfo.DesignBBoxLeft;
+                    }
 
-                    if (CharInfo.DesignBBoxBottom < Bottom) Bottom = CharInfo.DesignBBoxBottom;
+                    if (CharInfo.DesignBBoxBottom < Bottom)
+                    {
+                        Bottom = CharInfo.DesignBBoxBottom;
+                    }
 
-                    if (CharInfo.DesignBBoxRight > Right) Right = CharInfo.DesignBBoxRight;
+                    if (CharInfo.DesignBBoxRight > Right)
+                    {
+                        Right = CharInfo.DesignBBoxRight;
+                    }
 
-                    if (CharInfo.DesignBBoxTop > Top) Top = CharInfo.DesignBBoxTop;
+                    if (CharInfo.DesignBBoxTop > Top)
+                    {
+                        Top = CharInfo.DesignBBoxTop;
+                    }
 
                     // max width
-                    if (CharInfo.DesignWidth > MaxWidth) MaxWidth = CharInfo.DesignWidth;
+                    if (CharInfo.DesignWidth > MaxWidth)
+                    {
+                        MaxWidth = CharInfo.DesignWidth;
+                    }
                 }
             }
 
@@ -1352,18 +1509,27 @@ namespace PdfFileWriter
             var RangeArray = new List<UnicodeRange>();
 
             // add one entry for undefined character
-            if (UndefinedCharInfo.ActiveChar) RangeArray.Add(new UnicodeRange(0, 0));
+            if (UndefinedCharInfo.ActiveChar)
+            {
+                RangeArray.Add(new UnicodeRange(0, 0));
+            }
 
             // look for all used characters
             for (var Row = 1; Row < 256; Row++)
             {
                 var OneRow = CharInfoArray[Row];
-                if (OneRow == null) continue;
+                if (OneRow == null)
+                {
+                    continue;
+                }
 
                 for (var Col = 0; Col < 256; Col++)
                 {
                     var CharInfo = OneRow[Col];
-                    if (CharInfo == null || !CharInfo.ActiveChar) continue;
+                    if (CharInfo == null || !CharInfo.ActiveChar)
+                    {
+                        continue;
+                    }
 
                     RangeArray.Add(new UnicodeRange(CharInfo.NewGlyphIndex, CharInfo.CharCode));
                 }
@@ -1383,7 +1549,10 @@ namespace PdfFileWriter
                 // remove the higher char code
                 if (Next.GlyphStart == Last.GlyphStart)
                 {
-                    if (Next.CharCode < Last.CharCode) Last.CharCode = Next.CharCode;
+                    if (Next.CharCode < Last.CharCode)
+                    {
+                        Last.CharCode = Next.CharCode;
+                    }
 
                     RangeArray.RemoveAt(Index);
                     continue;
@@ -1416,7 +1585,10 @@ namespace PdfFileWriter
             {
                 if (Run == 0)
                 {
-                    if (Index != 0) ToUnicode.ObjectValueAppend("endbfrange\n");
+                    if (Index != 0)
+                    {
+                        ToUnicode.ObjectValueAppend("endbfrange\n");
+                    }
 
                     Run = Math.Min(100, RangeArray.Count - Index);
                     ToUnicode.ObjectValueFormat("{0} beginbfrange\n", Run);
@@ -1426,10 +1598,16 @@ namespace PdfFileWriter
                 var Range = RangeArray[Index];
                 var RangeStr = string.Format("<{0:x4}><{1:x4}><{2:x4}>\n", Range.GlyphStart, Range.GlyphEnd,
                     Range.CharCode);
-                foreach (var Chr in RangeStr) ToUnicode.ObjectValueList.Add((byte) Chr);
+                foreach (var Chr in RangeStr)
+                {
+                    ToUnicode.ObjectValueList.Add((byte) Chr);
+                }
             }
 
-            if (RangeArray.Count > 0) ToUnicode.ObjectValueAppend("endbfrange\n");
+            if (RangeArray.Count > 0)
+            {
+                ToUnicode.ObjectValueAppend("endbfrange\n");
+            }
 
             // output trailer
             ToUnicode.ObjectValueAppend(Trailer);
@@ -1451,18 +1629,27 @@ namespace PdfFileWriter
             var WidthArray = new List<GlyphWidth>();
 
             // add undefined glyph
-            if (UndefinedCharInfo.ActiveChar) WidthArray.Add(new GlyphWidth(0, UndefinedCharInfo.DesignWidth));
+            if (UndefinedCharInfo.ActiveChar)
+            {
+                WidthArray.Add(new GlyphWidth(0, UndefinedCharInfo.DesignWidth));
+            }
 
             // look for all used characters
             for (var Row = 1; Row < 256; Row++)
             {
                 var OneRow = CharInfoArray[Row];
-                if (OneRow == null) continue;
+                if (OneRow == null)
+                {
+                    continue;
+                }
 
                 for (var Col = 0; Col < 256; Col++)
                 {
                     var CharInfo = OneRow[Col];
-                    if (CharInfo == null || !CharInfo.ActiveChar) continue;
+                    if (CharInfo == null || !CharInfo.ActiveChar)
+                    {
+                        continue;
+                    }
 
                     WidthArray.Add(new GlyphWidth(CharInfo.NewGlyphIndex, CharInfo.DesignWidth));
                 }
@@ -1522,12 +1709,18 @@ namespace PdfFileWriter
                 // either glyphs are not consecutives
                 // or 3 or more glyphs have the same width
                 // for first case if there are less than 3 equal width eliminate equal block
-                if (Index - StartWidth < 3) StartWidth = Index;
+                if (Index - StartWidth < 3)
+                {
+                    StartWidth = Index;
+                }
 
                 // output GlyphIndex [W W W] between StartIndex and StartWidth
                 if (StartWidth > StartIndex)
                 {
-                    if (StartIndex != 0) GlyphWidthArray.ObjectValueList.Add((byte) '\n');
+                    if (StartIndex != 0)
+                    {
+                        GlyphWidthArray.ObjectValueList.Add((byte) '\n');
+                    }
 
                     GlyphWidthArray.ObjectValueFormat("{0}[{1}", WidthArray[StartIndex].GlyphIndex,
                         (float) FontDesignToPdfUnits(WidthArray[StartIndex].Width));
@@ -1542,7 +1735,10 @@ namespace PdfFileWriter
 
                 if (Index > StartWidth)
                 {
-                    if (StartWidth != 0) GlyphWidthArray.ObjectValueList.Add((byte) '\n');
+                    if (StartWidth != 0)
+                    {
+                        GlyphWidthArray.ObjectValueList.Add((byte) '\n');
+                    }
 
                     // output C(StartWidth) C(Index - 1) W
                     GlyphWidthArray.ObjectValueFormat("{0} {1} {2}",
@@ -1551,7 +1747,10 @@ namespace PdfFileWriter
                 }
 
                 // exit the loop
-                if (Index == WidthArray.Count) break;
+                if (Index == WidthArray.Count)
+                {
+                    break;
+                }
 
                 // reset block
                 LastIndex = Item.GlyphIndex;
@@ -1590,15 +1789,24 @@ namespace PdfFileWriter
             var RightLimit = (int) Rect.Right;
 
             // make sure we are within the I
-            if (!GP.IsVisible(X, Y)) return RightLimit - LeftLimit;
+            if (!GP.IsVisible(X, Y))
+            {
+                return RightLimit - LeftLimit;
+            }
 
             // look for left edge
             int Left;
-            for (Left = X - 1; Left >= LeftLimit && GP.IsVisible(Left, Y); Left--) ;
+            for (Left = X - 1; Left >= LeftLimit && GP.IsVisible(Left, Y); Left--)
+            {
+                ;
+            }
 
             // look for right edge
             int Right;
-            for (Right = X + 1; Right < RightLimit && GP.IsVisible(Right, Y); Right++) ;
+            for (Right = X + 1; Right < RightLimit && GP.IsVisible(Right, Y); Right++)
+            {
+                ;
+            }
 
             // exit
             return Right - Left - 1;

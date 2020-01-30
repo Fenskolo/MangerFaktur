@@ -9,7 +9,11 @@ namespace EasyInvoice
     {
         public static string Serialize<T>(this T value)
         {
-            if (value == null) return string.Empty;
+            if (value == null)
+            {
+                return string.Empty;
+            }
+
             try
             {
                 var serializers = new XmlSerializer(typeof(T));
@@ -28,7 +32,11 @@ namespace EasyInvoice
 
         public static T DeserializeObject<T>(string xml) where T : new()
         {
-            if (string.IsNullOrEmpty(xml)) return new T();
+            if (string.IsNullOrEmpty(xml))
+            {
+                return new T();
+            }
+
             try
             {
                 using (var stringReader = new StringReader(xml))

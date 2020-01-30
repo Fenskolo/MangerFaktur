@@ -91,10 +91,15 @@ namespace PdfFileWriter
             AnnotAction Two
         )
         {
-            if (One == null && Two == null) return true;
+            if (One == null && Two == null)
+            {
+                return true;
+            }
 
             if (One == null && Two != null || One != null && Two == null || One.GetType() != Two.GetType())
+            {
                 return false;
+            }
 
             return One.IsEqual(Two);
         }

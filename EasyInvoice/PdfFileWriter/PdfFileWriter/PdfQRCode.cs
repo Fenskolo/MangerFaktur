@@ -139,9 +139,13 @@ namespace PdfFileWriter
             // create QR Code object
             var Encoder = new QREncoder();
             if (DataString != null)
+            {
                 Encoder.EncodeQRCode(DataString, ErrorCorrection, QuietZone);
+            }
             else
+            {
                 Encoder.EncodeQRCode(SegDataString, ErrorCorrection, QuietZone);
+            }
 
             // output matrix
             // NOTE: Black=true, White=flase

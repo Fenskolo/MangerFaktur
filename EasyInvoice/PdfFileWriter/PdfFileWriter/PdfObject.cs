@@ -108,13 +108,22 @@ namespace PdfFileWriter
             NoCompression = Document.Debug;
 
             // if object is stream or a dictionary define empty dictionary
-            if (Type != ObjectType.Other) Dictionary = new PdfDictionary(this);
+            if (Type != ObjectType.Other)
+            {
+                Dictionary = new PdfDictionary(this);
+            }
 
             // if object is not a dictionary define empty contents stream
-            if (Type != ObjectType.Dictionary) ObjectValueList = new List<byte>();
+            if (Type != ObjectType.Dictionary)
+            {
+                ObjectValueList = new List<byte>();
+            }
 
             // if object name is specified, create a dictionary and add /Type Name entry
-            if (!string.IsNullOrEmpty(PdfDictType)) Dictionary.Add("/Type", PdfDictType);
+            if (!string.IsNullOrEmpty(PdfDictType))
+            {
+                Dictionary.Add("/Type", PdfDictType);
+            }
 
             // set PDF indirect object number to next available number
             ObjectNumber = Document.ObjectArray.Count + 1;
@@ -163,7 +172,10 @@ namespace PdfFileWriter
         )
         {
             var ReturnValue = ScaleFactor * Value;
-            if (Math.Abs(ReturnValue) < 0.0001) ReturnValue = 0;
+            if (Math.Abs(ReturnValue) < 0.0001)
+            {
+                ReturnValue = 0;
+            }
 
             return (float) ReturnValue;
         }
@@ -178,7 +190,10 @@ namespace PdfFileWriter
             double Value // a number to be saved in contents
         )
         {
-            if (Math.Abs(Value) < 0.0001) Value = 0;
+            if (Math.Abs(Value) < 0.0001)
+            {
+                Value = 0;
+            }
 
             return (float) Value;
         }
@@ -189,7 +204,10 @@ namespace PdfFileWriter
         )
         {
             // convert content from string to binary
-            foreach (var Chr in Str) ObjectValueList.Add((byte) Chr);
+            foreach (var Chr in Str)
+            {
+                ObjectValueList.Add((byte) Chr);
+            }
         }
 
         internal void ObjectValueFormat
@@ -202,7 +220,10 @@ namespace PdfFileWriter
             var Str = string.Format(NFI.PeriodDecSep, FormatStr, List);
 
             // convert content from string to binary
-            foreach (var Chr in Str) ObjectValueList.Add((byte) Chr);
+            foreach (var Chr in Str)
+            {
+                ObjectValueList.Add((byte) Chr);
+            }
         }
 
         ////////////////////////////////////////////////////////////////////
@@ -221,13 +242,19 @@ namespace PdfFileWriter
         {
             // resource object list is empty
             // if there are no resources an empty dictionary must be returned
-            if (ResObjects == null || ResObjects.Count == 0) return AddProcSet ? "<</ProcSet [/PDF/Text]>>" : "<<>>";
+            if (ResObjects == null || ResObjects.Count == 0)
+            {
+                return AddProcSet ? "<</ProcSet [/PDF/Text]>>" : "<<>>";
+            }
 
             // resources dictionary content initialization
             var Resources = new StringBuilder("<<");
 
             // for page object
-            if (AddProcSet) Resources.Append("/ProcSet [/PDF/Text/ImageB/ImageC/ImageI]\n");
+            if (AddProcSet)
+            {
+                Resources.Append("/ProcSet [/PDF/Text/ImageB/ImageC/ImageI]\n");
+            }
 
             // add all resources
             var ResCodeType = ' ';
@@ -237,7 +264,10 @@ namespace PdfFileWriter
                 if (Resource.ResourceCode[1] != ResCodeType)
                 {
                     // terminate last type
-                    if (ResCodeType != ' ') Resources.Append(">>\n");
+                    if (ResCodeType != ' ')
+                    {
+                        Resources.Append(">>\n");
+                    }
 
                     // start new type
                     ResCodeType = Resource.ResourceCode[1];
@@ -253,11 +283,15 @@ namespace PdfFileWriter
                 {
                     var Font = (PdfFont) Resource;
                     if (Font.FontResCodeUsed)
+                    {
                         Resources.Append(string.Format("{0} {1} 0 R", Font.ResourceCode, Font.ObjectNumber));
+                    }
 
                     if (Font.FontResGlyphUsed)
+                    {
                         Resources.Append(string.Format("{0} {1} 0 R", Font.ResourceCodeGlyph,
                             Font.GlyphIndexFont.ObjectNumber));
+                    }
                 }
             }
 
@@ -288,17 +322,28 @@ namespace PdfFileWriter
             {
                 case ObjectType.Stream:
                     // convert byte list to array
-                    if (ObjectValueList.Count > 0) ObjectValueArray = ObjectValueList.ToArray();
+                    if (ObjectValueList.Count > 0)
+                    {
+                        ObjectValueArray = ObjectValueList.ToArray();
+                    }
 
                     // application test
-                    if (ObjectValueArray == null) ObjectValueArray = new byte[0];
+                    if (ObjectValueArray == null)
+                    {
+                        ObjectValueArray = new byte[0];
+                    }
 
                     // compression is disabled
-                    if (!NoCompression) ObjectValueArray = CompressStream(ObjectValueArray);
+                    if (!NoCompression)
+                    {
+                        ObjectValueArray = CompressStream(ObjectValueArray);
+                    }
 
                     // encryption
                     if (Document.Encryption != null)
+                    {
                         ObjectValueArray = Document.Encryption.EncryptByteArray(ObjectNumber, ObjectValueArray);
+                    }
 
                     // stream length
                     Dictionary.AddInteger("/Length", ObjectValueArray.Length);
@@ -326,7 +371,10 @@ namespace PdfFileWriter
 
                 case ObjectType.Other:
                     // convert byte list to array
-                    if (ObjectValueList.Count > 0) ObjectValueArray = ObjectValueList.ToArray();
+                    if (ObjectValueList.Count > 0)
+                    {
+                        ObjectValueArray = ObjectValueList.ToArray();
+                    }
 
                     // we have contents but no dictionary
                     // write content to pdf file
@@ -356,7 +404,10 @@ namespace PdfFileWriter
             var InputLen = InputBuf.Length;
 
             // input buffer too small to compress
-            if (InputLen < 16) return InputBuf;
+            if (InputLen < 16)
+            {
+                return InputBuf;
+            }
 
             // create output memory stream to receive the compressed buffer
             var OutputStream = new MemoryStream();
@@ -374,7 +425,10 @@ namespace PdfFileWriter
             var OutputLen = (int) OutputStream.Length;
 
             // make sure compressed stream is shorter than input stream
-            if (OutputLen + 6 >= InputLen) return InputBuf;
+            if (OutputLen + 6 >= InputLen)
+            {
+                return InputBuf;
+            }
 
             // create output buffer
             var OutputBuf = new byte[OutputLen + 6];

@@ -117,7 +117,9 @@ namespace PdfFileWriter
             {
                 // set image quality
                 if (value != DefaultQuality && (value < 0 || value > 100))
+                {
                     throw new ApplicationException("PdfImageControl.ImageQuality must be DefaultQuality or 0 to 100");
+                }
 
                 _ImageQuality = value;
             }
@@ -132,7 +134,9 @@ namespace PdfFileWriter
             set
             {
                 if (value < 1 || value > 99)
+                {
                     throw new ApplicationException("PdfImageControl.GrayToBWCutoff must be 1 to 99");
+                }
 
                 _GrayToBWCutoff = value;
             }

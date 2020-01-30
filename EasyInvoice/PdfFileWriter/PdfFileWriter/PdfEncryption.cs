@@ -168,7 +168,9 @@ namespace PdfFileWriter
 
             // convert owner string password to byte array
             if (string.IsNullOrEmpty(OwnerPassword))
+            {
                 OwnerPassword = BitConverter.ToUInt64(PdfDocument.RandomByteArray(8), 0).ToString();
+            }
 
             var OwnerBinaryPassword = ProcessPassword(OwnerPassword);
 
@@ -298,7 +300,10 @@ namespace PdfFileWriter
         )
         {
             // no user password
-            if (string.IsNullOrEmpty(StringPassword)) return (byte[]) PasswordPad.Clone();
+            if (string.IsNullOrEmpty(StringPassword))
+            {
+                return (byte[]) PasswordPad.Clone();
+            }
 
             // convert password to byte array
             var BinaryPassword = new byte[32];
@@ -307,13 +312,18 @@ namespace PdfFileWriter
             {
                 var PWChar = StringPassword[Index];
                 if (PWChar > 255)
+                {
                     throw new ApplicationException("Owner or user Password has invalid character (allowed 0-255)");
+                }
 
                 BinaryPassword[Index] = (byte) PWChar;
             }
 
             // if user password is shorter than 32 bytes, add padding			
-            if (IndexEnd < 32) Array.Copy(PasswordPad, 0, BinaryPassword, IndexEnd, 32 - IndexEnd);
+            if (IndexEnd < 32)
+            {
+                Array.Copy(PasswordPad, 0, BinaryPassword, IndexEnd, 32 - IndexEnd);
+            }
 
             // return password
             return BinaryPassword;
@@ -333,13 +343,19 @@ namespace PdfFileWriter
             var OwnerHash = MD5.ComputeHash(OwnerBinaryPassword);
 
             // loop 50 times creating hash of a hash
-            for (var Index = 0; Index < 50; Index++) OwnerHash = MD5.ComputeHash(OwnerHash);
+            for (var Index = 0; Index < 50; Index++)
+            {
+                OwnerHash = MD5.ComputeHash(OwnerHash);
+            }
 
             var ownerKey = (byte[]) UserBinaryPassword.Clone();
             var TempKey = new byte[16];
             for (var Index = 0; Index < 20; Index++)
             {
-                for (var Tindex = 0; Tindex < 16; Tindex++) TempKey[Tindex] = (byte) (OwnerHash[Tindex] ^ Index);
+                for (var Tindex = 0; Tindex < 16; Tindex++)
+                {
+                    TempKey[Tindex] = (byte) (OwnerHash[Tindex] ^ Index);
+                }
 
                 EncryptRC4(TempKey, ownerKey);
             }
@@ -373,7 +389,10 @@ namespace PdfFileWriter
             MasterKey = MD5.ComputeHash(HashInput);
 
             // loop 50 times creating hash of a hash
-            for (var Index = 0; Index < 50; Index++) MasterKey = MD5.ComputeHash(MasterKey);
+            for (var Index = 0; Index < 50; Index++)
+            {
+                MasterKey = MD5.ComputeHash(MasterKey);
+            }
 
             // exit
         }
@@ -393,7 +412,10 @@ namespace PdfFileWriter
 
             for (var Index = 0; Index < 20; Index++)
             {
-                for (var Tindex = 0; Tindex < 16; Tindex++) TempKey[Tindex] = (byte) (MasterKey[Tindex] ^ Index);
+                for (var Tindex = 0; Tindex < 16; Tindex++)
+                {
+                    TempKey[Tindex] = (byte) (MasterKey[Tindex] ^ Index);
+                }
 
                 EncryptRC4(TempKey, UserKey);
             }
@@ -421,10 +443,16 @@ namespace PdfFileWriter
             HashInput[Ptr++] = (byte) (ObjectNumber >> 16);
             HashInput[Ptr++] = 0; // Generation is always zero for this library
             HashInput[Ptr++] = 0; // Generation is always zero for this library
-            if (EncryptionType == EncryptionType.Aes128) Array.Copy(Salt, 0, HashInput, Ptr, Salt.Length);
+            if (EncryptionType == EncryptionType.Aes128)
+            {
+                Array.Copy(Salt, 0, HashInput, Ptr, Salt.Length);
+            }
 
             var EncryptionKey = MD5.ComputeHash(HashInput);
-            if (EncryptionKey.Length > 16) Array.Resize(ref EncryptionKey, 16);
+            if (EncryptionKey.Length > 16)
+            {
+                Array.Resize(ref EncryptionKey, 16);
+            }
 
             return EncryptionKey;
         }
@@ -440,7 +468,10 @@ namespace PdfFileWriter
         )
         {
             var State = new byte[256];
-            for (var Index = 0; Index < 256; Index++) State[Index] = (byte) Index;
+            for (var Index = 0; Index < 256; Index++)
+            {
+                State[Index] = (byte) Index;
+            }
 
             var Index1 = 0;
             var Index2 = 0;

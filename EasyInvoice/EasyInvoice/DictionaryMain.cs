@@ -1,6 +1,6 @@
 ﻿namespace EasyInvoice
 {
-    public class DictionaryMain
+    public static class DictionaryMain
     {
         public const string LabelNrFaktury = "Faktura";
         public const string LabelMiejsceWystawienia = "MIEJSCE WYSTAWIENIA:";

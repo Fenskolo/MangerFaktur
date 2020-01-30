@@ -836,7 +836,9 @@ namespace PdfFileWriter
 
             // get one glyph
             if (GetGlyphOutline(GDIHandle, GlyphIndex, GGO_GLYPH_INDEX, Buffer, 0, IntPtr.Zero, UnitMatrix) < 0)
+            {
                 ThrowSystemErrorException("Calling GetGlyphOutline failed");
+            }
 
             // create WinOutlineTextMetric class
             var Info = new CharInfo(0, GlyphIndex, this);
@@ -875,9 +877,15 @@ namespace PdfFileWriter
 
             // test for at least one valid glyph
             int Start;
-            for (Start = 0; Start < 256 && GlyphIndexArray[Start] == 0; Start++) ;
+            for (Start = 0; Start < 256 && GlyphIndexArray[Start] == 0; Start++)
+            {
+                ;
+            }
 
-            if (Start == 256) return null;
+            if (Start == 256)
+            {
+                return null;
+            }
 
             // build unit matrix
             var UnitMatrix = BuildUnitMarix();
@@ -893,11 +901,17 @@ namespace PdfFileWriter
             {
                 // charater not defined
                 var GlyphIndex = GlyphIndexArray[CharCode];
-                if (GlyphIndex == 0) continue;
+                if (GlyphIndex == 0)
+                {
+                    continue;
+                }
 
                 // get one glyph
                 if (GetGlyphOutline(GDIHandle, FirstChar + CharCode, GGO_METRICS, Buffer, 0, IntPtr.Zero, UnitMatrix) <
-                    0) ThrowSystemErrorException("Calling GetGlyphOutline failed");
+                    0)
+                {
+                    ThrowSystemErrorException("Calling GetGlyphOutline failed");
+                }
 
                 // reset buffer pointer
                 BufPtr = 0;
@@ -938,14 +952,19 @@ namespace PdfFileWriter
         {
             // get number of pairs
             var Pairs = (int) GetKerningPairs(GDIHandle, 0, IntPtr.Zero);
-            if (Pairs == 0) return null;
+            if (Pairs == 0)
+            {
+                return null;
+            }
 
             // allocate buffer to receive outline text metrics information
             AllocateBuffer(8 * Pairs);
 
             // get outline text metrics information
             if (GetKerningPairs(GDIHandle, (uint) Pairs, Buffer) == 0)
+            {
                 ThrowSystemErrorException("Calling GetKerningPairs failed");
+            }
 
             // create list because the program will ignore pairs that are outside char range
             var TempList = new List<WinKerningPair>();
@@ -955,14 +974,20 @@ namespace PdfFileWriter
             {
                 var KPair = new WinKerningPair(this);
                 if (KPair.First >= FirstChar && KPair.First <= LastChar && KPair.Second >= FirstChar &&
-                    KPair.Second <= LastChar) TempList.Add(KPair);
+                    KPair.Second <= LastChar)
+                {
+                    TempList.Add(KPair);
+                }
             }
 
             // free buffer for outline text metrics
             FreeBuffer();
 
             // list is empty
-            if (TempList.Count == 0) return null;
+            if (TempList.Count == 0)
+            {
+                return null;
+            }
 
             // sort list
             TempList.Sort();
@@ -987,14 +1012,19 @@ namespace PdfFileWriter
         {
             // get buffer size
             var BufSize = GetOutlineTextMetrics(GDIHandle, 0, IntPtr.Zero);
-            if (BufSize == 0) ThrowSystemErrorException("Calling GetOutlineTextMetrics (get buffer size) failed");
+            if (BufSize == 0)
+            {
+                ThrowSystemErrorException("Calling GetOutlineTextMetrics (get buffer size) failed");
+            }
 
             // allocate buffer to receive outline text metrics information
             AllocateBuffer(BufSize);
 
             // get outline text metrics information
             if (GetOutlineTextMetrics(GDIHandle, BufSize, Buffer) == 0)
+            {
                 ThrowSystemErrorException("Calling GetOutlineTextMetrics failed");
+            }
 
             // create WinOutlineTextMetric class
             var WOTM = new WinOutlineTextMetric(this);
@@ -1024,7 +1054,10 @@ namespace PdfFileWriter
             AllocateBuffer(57);
 
             // get outline text metrics information
-            if (GetTextMetrics(GDIHandle, Buffer) == 0) ThrowSystemErrorException("Calling GetTextMetrics API failed.");
+            if (GetTextMetrics(GDIHandle, Buffer) == 0)
+            {
+                ThrowSystemErrorException("Calling GetTextMetrics API failed.");
+            }
 
             // create WinOutlineTextMetric class
             var WTM = new WinTextMetric(this);
@@ -1058,14 +1091,19 @@ namespace PdfFileWriter
         )
         {
             // empty table
-            if (BufSize == 0) return null;
+            if (BufSize == 0)
+            {
+                return null;
+            }
 
             // allocate buffer to receive outline text metrics information
             AllocateBuffer(BufSize);
 
             // get outline text metrics information
             if ((int) GetFontData(GDIHandle, 0, (uint) Offset, Buffer, (uint) BufSize) != BufSize)
+            {
                 ThrowSystemErrorException("Get font data file header failed");
+            }
 
             // copy api result buffer to managed memory buffer
             var DataBuffer = new byte[BufSize];
@@ -1108,14 +1146,18 @@ namespace PdfFileWriter
 
             // create array of all character codes between FirstChar and LastChar (we use Int16 because of Unicode)
             for (var CharPtr = FirstChar; CharPtr <= LastChar; CharPtr++)
+            {
                 Marshal.WriteInt16(CharBuffer, 2 * (CharPtr - FirstChar), (short) CharPtr);
+            }
 
             // allocate memory for result
             AllocateBuffer(2 * CharCount);
 
             // get glyph numbers for all characters including non existing glyphs
             if (GetGlyphIndices(GDIHandle, CharBuffer, CharCount, Buffer, 0) != CharCount)
+            {
                 ThrowSystemErrorException("Calling GetGlypeIndices failed");
+            }
 
             // get result array to managed code
             var GlyphIndex16 = ReadInt16Array(CharCount);
@@ -1129,7 +1171,9 @@ namespace PdfFileWriter
             // convert to Int32
             var GlyphIndex32 = new int[GlyphIndex16.Length];
             for (var Index = 0; Index < GlyphIndex16.Length; Index++)
+            {
                 GlyphIndex32[Index] = (ushort) GlyphIndex16[Index];
+            }
 
             // exit
             return GlyphIndex32;
@@ -1284,7 +1328,10 @@ namespace PdfFileWriter
             for (;;)
             {
                 var Chr = (char) Marshal.ReadInt16(Buffer, Ptr);
-                if (Chr == 0) break;
+                if (Chr == 0)
+                {
+                    break;
+                }
 
                 Str.Append(Chr);
                 Ptr += 2;
@@ -1329,7 +1376,10 @@ namespace PdfFileWriter
                 {
                     ErrMsg.Append(" ");
                     ErrMsg.Append(Marshal.PtrToStringAuto(ErrBuffer, StrLen));
-                    while (ErrMsg[ErrMsg.Length - 1] <= ' ') ErrMsg.Length--;
+                    while (ErrMsg[ErrMsg.Length - 1] <= ' ')
+                    {
+                        ErrMsg.Length--;
+                    }
                 }
 
                 // free buffer

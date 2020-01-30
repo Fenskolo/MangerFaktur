@@ -50,12 +50,17 @@ namespace PdfFileWriter
             this.FileName = FileName;
 
             // test exitance
-            if (!File.Exists(FileName)) throw new ApplicationException("Embedded file " + FileName + " does not exist");
+            if (!File.Exists(FileName))
+            {
+                throw new ApplicationException("Embedded file " + FileName + " does not exist");
+            }
 
             // get file length
             var FI = new FileInfo(FileName);
             if (FI.Length > int.MaxValue - 4095)
+            {
                 throw new ApplicationException("Embedded file " + FileName + " too long");
+            }
 
             var FileLength = (int) FI.Length;
 
@@ -79,7 +84,10 @@ namespace PdfFileWriter
                 DataStream = new FileStream(FileName, FileMode.Open, FileAccess.Read);
 
                 // read all the file
-                if (DataStream.Read(EmbeddedFile.ObjectValueArray, 0, FileLength) != FileLength) throw new Exception();
+                if (DataStream.Read(EmbeddedFile.ObjectValueArray, 0, FileLength) != FileLength)
+                {
+                    throw new Exception();
+                }
             }
 
             // loading file failed
@@ -93,7 +101,9 @@ namespace PdfFileWriter
 
             // debug
             if (Document.Debug)
+            {
                 EmbeddedFile.ObjectValueArray = Document.TextToByteArray("*** MEDIA FILE PLACE HOLDER ***");
+            }
 
             // write stream
             EmbeddedFile.WriteObjectToPdfFile();
@@ -102,7 +112,10 @@ namespace PdfFileWriter
             Dictionary.Add("/Type", "/Filespec");
 
             // PDF file name
-            if (string.IsNullOrWhiteSpace(PdfFileName)) PdfFileName = FI.Name;
+            if (string.IsNullOrWhiteSpace(PdfFileName))
+            {
+                PdfFileName = FI.Name;
+            }
 
             Dictionary.AddPdfString("/F", PdfFileName);
             Dictionary.AddPdfString("/UF", PdfFileName);
@@ -172,13 +185,19 @@ namespace PdfFileWriter
         )
         {
             // first time
-            if (Document.EmbeddedFileArray == null) Document.EmbeddedFileArray = new List<PdfEmbeddedFile>();
+            if (Document.EmbeddedFileArray == null)
+            {
+                Document.EmbeddedFileArray = new List<PdfEmbeddedFile>();
+            }
 
             // search list for a duplicate
             var Index = Document.EmbeddedFileArray.BinarySearch(new PdfEmbeddedFile(FileName));
 
             // this is a duplicate
-            if (Index >= 0) return Document.EmbeddedFileArray[Index];
+            if (Index >= 0)
+            {
+                return Document.EmbeddedFileArray[Index];
+            }
 
             // new object
             var EmbeddedFile = new PdfEmbeddedFile(Document, FileName, PdfFileName);

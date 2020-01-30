@@ -77,7 +77,10 @@ namespace PdfFileWriter
             // jump to destination
             else if (AnnotAction.GetType() == typeof(AnnotLinkAction))
             {
-                if (Document.LinkAnnotArray == null) Document.LinkAnnotArray = new List<PdfAnnotation>();
+                if (Document.LinkAnnotArray == null)
+                {
+                    Document.LinkAnnotArray = new List<PdfAnnotation>();
+                }
 
                 Document.LinkAnnotArray.Add(this);
             }
@@ -120,11 +123,15 @@ namespace PdfFileWriter
             // add annotation object to page dictionary
             var KeyValue = AnnotPage.Dictionary.GetValue("/Annots");
             if (KeyValue == null)
+            {
                 AnnotPage.Dictionary.AddFormat("/Annots", "[{0} 0 R]", ObjectNumber);
+            }
 
             else
+            {
                 AnnotPage.Dictionary.Add("/Annots",
                     ((string) KeyValue.Value).Replace("]", string.Format(" {0} 0 R]", ObjectNumber)));
+            }
 
             // exit
         }
@@ -148,10 +155,14 @@ namespace PdfFileWriter
             {
                 // play video when page becomes visible
                 if (Activate)
+                {
                     Dictionary.AddFormat("/AA", "<</PV {0} 0 R>>",
                         ((AnnotDisplayMedia) AnnotAction).DisplayMedia.ObjectNumber);
+                }
                 else
+                {
                     Dictionary.Remove("/AA");
+                }
             }
         }
 

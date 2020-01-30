@@ -52,7 +52,10 @@ namespace PdfFileWriter
         )
         {
             // make sure data string is not empty
-            if (string.IsNullOrEmpty(DataString)) throw new ApplicationException("Input data string is null or empty");
+            if (string.IsNullOrEmpty(DataString))
+            {
+                throw new ApplicationException("Input data string is null or empty");
+            }
 
             // split input data string to segments delimited by SegmentMarker
             SegDataString = DataString.Split(new[] {PdfQRCode.SegmentMarker}, StringSplitOptions.RemoveEmptyEntries);
@@ -91,7 +94,9 @@ namespace PdfFileWriter
         {
             // test input
             if (SegDataString == null || SegDataString.Length == 0)
+            {
                 throw new ApplicationException("Input data strings are null or empty");
+            }
 
             // create encoding mode array
             SegEncodingMode = new EncodingMode[SegDataString.Length];
@@ -127,8 +132,12 @@ namespace PdfFileWriter
             // convert result matrix to output matrix
             for (var Row = 0; Row < MatrixDimension; Row++)
             for (var Col = 0; Col < MatrixDimension; Col++)
+            {
                 if ((ResultMatrix[Row, Col] & 1) != 0)
+                {
                     OutputMatrix[QuietZone + Row, QuietZone + Col] = true;
+                }
+            }
 
             // output array
         }
@@ -148,7 +157,9 @@ namespace PdfFileWriter
             // save error correction
             if (ErrorCorrection != ErrorCorrection.L && ErrorCorrection != ErrorCorrection.M &&
                 ErrorCorrection != ErrorCorrection.Q && ErrorCorrection != ErrorCorrection.H)
+            {
                 throw new ApplicationException("Invalid error correction mode. Must be L, M, Q or H.");
+            }
 
             // reset to tal encoded data bits
             EncodedDataBits = 0;
@@ -165,10 +176,16 @@ namespace PdfFileWriter
                 for (var Index = 0; Index < DataLength; Index++)
                 {
                     int Value = DataStr[Index];
-                    if (Value > 255) throw new ApplicationException("Input string characters must be 0 to 255.");
+                    if (Value > 255)
+                    {
+                        throw new ApplicationException("Input string characters must be 0 to 255.");
+                    }
 
                     int Code = EncodingTable[Value];
-                    if (Code < 10) continue;
+                    if (Code < 10)
+                    {
+                        continue;
+                    }
 
                     if (Code < 45)
                     {
@@ -187,14 +204,22 @@ namespace PdfFileWriter
                     case EncodingMode.Numeric:
                         DataBits += 10 * (DataLength / 3);
                         if (DataLength % 3 == 1)
+                        {
                             DataBits += 4;
-                        else if (DataLength % 3 == 2) DataBits += 7;
+                        }
+                        else if (DataLength % 3 == 2)
+                        {
+                            DataBits += 7;
+                        }
 
                         break;
 
                     case EncodingMode.AlphaNumeric:
                         DataBits += 11 * (DataLength / 2);
-                        if ((DataLength & 1) != 0) DataBits += 6;
+                        if ((DataLength & 1) != 0)
+                        {
+                            DataBits += 6;
+                        }
 
                         break;
 
@@ -221,10 +246,16 @@ namespace PdfFileWriter
                     TotalDataLenBits += DataLengthBits(t);
                 }
 
-                if (EncodedDataBits + TotalDataLenBits <= MaxDataBits) break;
+                if (EncodedDataBits + TotalDataLenBits <= MaxDataBits)
+                {
+                    break;
+                }
             }
 
-            if (Version > 40) throw new ApplicationException("Input data string is too long");
+            if (Version > 40)
+            {
+                throw new ApplicationException("Input data string is too long");
+            }
 
             EncodedDataBits += TotalDataLenBits;
         }
@@ -265,18 +296,24 @@ namespace PdfFileWriter
                         // encode digits in groups of 3
                         var NumEnd = DataLength / 3 * 3;
                         for (var Index = 0; Index < NumEnd; Index += 3)
+                        {
                             SaveBitsToCodewordsArray(
                                 100 * EncodingTable[DataStr[Index]] + 10 * EncodingTable[DataStr[Index + 1]] +
                                 EncodingTable[DataStr[Index + 2]], 10);
+                        }
 
                         // we have one digit remaining
                         if (DataLength - NumEnd == 1)
+                        {
                             SaveBitsToCodewordsArray(EncodingTable[DataStr[NumEnd]], 4);
+                        }
 
                         // we have two digits remaining
                         else if (DataLength - NumEnd == 2)
+                        {
                             SaveBitsToCodewordsArray(
                                 10 * EncodingTable[DataStr[NumEnd]] + EncodingTable[DataStr[NumEnd + 1]], 7);
+                        }
 
                         break;
 
@@ -285,12 +322,16 @@ namespace PdfFileWriter
                         // encode digits in groups of 2
                         var AlphaNumEnd = DataLength / 2 * 2;
                         for (var Index = 0; Index < AlphaNumEnd; Index += 2)
+                        {
                             SaveBitsToCodewordsArray(
                                 45 * EncodingTable[DataStr[Index]] + EncodingTable[DataStr[Index + 1]], 11);
+                        }
 
                         // we have one character remaining
                         if (DataLength - AlphaNumEnd == 1)
+                        {
                             SaveBitsToCodewordsArray(EncodingTable[DataStr[AlphaNumEnd]], 6);
+                        }
 
                         break;
 
@@ -298,7 +339,10 @@ namespace PdfFileWriter
                     // byte mode					
                     case EncodingMode.Byte:
                         // append the data after mode and character count
-                        for (var Index = 0; Index < DataLength; Index++) SaveBitsToCodewordsArray(DataStr[Index], 8);
+                        for (var Index = 0; Index < DataLength; Index++)
+                        {
+                            SaveBitsToCodewordsArray(DataStr[Index], 8);
+                        }
 
                         break;
                 }
@@ -306,15 +350,22 @@ namespace PdfFileWriter
 
             // set terminator
             if (EncodedDataBits < MaxDataBits)
+            {
                 SaveBitsToCodewordsArray(0, MaxDataBits - EncodedDataBits < 4 ? MaxDataBits - EncodedDataBits : 4);
+            }
 
             // flush bit buffer
-            if (BitBufferLen > 0) CodewordsArray[CodewordsPtr++] = (byte) (BitBuffer >> 24);
+            if (BitBufferLen > 0)
+            {
+                CodewordsArray[CodewordsPtr++] = (byte) (BitBuffer >> 24);
+            }
 
             // add extra padding if there is still space
             var PadEnd = MaxDataCodewords - CodewordsPtr;
             for (var PadPtr = 0; PadPtr < PadEnd; PadPtr++)
+            {
                 CodewordsArray[CodewordsPtr + PadPtr] = (byte) ((PadPtr & 1) == 0 ? 0xEC : 0x11);
+            }
 
             // exit
         }
@@ -404,7 +455,9 @@ namespace PdfFileWriter
             // create array of data blocks starting point
             var Start = new int[TotalBlocks];
             for (var Index = 1; Index < TotalBlocks; Index++)
+            {
                 Start[Index] = Start[Index - 1] + (Index <= BlocksGroup1 ? DataCodewordsGroup1 : DataCodewordsGroup2);
+            }
 
             // step one. iterleave base on group one length
             var PtrEnd = DataCodewordsGroup1 * TotalBlocks;
@@ -417,7 +470,10 @@ namespace PdfFileWriter
                 TempArray[Ptr] = CodewordsArray[Start[Block]];
                 Start[Block]++;
                 Block++;
-                if (Block == TotalBlocks) Block = 0;
+                if (Block == TotalBlocks)
+                {
+                    Block = 0;
+                }
             }
 
             // interleave group two
@@ -432,13 +488,19 @@ namespace PdfFileWriter
                     TempArray[Ptr] = CodewordsArray[Start[Block]];
                     Start[Block]++;
                     Block++;
-                    if (Block == TotalBlocks) Block = BlocksGroup1;
+                    if (Block == TotalBlocks)
+                    {
+                        Block = BlocksGroup1;
+                    }
                 }
             }
 
             // create array of error correction blocks starting point
             Start[0] = MaxDataCodewords;
-            for (var Index = 1; Index < TotalBlocks; Index++) Start[Index] = Start[Index - 1] + ErrCorrCodewords;
+            for (var Index = 1; Index < TotalBlocks; Index++)
+            {
+                Start[Index] = Start[Index - 1] + ErrCorrCodewords;
+            }
 
             // step one. iterleave base on group one length
 
@@ -450,7 +512,10 @@ namespace PdfFileWriter
                 TempArray[Ptr] = CodewordsArray[Start[Block]];
                 Start[Block]++;
                 Block++;
-                if (Block == TotalBlocks) Block = 0;
+                if (Block == TotalBlocks)
+                {
+                    Block = 0;
+                }
             }
 
             // save result
@@ -479,9 +544,15 @@ namespace PdfFileWriter
                 if ((BaseMatrix[Row, Col] & NonData) == 0)
                 {
                     // load current module with
-                    if ((CodewordsArray[Ptr >> 3] & (1 << (7 - (Ptr & 7)))) != 0) BaseMatrix[Row, Col] = DataBlack;
+                    if ((CodewordsArray[Ptr >> 3] & (1 << (7 - (Ptr & 7)))) != 0)
+                    {
+                        BaseMatrix[Row, Col] = DataBlack;
+                    }
 
-                    if (++Ptr == PtrEnd) break;
+                    if (++Ptr == PtrEnd)
+                    {
+                        break;
+                    }
                 }
 
                 // current module is non data and vertical timing line condition is on
@@ -558,16 +629,28 @@ namespace PdfFileWriter
 
                 // evaluate 4 test conditions
                 var Score = EvaluationCondition1();
-                if (Score >= BestScore) continue;
+                if (Score >= BestScore)
+                {
+                    continue;
+                }
 
                 Score += EvaluationCondition2();
-                if (Score >= BestScore) continue;
+                if (Score >= BestScore)
+                {
+                    continue;
+                }
 
                 Score += EvaluationCondition3();
-                if (Score >= BestScore) continue;
+                if (Score >= BestScore)
+                {
+                    continue;
+                }
 
                 Score += EvaluationCondition4();
-                if (Score >= BestScore) continue;
+                if (Score >= BestScore)
+                {
+                    continue;
+                }
 
                 // save as best mask so far
                 ResultMatrix = MaskMatrix;
@@ -595,7 +678,10 @@ namespace PdfFileWriter
                     // current cell is not the same color as the one before
                     if (((MaskMatrix[Row, Col - 1] ^ MaskMatrix[Row, Col]) & 1) != 0)
                     {
-                        if (Count >= 5) Score += Count - 2;
+                        if (Count >= 5)
+                        {
+                            Score += Count - 2;
+                        }
 
                         Count = 0;
                     }
@@ -604,7 +690,10 @@ namespace PdfFileWriter
                 }
 
                 // last run
-                if (Count >= 5) Score += Count - 2;
+                if (Count >= 5)
+                {
+                    Score += Count - 2;
+                }
             }
 
             // test columns
@@ -616,7 +705,10 @@ namespace PdfFileWriter
                     // current cell is not the same color as the one before
                     if (((MaskMatrix[Row - 1, Col] ^ MaskMatrix[Row, Col]) & 1) != 0)
                     {
-                        if (Count >= 5) Score += Count - 2;
+                        if (Count >= 5)
+                        {
+                            Score += Count - 2;
+                        }
 
                         Count = 0;
                     }
@@ -625,7 +717,10 @@ namespace PdfFileWriter
                 }
 
                 // last run
-                if (Count >= 5) Score += Count - 2;
+                if (Count >= 5)
+                {
+                    Score += Count - 2;
+                }
             }
 
             return Score;
@@ -643,13 +738,20 @@ namespace PdfFileWriter
             for (var Row = 1; Row < MatrixDimension; Row++)
             for (var Col = 1; Col < MatrixDimension; Col++)
                 // all are black
+            {
                 if ((MaskMatrix[Row - 1, Col - 1] & MaskMatrix[Row - 1, Col] & MaskMatrix[Row, Col - 1] &
                      MaskMatrix[Row, Col] & 1) != 0)
+                {
                     Score += 3;
+                }
 
                 // all are white
                 else if (((MaskMatrix[Row - 1, Col - 1] | MaskMatrix[Row - 1, Col] | MaskMatrix[Row, Col - 1] |
-                           MaskMatrix[Row, Col]) & 1) == 0) Score += 3;
+                           MaskMatrix[Row, Col]) & 1) == 0)
+                {
+                    Score += 3;
+                }
+            }
 
             return Score;
         }
@@ -673,14 +775,20 @@ namespace PdfFileWriter
                 for (var Col = 0; Col < MatrixDimension; Col++)
                 {
                     // current cell is white
-                    if ((MaskMatrix[Row, Col] & 1) == 0) continue;
+                    if ((MaskMatrix[Row, Col] & 1) == 0)
+                    {
+                        continue;
+                    }
 
                     // more or equal to 4
                     if (Col - Start >= 4)
                     {
                         // we have 4 or more white
                         // test for pattern before the white space
-                        if (Start >= 7 && TestHorizontalDarkLight(Row, Start - 7)) Score += 40;
+                        if (Start >= 7 && TestHorizontalDarkLight(Row, Start - 7))
+                        {
+                            Score += 40;
+                        }
 
                         // test for pattern after the white space
                         if (MatrixDimension - Col >= 7 && TestHorizontalDarkLight(Row, Col))
@@ -695,7 +803,10 @@ namespace PdfFileWriter
                 }
 
                 // last run
-                if (MatrixDimension - Start >= 4 && Start >= 7 && TestHorizontalDarkLight(Row, Start - 7)) Score += 40;
+                if (MatrixDimension - Start >= 4 && Start >= 7 && TestHorizontalDarkLight(Row, Start - 7))
+                {
+                    Score += 40;
+                }
             }
 
             // test columns
@@ -707,14 +818,20 @@ namespace PdfFileWriter
                 for (var Row = 0; Row < MatrixDimension; Row++)
                 {
                     // current cell is white
-                    if ((MaskMatrix[Row, Col] & 1) == 0) continue;
+                    if ((MaskMatrix[Row, Col] & 1) == 0)
+                    {
+                        continue;
+                    }
 
                     // more or equal to 4
                     if (Row - Start >= 4)
                     {
                         // we have 4 or more white
                         // test for pattern before the white space
-                        if (Start >= 7 && TestVerticalDarkLight(Start - 7, Col)) Score += 40;
+                        if (Start >= 7 && TestVerticalDarkLight(Start - 7, Col))
+                        {
+                            Score += 40;
+                        }
 
                         // test for pattern after the white space
                         if (MatrixDimension - Row >= 7 && TestVerticalDarkLight(Row, Col))
@@ -729,7 +846,10 @@ namespace PdfFileWriter
                 }
 
                 // last run
-                if (MatrixDimension - Start >= 4 && Start >= 7 && TestVerticalDarkLight(Start - 7, Col)) Score += 40;
+                if (MatrixDimension - Start >= 4 && Start >= 7 && TestVerticalDarkLight(Start - 7, Col))
+                {
+                    Score += 40;
+                }
             }
 
             // exit
@@ -747,16 +867,26 @@ namespace PdfFileWriter
             var Black = 0;
             for (var Row = 0; Row < MatrixDimension; Row++)
             for (var Col = 0; Col < MatrixDimension; Col++)
+            {
                 if ((MaskMatrix[Row, Col] & 1) != 0)
+                {
                     Black++;
+                }
+            }
 
             // ratio
             var Ratio = Black / (double) (MatrixDimension * MatrixDimension);
 
             // there are more black than white
             if (Ratio > 0.55)
+            {
                 return (int) (20.0 * (Ratio - 0.5)) * 10;
-            if (Ratio < 0.45) return (int) (20.0 * (0.5 - Ratio)) * 10;
+            }
+
+            if (Ratio < 0.45)
+            {
+                return (int) (20.0 * (0.5 - Ratio)) * 10;
+            }
 
             return 0;
         }
@@ -835,13 +965,19 @@ namespace PdfFileWriter
 
                 // horizontal line
                 int Col = FormatInfoHor[Index];
-                if (Col < 0) Col = MatrixDimension + Col;
+                if (Col < 0)
+                {
+                    Col = MatrixDimension + Col;
+                }
 
                 ResultMatrix[8, Col] = (byte) FormatBit;
 
                 // vertical line
                 int Row = FormatInfoVer[Index];
-                if (Row < 0) Row = MatrixDimension + Row;
+                if (Row < 0)
+                {
+                    Row = MatrixDimension + Row;
+                }
 
                 ResultMatrix[Row, 8] = (byte) FormatBit;
             }

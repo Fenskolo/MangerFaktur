@@ -93,12 +93,18 @@ namespace PdfFileWriter
             this.Document = Document;
 
             // save image control
-            if (ImageControl == null) ImageControl = new PdfImageControl();
+            if (ImageControl == null)
+            {
+                ImageControl = new PdfImageControl();
+            }
 
             this.ImageControl = ImageControl;
 
             // set default resolution to 96 pixels per inch
-            if (ImageControl.Resolution == 0) ImageControl.Resolution = 96.0;
+            if (ImageControl.Resolution == 0)
+            {
+                ImageControl.Resolution = 96.0;
+            }
 
             // make sure image control crop rectangles are empty
             this.ImageControl.CropRect = Rectangle.Empty;

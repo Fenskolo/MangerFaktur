@@ -77,13 +77,17 @@ namespace EasyInvoice
             {
                 var d2 = new DaneUsluga();
                 foreach (var item in GetListDt())
-                    if (stri == item.StawkaVat)
+                {
+                    if (stri != item.StawkaVat)
                     {
-                        d2.WartoscNetto += item.WartoscNetto;
-                        d2.KwotaVat += item.KwotaVat;
-                        d2.WartoscBrutto += item.WartoscBrutto;
-                        d2.StawkaVat = stri;
+                        continue;
                     }
+
+                    d2.WartoscNetto += item.WartoscNetto;
+                    d2.KwotaVat += item.KwotaVat;
+                    d2.WartoscBrutto += item.WartoscBrutto;
+                    d2.StawkaVat = stri;
+                }
 
                 yield return d2;
             }

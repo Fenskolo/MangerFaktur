@@ -97,9 +97,14 @@ namespace PdfFileWriter
                 {
                     if (Alignment == ContentAlignment.MiddleLeft || Alignment == ContentAlignment.MiddleCenter ||
                         Alignment == ContentAlignment.MiddleRight)
+                    {
                         DeltaY = 0.5 * (DrawAreaHeight - Height);
+                    }
                     else if (Alignment == ContentAlignment.TopLeft || Alignment == ContentAlignment.TopCenter ||
-                             Alignment == ContentAlignment.TopRight) DeltaY = DrawAreaHeight - Height;
+                             Alignment == ContentAlignment.TopRight)
+                    {
+                        DeltaY = DrawAreaHeight - Height;
+                    }
                 }
             }
             // calculate width to fit aspect ratio
@@ -111,9 +116,14 @@ namespace PdfFileWriter
                 {
                     if (Alignment == ContentAlignment.TopCenter || Alignment == ContentAlignment.MiddleCenter ||
                         Alignment == ContentAlignment.BottomCenter)
+                    {
                         DeltaX = 0.5 * (DrawAreaWidth - Width);
+                    }
                     else if (Alignment == ContentAlignment.TopRight || Alignment == ContentAlignment.MiddleRight ||
-                             Alignment == ContentAlignment.BottomRight) DeltaX = DrawAreaWidth - Width;
+                             Alignment == ContentAlignment.BottomRight)
+                    {
+                        DeltaX = DrawAreaWidth - Width;
+                    }
                 }
             }
 

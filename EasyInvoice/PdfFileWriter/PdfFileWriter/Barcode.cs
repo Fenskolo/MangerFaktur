@@ -180,7 +180,10 @@ namespace PdfFileWriter
         )
         {
             // no text
-            if (TextFont == null) return new BarcodeBox(BarWidth * TotalWidth, BarcodeHeight);
+            if (TextFont == null)
+            {
+                return new BarcodeBox(BarWidth * TotalWidth, BarcodeHeight);
+            }
 
             // calculate width
             var BarcodeWidth = BarWidth * TotalWidth;
@@ -472,7 +475,10 @@ namespace PdfFileWriter
         )
         {
             // test argument
-            if (string.IsNullOrEmpty(Text)) throw new ApplicationException("Barcode128: Text is null or empty");
+            if (string.IsNullOrEmpty(Text))
+            {
+                throw new ApplicationException("Barcode128: Text is null or empty");
+            }
 
             // save text
             this.Text = Text;
@@ -484,14 +490,16 @@ namespace PdfFileWriter
             int LeadFnc1End;
             for (LeadFnc1End = 0; LeadFnc1End < TextLen && Text[LeadFnc1End] == FNC1_CHAR; LeadFnc1End++)
             {
-                
             }
 
             // leading digits
             int LeadDigitsEnd;
             for (LeadDigitsEnd = LeadFnc1End;
                 LeadDigitsEnd < TextLen && Text[LeadDigitsEnd] >= '0' && Text[LeadDigitsEnd] <= '9';
-                LeadDigitsEnd++) ;
+                LeadDigitsEnd++)
+            {
+                ;
+            }
 
             // lead digits count
             var LeadDigitsCount = LeadDigitsEnd - LeadFnc1End;
@@ -507,7 +515,10 @@ namespace PdfFileWriter
             int TrailFnc1Start;
             for (TrailFnc1Start = TextLen - 1;
                 TrailFnc1Start >= LeadDigitsEnd && Text[TrailFnc1Start] == FNC1_CHAR;
-                TrailFnc1Start--) ;
+                TrailFnc1Start--)
+            {
+                ;
+            }
 
             TrailFnc1Start++;
 
@@ -515,7 +526,10 @@ namespace PdfFileWriter
             int TrailDigitsStart;
             for (TrailDigitsStart = TrailFnc1Start - 1;
                 TrailDigitsStart >= LeadDigitsEnd && Text[TrailDigitsStart] >= '0' && Text[TrailDigitsStart] <= '9';
-                TrailDigitsStart--) ;
+                TrailDigitsStart--)
+            {
+                ;
+            }
 
             TrailDigitsStart++;
 
@@ -544,13 +558,19 @@ namespace PdfFileWriter
                 CodeEnd++;
 
                 // add FNC1 if required
-                for (var Index = 0; Index < LeadFnc1End; Index++) _CodeArray[CodeEnd++] = FNC1;
+                for (var Index = 0; Index < LeadFnc1End; Index++)
+                {
+                    _CodeArray[CodeEnd++] = FNC1;
+                }
 
                 // convert to pairs of digits
                 EncodeDigits(LeadFnc1End, LeadDigitsEnd, ref CodeEnd);
 
                 // add FNC1 if required
-                for (var Index = TrailFnc1Start; Index < TextLen; Index++) _CodeArray[CodeEnd++] = FNC1;
+                for (var Index = TrailFnc1Start; Index < TextLen; Index++)
+                {
+                    _CodeArray[CodeEnd++] = FNC1;
+                }
             }
 
             // text has digits and non digits
@@ -583,7 +603,10 @@ namespace PdfFileWriter
                     CodeEnd++;
 
                     // add FNC1 if required
-                    for (var Index = 0; Index < LeadFnc1End; Index++) _CodeArray[CodeEnd++] = FNC1;
+                    for (var Index = 0; Index < LeadFnc1End; Index++)
+                    {
+                        _CodeArray[CodeEnd++] = FNC1;
+                    }
 
                     // convert to pairs of digits
                     EncodeDigits(LeadFnc1End, LeadDigitsEnd, ref CodeEnd);
@@ -599,7 +622,10 @@ namespace PdfFileWriter
                     // look for a digit
                     for (;
                         StartOfDigits < TrailDigitsStart && (Text[StartOfDigits] < '0' || Text[StartOfDigits] > '9');
-                        StartOfDigits++) ;
+                        StartOfDigits++)
+                    {
+                        ;
+                    }
 
                     EndOfDigits = StartOfDigits;
 
@@ -609,10 +635,16 @@ namespace PdfFileWriter
                         // count how many digits we have
                         for (EndOfDigits++;
                             EndOfDigits < TrailDigitsStart && Text[EndOfDigits] >= '0' && Text[EndOfDigits] <= '9';
-                            EndOfDigits++) ;
+                            EndOfDigits++)
+                        {
+                            ;
+                        }
 
                         // test for odd number of digits
-                        if (((EndOfDigits - StartOfDigits) & 1) != 0) StartOfDigits++;
+                        if (((EndOfDigits - StartOfDigits) & 1) != 0)
+                        {
+                            StartOfDigits++;
+                        }
 
                         // if we have less than 6 process digits as non digits
                         if (EndOfDigits - StartOfDigits < 6)
@@ -626,7 +658,10 @@ namespace PdfFileWriter
                     EncodeNonDigits(StartOfNonDigits, StartOfDigits, ref CodeEnd);
 
                     // if there are no digits at the end, get out of the loop
-                    if (StartOfDigits == TrailDigitsStart) break;
+                    if (StartOfDigits == TrailDigitsStart)
+                    {
+                        break;
+                    }
 
                     // add code set C
                     _CodeArray[CodeEnd] = CodeEnd == 0 ? STARTC : CODEC;
@@ -650,7 +685,10 @@ namespace PdfFileWriter
                     EncodeDigits(TrailDigitsStart, TrailFnc1Start, ref CodeEnd);
 
                     // add trailing FNC1 if required
-                    for (var Index = TrailFnc1Start; Index < TextLen; Index++) _CodeArray[CodeEnd++] = FNC1;
+                    for (var Index = TrailFnc1Start; Index < TextLen; Index++)
+                    {
+                        _CodeArray[CodeEnd++] = FNC1;
+                    }
                 }
 
                 // adjust code array to right length
@@ -712,7 +750,9 @@ namespace PdfFileWriter
 
             // test argument
             if (_CodeArray == null || _CodeArray.Length < 2)
+            {
                 throw new ApplicationException("Barcode128: Code array is null or empty");
+            }
 
             // code array length
             var Length = _CodeArray.Length;
@@ -768,68 +808,114 @@ namespace PdfFileWriter
             {
                 var Code = _CodeArray[Index];
                 if (Code < 0 || Code > FNC1)
+                {
                     throw new ApplicationException("Barcode128: Code array has invalid codes (not 0 to 106)");
+                }
 
                 switch (CodeSet)
                 {
                     case CodeSet.CodeA:
                         if (Code == CODEA)
+                        {
                             throw new ApplicationException("Barcode128: No support for FNC4");
+                        }
                         else if (Code == CODEB)
+                        {
                             CodeSet = CodeSet.CodeB;
+                        }
                         else if (Code == CODEC)
+                        {
                             CodeSet = CodeSet.CodeC;
+                        }
                         else if (Code == SHIFT)
+                        {
                             CodeSet = CodeSet.ShiftB;
+                        }
                         else if (Code == FNC1)
+                        {
                             Str.Append(FNC1_CHAR);
+                        }
                         else if (Code == FNC2)
+                        {
                             Str.Append(FNC2_CHAR);
+                        }
                         else if (Code == FNC3)
+                        {
                             Str.Append(FNC3_CHAR);
+                        }
                         else if (Code < 64)
+                        {
                             Str.Append((char) (' ' + Code));
+                        }
                         else
+                        {
                             Str.Append((char) (Code - 64));
+                        }
 
                         break;
 
                     case CodeSet.CodeB:
                         if (Code == CODEA)
+                        {
                             CodeSet = CodeSet.CodeA;
+                        }
                         else if (Code == CODEB)
+                        {
                             throw new ApplicationException("Barcode128: No support for FNC4");
+                        }
                         else if (Code == CODEC)
+                        {
                             CodeSet = CodeSet.CodeC;
+                        }
                         else if (Code == SHIFT)
+                        {
                             CodeSet = CodeSet.ShiftB;
+                        }
                         else if (Code == FNC1)
+                        {
                             Str.Append(FNC1_CHAR);
+                        }
                         else if (Code == FNC2)
+                        {
                             Str.Append(FNC2_CHAR);
+                        }
                         else if (Code == FNC3)
+                        {
                             Str.Append(FNC3_CHAR);
+                        }
                         else
+                        {
                             Str.Append((char) (' ' + Code));
+                        }
 
                         break;
 
                     case CodeSet.ShiftA:
                         if (Code < 64)
+                        {
                             Str.Append((char) (' ' + Code));
+                        }
                         else if (Code < 96)
+                        {
                             Str.Append((char) (Code - 64));
+                        }
                         else
+                        {
                             throw new ApplicationException("Barcode128: SHIFT error");
+                        }
 
                         CodeSet = CodeSet.CodeB;
                         break;
 
                     case CodeSet.ShiftB:
                         if (Code < 96)
+                        {
                             Str.Append((char) (' ' + Code));
+                        }
                         else
+                        {
                             throw new ApplicationException("Barcode128: SHIFT error");
+                        }
 
                         CodeSet = CodeSet.CodeA;
                         break;
@@ -895,7 +981,9 @@ namespace PdfFileWriter
         {
             // convert to pairs of digits
             for (var Index = TextStart; Index < TextEnd; Index += 2)
+            {
                 _CodeArray[CodeEnd++] = 10 * (Text[Index] - '0') + (Text[Index + 1] - '0');
+            }
         }
 
         ////////////////////////////////////////////////////////////////////
@@ -1032,7 +1120,10 @@ namespace PdfFileWriter
             // calculate checksum
             var Length = _CodeArray.Length - 2;
             var ChkSum = _CodeArray[0];
-            for (var Index = 1; Index < Length; Index++) ChkSum += Index * _CodeArray[Index];
+            for (var Index = 1; Index < Length; Index++)
+            {
+                ChkSum += Index * _CodeArray[Index];
+            }
 
             // final checksum
             _CodeArray[Length] = ChkSum % 103;
@@ -1187,7 +1278,10 @@ namespace PdfFileWriter
         )
         {
             // test argument
-            if (string.IsNullOrEmpty(Text)) throw new ApplicationException("Barcode39: Text cannot be null or empty");
+            if (string.IsNullOrEmpty(Text))
+            {
+                throw new ApplicationException("Barcode39: Text cannot be null or empty");
+            }
 
             // save text
             this.Text = Text;
@@ -1205,13 +1299,19 @@ namespace PdfFileWriter
                 var Code = CharSet.IndexOf(Text[Index]);
                 if (Code == START_STOP_CODE)
                 {
-                    if (Index == 0 || Index == Text.Length - 1) continue;
+                    if (Index == 0 || Index == Text.Length - 1)
+                    {
+                        continue;
+                    }
 
                     throw new ApplicationException(
                         "Barcode39: Start/Stop character (asterisk *) is not allowed in the middle of the text");
                 }
 
-                if (Code < 0) throw new ApplicationException("Barcode39: Invalid character");
+                if (Code < 0)
+                {
+                    throw new ApplicationException("Barcode39: Invalid character");
+                }
 
                 _CodeArray[CodePtr++] = Code;
             }
@@ -1292,7 +1392,9 @@ namespace PdfFileWriter
 
             // test argument
             if (_CodeArray == null || _CodeArray.Length == 0)
+            {
                 throw new ApplicationException("Barcode39: Code array is null or empty");
+            }
 
             // test for start code
             if (_CodeArray[0] != START_STOP_CODE)
@@ -1322,7 +1424,9 @@ namespace PdfFileWriter
             {
                 var Code = _CodeArray[Index];
                 if (Code < 0 || Code >= START_STOP_CODE)
+                {
                     throw new ApplicationException("Barcode39: Code array contains invalid code (0 to 42)");
+                }
 
                 Str.Append(CharSet[Code]);
             }
@@ -1489,17 +1593,23 @@ namespace PdfFileWriter
 
             // test argument
             if (string.IsNullOrEmpty(Text))
+            {
                 throw new ApplicationException("Barcode EAN-13/UPC-A: Text must not be null");
+            }
 
             // text length
             var Length = Text.Length;
             if (Length != 12 && Length != 13)
+            {
                 throw new ApplicationException("Barcode EAN-13/UPC-A: Text must be 12 for UPC-A or 13 for EAN-13");
+            }
 
             // first digit
             FirstDigit = Length == 12 ? 0 : Text[0] - '0';
             if (FirstDigit < 0 || FirstDigit > 9)
+            {
                 throw new ApplicationException("Barcode EAN-13/UPC-A: Invalid character (must be 0 to 9)");
+            }
 
             // barcode array
             _CodeArray = new int[BARCODE_LEN];
@@ -1510,9 +1620,14 @@ namespace PdfFileWriter
             {
                 var CodeValue = Text[Index] - '0';
                 if (CodeValue < 0 || CodeValue > 9)
+                {
                     throw new ApplicationException("Barcode EAN-13/UPC-A: Invalid character (must be 0 to 9)");
+                }
 
-                if (FirstDigit != 0 && Index >= 2 && Index <= 6) CodeValue += ParityTable[FirstDigit, Index - 2];
+                if (FirstDigit != 0 && Index >= 2 && Index <= 6)
+                {
+                    CodeValue += ParityTable[FirstDigit, Index - 2];
+                }
 
                 _CodeArray[CodePtr++] = CodeValue;
             }
@@ -1579,7 +1694,9 @@ namespace PdfFileWriter
 
             // test argument
             if (_CodeArray == null || _CodeArray.Length != BARCODE_LEN)
+            {
                 throw new ApplicationException("Barcode EAN-13/UPC-A: Code array must be exactly 12 characters");
+            }
 
             var Str = new StringBuilder();
             var ParityTest = new int[5];
@@ -1589,23 +1706,40 @@ namespace PdfFileWriter
             {
                 var Code = _CodeArray[Index];
                 if (Code < 0 || Code >= 20 || Code >= 10 && (Index == 0 || Index >= 6))
+                {
                     throw new ApplicationException("Barcode EAN-13/UPC-A: Invalid code");
+                }
 
-                if (Index >= 1 && Index < 6 && Code >= 10) ParityTest[Index - 1] = 10;
+                if (Index >= 1 && Index < 6 && Code >= 10)
+                {
+                    ParityTest[Index - 1] = 10;
+                }
 
                 if (Index == 5)
                 {
                     for (FirstDigit = 0; FirstDigit < 10; FirstDigit++)
                     {
                         int Scan;
-                        for (Scan = 0; Scan < 5 && ParityTable[FirstDigit, Scan] == ParityTest[Scan]; Scan++) ;
+                        for (Scan = 0; Scan < 5 && ParityTable[FirstDigit, Scan] == ParityTest[Scan]; Scan++)
+                        {
+                            ;
+                        }
 
-                        if (Scan == 5) break;
+                        if (Scan == 5)
+                        {
+                            break;
+                        }
                     }
 
-                    if (FirstDigit == 10) throw new ApplicationException("Barcode EAN-13/UPC-A: Invalid code");
+                    if (FirstDigit == 10)
+                    {
+                        throw new ApplicationException("Barcode EAN-13/UPC-A: Invalid code");
+                    }
 
-                    if (FirstDigit != 0) Str.Insert(0, (char) ('0' + FirstDigit));
+                    if (FirstDigit != 0)
+                    {
+                        Str.Insert(0, (char) ('0' + FirstDigit));
+                    }
                 }
 
                 Str.Append((char) ('0' + Code % 10));
@@ -1642,7 +1776,10 @@ namespace PdfFileWriter
         )
         {
             // leading bars
-            if (BarIndex < LEAD_BARS) return 1;
+            if (BarIndex < LEAD_BARS)
+            {
+                return 1;
+            }
 
             // left side 6 digits
             if (BarIndex < LEAD_BARS + BARCODE_HALF_LEN * CODE_CHAR_BARS)
@@ -1652,7 +1789,10 @@ namespace PdfFileWriter
             }
 
             // separator bars
-            if (BarIndex < LEAD_BARS + BARCODE_HALF_LEN * CODE_CHAR_BARS + SEPARATOR_BARS) return 1;
+            if (BarIndex < LEAD_BARS + BARCODE_HALF_LEN * CODE_CHAR_BARS + SEPARATOR_BARS)
+            {
+                return 1;
+            }
 
             // right side 6 digits
             if (BarIndex < LEAD_BARS + BARCODE_LEN * CODE_CHAR_BARS + SEPARATOR_BARS)
@@ -1682,14 +1822,20 @@ namespace PdfFileWriter
         )
         {
             // no text
-            if (TextFont == null) return new BarcodeBox(BarWidth * TotalWidth, BarcodeHeight);
+            if (TextFont == null)
+            {
+                return new BarcodeBox(BarWidth * TotalWidth, BarcodeHeight);
+            }
 
             // one digit width
             var OriginX = TextFont.TextWidth(FontSize, "0");
 
             // calculate width
             var BarcodeWidth = BarWidth * TotalWidth + OriginX;
-            if (Text.Length == 12) BarcodeWidth += OriginX;
+            if (Text.Length == 12)
+            {
+                BarcodeWidth += OriginX;
+            }
 
             // text height
             var OriginY = TextFont.LineSpacing(FontSize) - 5.0 * BarWidth;
@@ -1754,18 +1900,25 @@ namespace PdfFileWriter
         {
             // test argument
             if (string.IsNullOrWhiteSpace(Text))
+            {
                 throw new ApplicationException("Barcode Interleave 2 of 5: Input text is null or empty");
+            }
 
             // save text
             this.Text = Text;
 
             // text length
             var Length = Text.Length;
-            if (AddChecksum) Length++;
+            if (AddChecksum)
+            {
+                Length++;
+            }
 
             if ((Length & 1) != 0)
+            {
                 throw new ApplicationException(
                     "Barcode Interleave 2 of 5: Text length must be even (including checksum)");
+            }
 
             // barcode array
             _CodeArray = new int[Length];
@@ -1775,13 +1928,18 @@ namespace PdfFileWriter
             foreach (var Chr in Text)
             {
                 if (Chr < '0' || Chr > '9')
+                {
                     throw new ApplicationException("Barcode interleave 2 of 5: Invalid character (must be 0 to 9)");
+                }
 
                 _CodeArray[CodePtr++] = Chr - '0';
             }
 
             // calculate checksum
-            if (AddChecksum) Checksum();
+            if (AddChecksum)
+            {
+                Checksum();
+            }
 
             // set number of bars
             BarCount = 7 + 10 * (Length / 2);
@@ -1805,15 +1963,24 @@ namespace PdfFileWriter
         )
         {
             // leading bars
-            if (BarIndex < 4) return 1;
+            if (BarIndex < 4)
+            {
+                return 1;
+            }
 
             // ending bars
-            if (BarIndex >= BarCount - 3) return BarIndex == BarCount - 3 ? 2 : 1;
+            if (BarIndex >= BarCount - 3)
+            {
+                return BarIndex == BarCount - 3 ? 2 : 1;
+            }
 
             // code index
             BarIndex -= 4;
             var CodeIndex = 2 * (BarIndex / 10);
-            if ((BarIndex & 1) != 0) CodeIndex++;
+            if ((BarIndex & 1) != 0)
+            {
+                CodeIndex++;
+            }
 
             // code
             var Code = _CodeArray[CodeIndex];
@@ -1830,11 +1997,17 @@ namespace PdfFileWriter
             // calculate checksum
             var ChkSum = 3 * _CodeArray[0];
             var End = _CodeArray.Length - 1;
-            for (var Index = 1; Index < End; Index += 2) ChkSum += _CodeArray[Index] + 3 * _CodeArray[Index + 1];
+            for (var Index = 1; Index < End; Index += 2)
+            {
+                ChkSum += _CodeArray[Index] + 3 * _CodeArray[Index + 1];
+            }
 
             // final checksum
             ChkSum = ChkSum % 10;
-            if (ChkSum != 0) ChkSum = 10 - ChkSum;
+            if (ChkSum != 0)
+            {
+                ChkSum = 10 - ChkSum;
+            }
 
             _CodeArray[End] = ChkSum;
 

@@ -106,7 +106,9 @@ namespace EasyInvoice
 
             XDg.DataContext = null;
             if (SingleFakturaProperty.Singleton.MySingleton.Work.Dt != null)
+            {
                 XDg.DataContext = SingleFakturaProperty.Singleton.MySingleton.Work.Dt.DefaultView;
+            }
 
             Nabywca.DataContext = null;
             Nabywca.DataContext = SingleFakturaProperty.Singleton.MySingleton.Work.Nabywca;
@@ -155,7 +157,7 @@ namespace EasyInvoice
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             XDg.ActiveRecord = null;
-            new MakePdf(this, SingleFakturaProperty.Singleton);
+            var makePdf = new MakePdf(this, SingleFakturaProperty.Singleton);
         }
 
         private void Gotowka_Click(object sender, RoutedEventArgs E)
@@ -190,19 +192,25 @@ namespace EasyInvoice
                                             && cenaNetto.Value != DBNull.Value &&
                                             (wartoscNetto.Value == DBNull.Value ||
                                              Convert.ToDecimal(wartoscNetto.Value) != GetValueIloraz(ilosc, cenaNetto)))
+            {
                 wartoscNetto.Value = GetValueIloraz(ilosc, cenaNetto);
+            }
 
             if (!string.IsNullOrEmpty(stawkaVat.Value.ToString())
                 && wartoscNetto.Value != DBNull.Value && wartoscNetto.Value != null
                 && (wartoscBrutto.Value == DBNull.Value ||
                     (decimal) wartoscBrutto.Value != GetValueIloraz(wartoscNetto, stawkaVat)))
+            {
                 wartoscBrutto.Value = GetValueIloraz(wartoscNetto, stawkaVat);
+            }
 
             if (wartoscBrutto.Value != DBNull.Value && wartoscBrutto.Value != null
                                                     && wartoscNetto.Value != null
                                                     && (kwotaVat.Value == DBNull.Value || (decimal) kwotaVat.Value !=
                                                         (decimal) wartoscBrutto.Value - (decimal) wartoscNetto.Value))
+            {
                 kwotaVat.Value = (decimal) wartoscBrutto.Value - (decimal) wartoscNetto.Value;
+            }
         }
 
         private static decimal GetDecimalVatStawka(DataRecord Row)

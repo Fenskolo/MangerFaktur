@@ -266,7 +266,10 @@ namespace PdfFileWriter
         {
             get
             {
-                if (Font == null) throw new ApplicationException("PdfTableStyle: Font is not defined.");
+                if (Font == null)
+                {
+                    throw new ApplicationException("PdfTableStyle: Font is not defined.");
+                }
 
                 return Font.AscentPlusLeading(FontSize);
             }
@@ -279,7 +282,10 @@ namespace PdfFileWriter
         {
             get
             {
-                if (Font == null) throw new ApplicationException("PdfTableStyle: Font is not defined.");
+                if (Font == null)
+                {
+                    throw new ApplicationException("PdfTableStyle: Font is not defined.");
+                }
 
                 return Font.DescentPlusLeading(FontSize);
             }
@@ -292,7 +298,10 @@ namespace PdfFileWriter
         {
             get
             {
-                if (Font == null) throw new ApplicationException("PdfTableStyle: Font is not defined.");
+                if (Font == null)
+                {
+                    throw new ApplicationException("PdfTableStyle: Font is not defined.");
+                }
 
                 return Font.LineSpacing(FontSize);
             }

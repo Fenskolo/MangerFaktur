@@ -490,7 +490,10 @@ namespace PdfFileWriter
         )
         {
             // apply paint operator
-            if (PP != PaintOp.NoOperator) ObjectValueFormat("{0}\n", PaintStr[(int) PP]);
+            if (PP != PaintOp.NoOperator)
+            {
+                ObjectValueFormat("{0}\n", PaintStr[(int) PP]);
+            }
         }
 
         ////////////////////////////////////////////////////////////////////
@@ -574,7 +577,10 @@ namespace PdfFileWriter
             else
             {
                 ObjectValueList.Add((byte) '[');
-                foreach (var Value in DashArray) ObjectValueFormat("{0} ", ToPt(Value));
+                foreach (var Value in DashArray)
+                {
+                    ObjectValueFormat("{0} ", ToPt(Value));
+                }
 
                 ObjectValueFormat("] {0} d\n", ToPt(DashPhase));
             }
@@ -674,11 +680,17 @@ namespace PdfFileWriter
         {
             string AlphaStr;
             if (Alpha < 0.001)
+            {
                 AlphaStr = "0";
+            }
             else if (Alpha > 0.999)
+            {
                 AlphaStr = "1";
+            }
             else
+            {
                 AlphaStr = Alpha.ToString("0.0##", NFI.PeriodDecSep);
+            }
 
             var ExtGState = PdfExtGState.CreateExtGState(Document, "/CA", AlphaStr);
             AddToUsedResources(ExtGState);
@@ -713,11 +725,17 @@ namespace PdfFileWriter
         {
             string AlphaStr;
             if (Alpha < 0.001)
+            {
                 AlphaStr = "0";
+            }
             else if (Alpha > 0.999)
+            {
                 AlphaStr = "1";
+            }
             else
+            {
                 AlphaStr = Alpha.ToString("0.0##", NFI.PeriodDecSep);
+            }
 
             var ExtGState = PdfExtGState.CreateExtGState(Document, "/ca", AlphaStr);
             AddToUsedResources(ExtGState);
@@ -1248,8 +1266,10 @@ namespace PdfFileWriter
 
             // output
             for (var Index = 1; Index < SegArray.Length;)
+            {
                 DrawBezier(SegArray[Index].X, SegArray[Index++].Y, SegArray[Index].X, SegArray[Index++].Y,
                     SegArray[Index].X, SegArray[Index++].Y);
+            }
         }
 
         ////////////////////////////////////////////////////////////////////
@@ -1377,9 +1397,11 @@ namespace PdfFileWriter
         )
         {
             if (BorderStyle.Display)
+            {
                 ObjectValueFormat("q {0} w {1} {2} {3} RG 0 J {4} {5} m {6} {7} l S Q\n",
                     ToPt(BorderStyle.Width), Round(BorderStyle.Color.R / 255.0), Round(BorderStyle.Color.G / 255.0),
                     Round(BorderStyle.Color.B / 255.0), ToPt(X1), ToPt(Y1), ToPt(X2), ToPt(Y2));
+            }
         }
 
         ////////////////////////////////////////////////////////////////////
@@ -1601,9 +1623,15 @@ namespace PdfFileWriter
         )
         {
             // make sure radius is not too big
-            if (Radius > 0.5 * Width) Radius = 0.5 * Width;
+            if (Radius > 0.5 * Width)
+            {
+                Radius = 0.5 * Width;
+            }
 
-            if (Radius > 0.5 * Height) Radius = 0.5 * Height;
+            if (Radius > 0.5 * Height)
+            {
+                Radius = 0.5 * Height;
+            }
 
             // draw path
             MoveTo(OriginX + Radius, OriginY);
@@ -1641,9 +1669,15 @@ namespace PdfFileWriter
         )
         {
             // make sure radius is not too big
-            if (Radius > 0.5 * Width) Radius = 0.5 * Width;
+            if (Radius > 0.5 * Width)
+            {
+                Radius = 0.5 * Width;
+            }
 
-            if (Radius > 0.5 * Height) Radius = 0.5 * Height;
+            if (Radius > 0.5 * Height)
+            {
+                Radius = 0.5 * Height;
+            }
 
             // draw path
             MoveTo(OriginX, OriginY + Radius);
@@ -1671,14 +1705,18 @@ namespace PdfFileWriter
         {
             // program error
             if (PathArray.Length < 2)
+            {
                 throw new ApplicationException("Draw polygon error: path array must have at least two points");
+            }
 
             // move to first point
             ObjectValueFormat("{0} {1} m\n", ToPt(PathArray[0].X), ToPt(PathArray[0].Y));
 
             // draw lines		
             for (var Index = 1; Index < PathArray.Length; Index++)
+            {
                 ObjectValueFormat("{0} {1} l\n", ToPt(PathArray[Index].X), ToPt(PathArray[Index].Y));
+            }
 
             // set paint operator
             SetPaintOp(PP);
@@ -1699,18 +1737,24 @@ namespace PdfFileWriter
         {
             // program error
             if (PathArray.Length < 4)
+            {
                 throw new ApplicationException("Draw polygon error: path array must have at least 4 items");
+            }
 
             // program error
             if ((PathArray.Length & 1) != 0)
+            {
                 throw new ApplicationException("Draw polygon error: path array must have even number of items");
+            }
 
             // move to first point
             ObjectValueFormat("{0} {1} m\n", ToPt(PathArray[0]), ToPt(PathArray[1]));
 
             // draw lines		
             for (var Index = 2; Index < PathArray.Length; Index += 2)
+            {
                 ObjectValueFormat("{0} {1} l\n", ToPt(PathArray[Index]), ToPt(PathArray[Index + 1]));
+            }
 
             // set paint operator
             SetPaintOp(PP);
@@ -1760,7 +1804,10 @@ namespace PdfFileWriter
         )
         {
             // validate sides
-            if (Sides < 3) throw new ApplicationException("Draw regular polygon. Number of sides must be 3 or more");
+            if (Sides < 3)
+            {
+                throw new ApplicationException("Draw regular polygon. Number of sides must be 3 or more");
+            }
 
             // polygon angle
             var DeltaAlpha = 2.0 * Math.PI / Sides;
@@ -1900,7 +1947,10 @@ namespace PdfFileWriter
         )
         {
             // validate sides
-            if (Sides < 3) throw new ApplicationException("Draw star. Number of sides must be 3 or more");
+            if (Sides < 3)
+            {
+                throw new ApplicationException("Draw star. Number of sides must be 3 or more");
+            }
 
             // move to first point
             MoveTo(new PointD(Center, Radius1, Alpha));
@@ -2038,7 +2088,10 @@ namespace PdfFileWriter
         )
         {
             // text is null or empty
-            if (string.IsNullOrEmpty(Text)) return 0;
+            if (string.IsNullOrEmpty(Text))
+            {
+                return 0;
+            }
 
             // add font code to current list of font codes
             AddToUsedResources(Font);
@@ -2108,7 +2161,10 @@ namespace PdfFileWriter
                         if (FontResGlyph == null)
                         {
                             FontResGlyph = CreateFontResStr(Font.ResourceCodeGlyph, FontSizeStr);
-                            if (!Font.FontResGlyphUsed) Font.CreateGlyphIndexFont();
+                            if (!Font.FontResGlyphUsed)
+                            {
+                                Font.CreateGlyphIndexFont();
+                            }
                         }
 
                         ObjectValueList.AddRange(FontResGlyph);
@@ -2127,7 +2183,9 @@ namespace PdfFileWriter
                 else
                 {
                     if (CharInfo.NewGlyphIndex < 0)
+                    {
                         CharInfo.NewGlyphIndex = Font.EmbeddedFont ? Font.NewGlyphIndex++ : CharInfo.GlyphIndex;
+                    }
 
                     OutputOneByte(CharInfo.NewGlyphIndex >> 8);
                     OutputOneByte(CharInfo.NewGlyphIndex & 0xff);
@@ -2183,10 +2241,16 @@ namespace PdfFileWriter
         {
             var FontRes = new byte[ResCode.Length + SizeStr.Length + 4];
             var Index = 0;
-            foreach (var TextChar in ResCode) FontRes[Index++] = (byte) TextChar;
+            foreach (var TextChar in ResCode)
+            {
+                FontRes[Index++] = (byte) TextChar;
+            }
 
             FontRes[Index++] = (byte) ' ';
-            foreach (var TextChar in SizeStr) FontRes[Index++] = (byte) TextChar;
+            foreach (var TextChar in SizeStr)
+            {
+                FontRes[Index++] = (byte) TextChar;
+            }
 
             FontRes[Index++] = (byte) ' ';
             FontRes[Index++] = (byte) 'T';
@@ -2240,7 +2304,10 @@ namespace PdfFileWriter
         )
         {
             // text is null or empty
-            if (string.IsNullOrEmpty(Text)) return 0;
+            if (string.IsNullOrEmpty(Text))
+            {
+                return 0;
+            }
 
             // add font code to current list of font codes
             AddToUsedResources(Font);
@@ -2347,7 +2414,10 @@ namespace PdfFileWriter
         )
         {
             // text is null or empty
-            if (string.IsNullOrEmpty(Text)) return 0;
+            if (string.IsNullOrEmpty(Text))
+            {
+                return 0;
+            }
 
             // text width
             double TextWidth = 0;
@@ -2372,7 +2442,10 @@ namespace PdfFileWriter
                 if (DrawStyle != DrawStyle.Normal)
                 {
                     // change stroking color
-                    if (TextColor != Color.Empty) SetColorStroking(TextColor);
+                    if (TextColor != Color.Empty)
+                    {
+                        SetColorStroking(TextColor);
+                    }
 
                     // adjust position
                     switch (Justify)
@@ -2433,7 +2506,9 @@ namespace PdfFileWriter
             // we have color
             if (TextColor != Color.Empty)
                 // save graphics state
+            {
                 RestoreGraphicsState();
+            }
 
             // return text width
             return TextWidth;
@@ -2464,7 +2539,10 @@ namespace PdfFileWriter
         )
         {
             // text is null or empty
-            if (KerningArray == null || KerningArray.Length == 0) return 0;
+            if (KerningArray == null || KerningArray.Length == 0)
+            {
+                return 0;
+            }
 
             // add font code to current list of font codes
             AddToUsedResources(Font);
@@ -2525,7 +2603,10 @@ namespace PdfFileWriter
                     if (Index == 0 && Ptr == 0 || CharInfo.Type0Font != GlyphIndexFlag)
                     {
                         // close partial string
-                        if (Ptr != 0) ObjectValueList.Add((byte) ')');
+                        if (Ptr != 0)
+                        {
+                            ObjectValueList.Add((byte) ')');
+                        }
 
                         // close code/glyph area
                         if (Index != 0)
@@ -2554,7 +2635,10 @@ namespace PdfFileWriter
                             if (FontResGlyph == null)
                             {
                                 FontResGlyph = CreateFontResStr(Font.ResourceCodeGlyph, FontSizeStr);
-                                if (!Font.FontResGlyphUsed) Font.CreateGlyphIndexFont();
+                                if (!Font.FontResGlyphUsed)
+                                {
+                                    Font.CreateGlyphIndexFont();
+                                }
                             }
 
                             ObjectValueList.AddRange(FontResGlyph);
@@ -2579,7 +2663,9 @@ namespace PdfFileWriter
                     else
                     {
                         if (CharInfo.NewGlyphIndex < 0)
+                        {
                             CharInfo.NewGlyphIndex = Font.EmbeddedFont ? Font.NewGlyphIndex++ : CharInfo.GlyphIndex;
+                        }
 
                         OutputOneByte(CharInfo.NewGlyphIndex >> 8);
                         OutputOneByte(CharInfo.NewGlyphIndex & 0xff);
@@ -2590,7 +2676,10 @@ namespace PdfFileWriter
 
                 // test for end of kerning array
                 Index++;
-                if (Index == KerningArray.Length) break;
+                if (Index == KerningArray.Length)
+                {
+                    break;
+                }
 
                 // add adjustment
                 ObjectValueFormat("{0}", Round(-KA.Adjust));
@@ -2628,13 +2717,19 @@ namespace PdfFileWriter
         )
         {
             // text is null or empty
-            if (string.IsNullOrEmpty(Text)) return 0;
+            if (string.IsNullOrEmpty(Text))
+            {
+                return 0;
+            }
 
             // create text position adjustment array based on kerning information
             var KernArray = Font.TextKerning(Text);
 
             // no kerning
-            if (KernArray == null) return DrawText(Font, FontSize, PosX, PosY, Text);
+            if (KernArray == null)
+            {
+                return DrawText(Font, FontSize, PosX, PosY, Text);
+            }
 
             // draw text with adjustment
             return DrawText(Font, FontSize, PosX, PosY, KernArray);
@@ -2669,7 +2764,10 @@ namespace PdfFileWriter
         )
         {
             // text is null or empty
-            if (string.IsNullOrEmpty(Text)) return 0;
+            if (string.IsNullOrEmpty(Text))
+            {
+                return 0;
+            }
 
             // add font code to current list of font codes
             AddToUsedResources(Font);
@@ -2719,11 +2817,15 @@ namespace PdfFileWriter
 
             // draw text without kerning
             if (KernArray == null)
+            {
                 DrawTextInternal(Font, FontSize, Text);
+            }
 
             // draw text with kerning
             else
+            {
                 DrawTextWithKerning(Font, FontSize, KernArray);
+            }
 
             // draw text termination
             EndTextMode();
@@ -2873,7 +2975,10 @@ namespace PdfFileWriter
         )
         {
             var Width = DrawText(Font, FontSize, TextAbsPosX, TextAbsPosY, Justify, DrawStyle, TextColor, Text);
-            if (Width == 0.0) return 0.0;
+            if (Width == 0.0)
+            {
+                return 0.0;
+            }
 
             // adjust position
             switch (Justify)
@@ -3025,7 +3130,10 @@ namespace PdfFileWriter
                 var Line = TextBox[LineNo];
 
                 // break out of the loop if printing below bottom line
-                if (PosYTop - Line.LineHeight < PosYBottom) break;
+                if (PosYTop - Line.LineHeight < PosYBottom)
+                {
+                    break;
+                }
 
                 // adjust PosY to font base line
                 PosYTop -= Line.Ascent;
@@ -3043,20 +3151,29 @@ namespace PdfFileWriter
 
                 // draw text to fit box width
                 if (Justify == TextBoxJustify.FitToWidth && !Line.EndOfParagraph)
+                {
                     DrawText(X, PosYTop, W, Line, Page);
+                }
 
                 // draw text center or right justified
                 else if (Justify == TextBoxJustify.Center || Justify == TextBoxJustify.Right)
+                {
                     DrawText(X, PosYTop, W, Justify, Line, Page);
+                }
 
                 // draw text normal
                 else
+                {
                     DrawText(X, PosYTop, Line, Page);
+                }
 
 
                 // advance position y to next line
                 PosYTop -= Line.Descent + LineExtraSpace;
-                if (Line.EndOfParagraph) PosYTop -= ParagraphExtraSpace;
+                if (Line.EndOfParagraph)
+                {
+                    PosYTop -= ParagraphExtraSpace;
+                }
             }
 
             return LineNo;
@@ -3082,7 +3199,9 @@ namespace PdfFileWriter
                 if (Seg.AnnotAction != null)
                 {
                     if (Page == null)
+                    {
                         throw new ApplicationException("TextBox with WebLink. You must call DrawText with PdfPage");
+                    }
 
                     var AnnotRect = new PdfRectangle(SegPosX, PosY - Seg.Font.DescentPlusLeading(Seg.FontSize),
                         SegPosX + SegWidth, PosY + Seg.Font.AscentPlusLeading(Seg.FontSize));
@@ -3110,13 +3229,20 @@ namespace PdfFileWriter
         )
         {
             double LineWidth = 0;
-            foreach (var Seg in Line.SegArray) LineWidth += Seg.SegWidth;
+            foreach (var Seg in Line.SegArray)
+            {
+                LineWidth += Seg.SegWidth;
+            }
 
             var SegPosX = PosX;
             if (Justify == TextBoxJustify.Right)
+            {
                 SegPosX += Width - LineWidth;
+            }
             else
+            {
                 SegPosX += 0.5 * (Width - LineWidth);
+            }
 
             foreach (var Seg in Line.SegArray)
             {
@@ -3125,7 +3251,9 @@ namespace PdfFileWriter
                 if (Seg.AnnotAction != null)
                 {
                     if (Page == null)
+                    {
                         throw new ApplicationException("TextBox with WebLink. You must call DrawText with PdfPage");
+                    }
 
                     var AnnotRect = new PdfRectangle(SegPosX, PosY - Seg.Font.DescentPlusLeading(Seg.FontSize),
                         SegPosX + SegWidth, PosY + Seg.Font.AscentPlusLeading(Seg.FontSize));
@@ -3152,7 +3280,9 @@ namespace PdfFileWriter
         )
         {
             if (!TextFitToWidth(Width, out var WordSpacing, out var CharSpacing, Line))
+            {
                 return DrawText(PosX, PosY, Line, Page);
+            }
 
             SaveGraphicsState();
             SetWordSpacing(WordSpacing);
@@ -3167,7 +3297,9 @@ namespace PdfFileWriter
                 if (Seg.AnnotAction != null)
                 {
                     if (Page == null)
+                    {
                         throw new ApplicationException("TextBox with WebLink. You must call DrawText with PdfPage");
+                    }
 
                     var AnnotRect = new PdfRectangle(SegPosX, PosY - Seg.Font.DescentPlusLeading(Seg.FontSize),
                         SegPosX + SegWidth, PosY + Seg.Font.AscentPlusLeading(Seg.FontSize));
@@ -3215,7 +3347,10 @@ namespace PdfFileWriter
 
             // reduce character count by one
             CharCount--;
-            if (CharCount <= 0) return false;
+            if (CharCount <= 0)
+            {
+                return false;
+            }
 
             // extra spacing required
             var ExtraSpace = ReqWidth - Width;
@@ -3224,10 +3359,16 @@ namespace PdfFileWriter
             var MaxRes = 0.006 / ScaleFactor;
 
             // string is too wide
-            if (ExtraSpace < -MaxRes) return false;
+            if (ExtraSpace < -MaxRes)
+            {
+                return false;
+            }
 
             // string is just right
-            if (ExtraSpace < MaxRes) return true;
+            if (ExtraSpace < MaxRes)
+            {
+                return true;
+            }
 
             // String does not have any blank characters
             if (SpaceCount == 0)
@@ -3240,7 +3381,10 @@ namespace PdfFileWriter
             WordSpacing = ExtraSpace / SpaceCount;
 
             // extra space is equal or less than one blank
-            if (WordSpacing <= SpaceWidth / SpaceCount) return true;
+            if (WordSpacing <= SpaceWidth / SpaceCount)
+            {
+                return true;
+            }
 
             // extra space is larger that one blank
             // increase character and word spacing
@@ -3269,7 +3413,10 @@ namespace PdfFileWriter
         )
         {
             // text is null or empty
-            if (string.IsNullOrEmpty(Text)) return;
+            if (string.IsNullOrEmpty(Text))
+            {
+                return;
+            }
 
             // add font code to current list of font codes
             AddToUsedResources(Font);
@@ -3510,7 +3657,10 @@ namespace PdfFileWriter
                     var Width = BarWidth * Barcode.BarWidth(Index);
 
                     // draw black bars
-                    if (Bar) DrawRectangle(BarPosX, PosY, Width, BarHeight, PaintOp.Fill);
+                    if (Bar)
+                    {
+                        DrawRectangle(BarPosX, PosY, Width, BarHeight, PaintOp.Fill);
+                    }
 
                     // update bar position and color
                     BarPosX += Width;
@@ -3519,8 +3669,10 @@ namespace PdfFileWriter
 
                 // display text if font is specified
                 if (TextFont != null)
+                {
                     DrawBarcodeText(TextFont, FontSize, PosX + 0.5 * TotalWidth, PosY, TextJustify.Center,
                         Barcode.Text);
+                }
             }
 
             // EAN-13 or UPC-A
@@ -3536,7 +3688,10 @@ namespace PdfFileWriter
                     var DeltaY = Index < 7 || Index >= 27 && Index < 32 || Index >= 52 ? 0.0 : 5 * BarWidth;
 
                     // draw black bars
-                    if (Bar) DrawRectangle(BarPosX, PosY + DeltaY, Width, BarHeight - DeltaY, PaintOp.Fill);
+                    if (Bar)
+                    {
+                        DrawRectangle(BarPosX, PosY + DeltaY, Width, BarHeight - DeltaY, PaintOp.Fill);
+                    }
 
                     // update bar position and color
                     BarPosX += Width;
@@ -3600,14 +3755,21 @@ namespace PdfFileWriter
         {
             // test for non printable characters
             int Index;
-            for (Index = 0; Index < Text.Length && Text[Index] >= ' ' && Text[Index] <= '~'; Index++) ;
+            for (Index = 0; Index < Text.Length && Text[Index] >= ' ' && Text[Index] <= '~'; Index++)
+            {
+                ;
+            }
 
             if (Index < Text.Length)
             {
                 var Str = new StringBuilder(Text);
                 for (; Index < Text.Length; Index++)
+                {
                     if (Str[Index] < ' ' || Str[Index] > '~')
+                    {
                         Str[Index] = ' ';
+                    }
+                }
 
                 Text = Str.ToString();
             }
@@ -3917,10 +4079,16 @@ namespace PdfFileWriter
             PdfObject ResObject
         )
         {
-            if (ResObjects == null) ResObjects = new List<PdfObject>();
+            if (ResObjects == null)
+            {
+                ResObjects = new List<PdfObject>();
+            }
 
             var Index = ResObjects.BinarySearch(ResObject);
-            if (Index < 0) ResObjects.Insert(~Index, ResObject);
+            if (Index < 0)
+            {
+                ResObjects.Insert(~Index, ResObject);
+            }
         }
 
         /// <summary>
@@ -3939,7 +4107,10 @@ namespace PdfFileWriter
                 WriteObjectToPdfFile();
 
                 // activate garbage collector
-                if (GCCollect) GC.Collect();
+                if (GCCollect)
+                {
+                    GC.Collect();
+                }
             }
 
             // exit
@@ -3952,7 +4123,10 @@ namespace PdfFileWriter
         internal override void WriteObjectToPdfFile()
         {
             // build resource dictionary for non page contents
-            if (!PageContents) Dictionary.Add("/Resources", BuildResourcesDictionary(ResObjects, false));
+            if (!PageContents)
+            {
+                Dictionary.Add("/Resources", BuildResourcesDictionary(ResObjects, false));
+            }
 
             // call PdfObject routine
             base.WriteObjectToPdfFile();

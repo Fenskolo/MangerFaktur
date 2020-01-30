@@ -82,8 +82,12 @@ namespace PdfFileWriter
         {
             // look through the dictionary
             for (var Index = 0; Index < KeyValue.Count; Index++)
+            {
                 if (KeyValue[Index].Key == Key)
+                {
                     return Index;
+                }
+            }
 
             // not found
             return -1;
@@ -142,7 +146,10 @@ namespace PdfFileWriter
             double Real
         )
         {
-            if (Math.Abs(Real) < 0.0001) Real = 0;
+            if (Math.Abs(Real) < 0.0001)
+            {
+                Real = 0;
+            }
 
             Add(Key, string.Format(NFI.PeriodDecSep, "{0}", (float) Real), ValueType.Other);
         }
@@ -158,7 +165,10 @@ namespace PdfFileWriter
             float Real
         )
         {
-            if (Math.Abs(Real) < 0.0001) Real = 0;
+            if (Math.Abs(Real) < 0.0001)
+            {
+                Real = 0;
+            }
 
             Add(Key, string.Format(NFI.PeriodDecSep, "{0}", Real), ValueType.Other);
         }
@@ -325,7 +335,10 @@ namespace PdfFileWriter
         )
         {
             var Index = Find(Key);
-            if (Index >= 0) KeyValue.RemoveAt(Index);
+            if (Index >= 0)
+            {
+                KeyValue.RemoveAt(Index);
+            }
         }
 
         ////////////////////////////////////////////////////////////////////
@@ -379,7 +392,9 @@ namespace PdfFileWriter
                         // add one space between key and value unless value starts with a clear separator
                         var FirstChar = ((string) KeyValueItem.Value)[0];
                         if (FirstChar != '/' && FirstChar != '[' && FirstChar != '<' && FirstChar != '(')
+                        {
                             Str.Append(' ');
+                        }
 
                         // add value
                         Str.Append(KeyValueItem.Value);
@@ -409,7 +424,10 @@ namespace PdfFileWriter
             ValueType Type // value type
         )
         {
-            if (Key[0] != '/') throw new ApplicationException("Dictionary key must start with /");
+            if (Key[0] != '/')
+            {
+                throw new ApplicationException("Dictionary key must start with /");
+            }
 
             this.Key = Key;
             this.Value = Value;

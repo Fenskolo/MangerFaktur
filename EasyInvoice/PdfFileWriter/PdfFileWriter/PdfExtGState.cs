@@ -75,7 +75,10 @@ namespace PdfFileWriter
         )
         {
             var Cmp = string.Compare(Key, Other.Key);
-            if (Cmp != 0) return Cmp;
+            if (Cmp != 0)
+            {
+                return Cmp;
+            }
 
             return string.Compare(Value, Other.Value);
         }
@@ -87,13 +90,19 @@ namespace PdfFileWriter
             string Value
         )
         {
-            if (Document.ExtGStateArray == null) Document.ExtGStateArray = new List<PdfExtGState>();
+            if (Document.ExtGStateArray == null)
+            {
+                Document.ExtGStateArray = new List<PdfExtGState>();
+            }
 
             // search list for a duplicate
             var Index = Document.ExtGStateArray.BinarySearch(new PdfExtGState(Key, Value));
 
             // this value is a duplicate
-            if (Index >= 0) return Document.ExtGStateArray[Index];
+            if (Index >= 0)
+            {
+                return Document.ExtGStateArray[Index];
+            }
 
             // new blend object
             var ExtGState = new PdfExtGState(Document, Key, Value);

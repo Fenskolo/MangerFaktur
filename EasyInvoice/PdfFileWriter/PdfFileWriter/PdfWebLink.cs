@@ -109,13 +109,19 @@ namespace PdfFileWriter
         )
         {
             // first time
-            if (Document.WebLinkArray == null) Document.WebLinkArray = new List<PdfWebLink>();
+            if (Document.WebLinkArray == null)
+            {
+                Document.WebLinkArray = new List<PdfWebLink>();
+            }
 
             // search list for a duplicate
             var Index = Document.WebLinkArray.BinarySearch(new PdfWebLink(WebLinkStr));
 
             // this string is a duplicate
-            if (Index >= 0) return Document.WebLinkArray[Index];
+            if (Index >= 0)
+            {
+                return Document.WebLinkArray[Index];
+            }
 
             // new link
             var WebLink = new PdfWebLink(Document, WebLinkStr);
