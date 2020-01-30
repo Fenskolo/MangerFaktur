@@ -4,7 +4,7 @@ namespace ManagerFaktur
 {
     public class SymbolCollection : CollectionBase
     {
-        public Symbol this[int index] => (Symbol)List[index];
+        public Symbol this[int index] => (Symbol) List[index];
 
         public void Add(Symbol emp)
         {

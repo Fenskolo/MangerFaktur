@@ -12,8 +12,8 @@ namespace ManagerFaktur
 
         protected override string GetDisplayText(object value)
         {
-            Symbol item = new Symbol();
-            item = (Symbol)value;
+            var item = new Symbol();
+            item = (Symbol) value;
 
             return base.GetDisplayText(string.Format("{0}, {1}", item.FirstString, item.LastString));
         }

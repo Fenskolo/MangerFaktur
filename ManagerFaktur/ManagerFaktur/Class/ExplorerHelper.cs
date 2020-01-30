@@ -1,26 +1,28 @@
-﻿using Infragistics.Win.UltraWinListView;
-using iTextSharp.text.pdf;
-using iTextSharp.text.pdf.parser;
-using System;
+﻿using System;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using Infragistics.Win.UltraWinListView;
+using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.parser;
+using Appearance = Infragistics.Win.Appearance;
+using Resources = ManagerFaktur.Properties.Resources;
 
 namespace ManagerFaktur
 {
     internal class ExplorerHelper
     {
+        private readonly Appearance appPdf;
+        private readonly Appearance appWord;
         private readonly UltraListView ulv;
-        private readonly Infragistics.Win.Appearance appPdf;
-        private readonly Infragistics.Win.Appearance appWord;
 
         public ExplorerHelper(UltraListView _ulv)
         {
             ulv = _ulv;
             appPdf = ulv.Appearances.Add("pdf");
-            appPdf.Image = Properties.Resources.pdf;
+            appPdf.Image = Resources.pdf;
             appWord = ulv.Appearances.Add("Word");
-            appWord.Image = Properties.Resources.word;
+            appWord.Image = Resources.word;
         }
 
         public void LoadExplorer(string Path)
@@ -32,19 +34,19 @@ namespace ManagerFaktur
                     return;
                 }
 
-                DirectoryInfo cDriveInfo = new DirectoryInfo(Path);
+                var cDriveInfo = new DirectoryInfo(Path);
 
-                FileInfo[] files = cDriveInfo.GetFiles("*.*", Settings.Instance.SearchOptions);
-                for (int i = 0; i < files.Length; i++)
+                var files = cDriveInfo.GetFiles("*.*", Settings.Instance.SearchOptions);
+                for (var i = 0; i < files.Length; i++)
                 {
-                    FileInfo fileInfo = files[i];
+                    var fileInfo = files[i];
 
                     if (!Settings.Instance.ListExtenstion.Contains(fileInfo.Extension.ToUpper()))
                     {
                         continue;
                     }
 
-                    UltraListViewItem item = ulv.Items.Add(fileInfo.FullName, fileInfo.Name);
+                    var item = ulv.Items.Add(fileInfo.FullName, fileInfo.Name);
                     item.SubItems["FileSize"].Value = fileInfo.Length / 1024;
                     item.SubItems["FileType"].Value = "File";
                     item.SubItems["DateModified"].Value = fileInfo.LastWriteTime;
@@ -53,9 +55,9 @@ namespace ManagerFaktur
                     if (fileInfo.Extension.ToUpper() == ".PDF")
                     {
                         item.Appearance = appPdf;
-                        string tekst = ExtractTextFromPdf(fileInfo.FullName).Trim();
+                        var tekst = ExtractTextFromPdf(fileInfo.FullName).Trim();
 
-                        FindOkresAndSymbol(tekst, out string symbol, out DateTime? okresD);
+                        FindOkresAndSymbol(tekst, out var symbol, out var okresD);
 
                         okresD = okresD ?? new DateTime();
 
@@ -84,42 +86,37 @@ namespace ManagerFaktur
 
             foreach (Symbol x in Settings.Instance.SymboleOkres)
             {
-                if (x.Td == TypDanych.containsSymbol && tekst.Contains(x.FirstString))
+                switch (x.Td)
                 {
-                    symbol = x.LastString;
-                }
-                else if (x.Td == TypDanych.symbolOdDo && !string.IsNullOrEmpty(GetBetween(tekst, x.FirstString, x.LastString)))
-                {
-                    symbol = GetBetween(tekst, x.FirstString, x.LastString);
-                }
-
-                if (x.Td == TypDanych.okresOdDo && !string.IsNullOrEmpty(GetBetween(tekst, x.FirstString, x.LastString)))
-                {
-                    okres = GetBetween(tekst, x.FirstString, x.LastString);
+                    case TypDanych.containsSymbol when tekst.Contains(x.FirstString):
+                        symbol = x.LastString;
+                        break;
+                    case TypDanych.symbolOdDo when !string.IsNullOrEmpty(GetBetween(tekst, x.FirstString, x.LastString)):
+                        symbol = GetBetween(tekst, x.FirstString, x.LastString);
+                        break;
+                    case TypDanych.okresOdDo when !string.IsNullOrEmpty(GetBetween(tekst, x.FirstString, x.LastString)):
+                        okres = GetBetween(tekst, x.FirstString, x.LastString);
+                        break;
                 }
             }
 
-            if (!string.IsNullOrEmpty(okres))
+            if (string.IsNullOrEmpty(okres))
             {
-                if (okres.Contains("M"))
-                {
-                    okresD = BuildDate(okres.Split('M')[0], okres.Split('M')[1], null);
-                }
-                else if ((okres.Contains("-") && okres[2] == '-' && okres[5] == '-') || (okres.Contains(".") && okres[2] == '.' && okres[5] == '.') && okres.Length == 10)
-                {
-                    okresD = BuildDate(okres.Substring(6, 4), okres.Substring(3, 2), okres.Substring(0, 2));
-                }
-                else if (okres.Length == 10)
-                {
-                    if (Settings.Instance.ListSDelOneMonth.Contains(symbol))
-                    {
-                        okresD = Convert.ToDateTime(okres).AddMonths(-1);
-                    }
-                    else
-                    {
-                        okresD = Convert.ToDateTime(okres);
-                    }
-                }
+                return;
+            }
+
+            if (okres.Contains("M"))
+            {
+                okresD = BuildDate(okres.Split('M')[0], okres.Split('M')[1], null);
+            }
+            else if (okres.Contains("-") && okres[2] == '-' && okres[5] == '-' || okres.Contains(".") &&
+                     okres[2] == '.' && okres[5] == '.' && okres.Length == 10)
+            {
+                okresD = BuildDate(okres.Substring(6, 4), okres.Substring(3, 2), okres.Substring(0, 2));
+            }
+            else if (okres.Length == 10)
+            {
+                okresD = Settings.Instance.ListSDelOneMonth.Contains(symbol) ? Convert.ToDateTime(okres).AddMonths(-1) : Convert.ToDateTime(okres);
             }
         }
 
@@ -130,9 +127,9 @@ namespace ManagerFaktur
                 return new DateTime();
             }
 
-            int year = yearS.Length == 2 ? Convert.ToInt32(yearS) + 2000 : Convert.ToInt32(yearS);
-            int month = Convert.ToInt32(monthS);
-            int day = !string.IsNullOrEmpty(dayS) ? Convert.ToInt32(dayS) : 1;
+            var year = yearS.Length == 2 ? Convert.ToInt32(yearS) + 2000 : Convert.ToInt32(yearS);
+            var month = Convert.ToInt32(monthS);
+            var day = !string.IsNullOrEmpty(dayS) ? Convert.ToInt32(dayS) : 1;
 
             return new DateTime(year, month, day);
         }
@@ -142,32 +139,30 @@ namespace ManagerFaktur
             int Start, End;
             if (strSource.Contains(strStart) && strSource.Contains(strEnd))
             {
-                Start = strSource.IndexOf(strStart, 0) + strStart.Length;
+                Start = strSource.IndexOf(strStart, 0, StringComparison.Ordinal) + strStart.Length;
                 End = strSource.IndexOf(strEnd, Start);
                 return strSource.Substring(Start, End - Start);
             }
-            else
-            {
-                return "";
-            }
+
+            return "";
         }
 
         public string ExtractTextFromPdf(string path)
         {
-            using (PdfReader reader = new PdfReader(path))
+            using (var reader = new PdfReader(path))
             {
-                StringBuilder text = new StringBuilder();
-                string t1 = string.Empty;
+                var text = new StringBuilder();
+                var t1 = string.Empty;
 
-                for (int i = 1; i <= reader.NumberOfPages; i++)
+                for (var i = 1; i <= reader.NumberOfPages; i++)
                 {
-                    TextWithFontExtractionStategy s = new TextWithFontExtractionStategy();
+                    var s = new TextWithFontExtractionStategy();
                     text.Append(PdfTextExtractor.GetTextFromPage(reader, i, s));
                 }
+
                 text.Replace(" ", "").Replace("\r\n", "");
                 return text.ToString();
             }
         }
     }
 }
-

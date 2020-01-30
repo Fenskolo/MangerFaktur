@@ -107,7 +107,10 @@ namespace PdfFileWriter
                 var ScaleStart = new PointD(ArcStart.X / ScaleX, ArcStart.Y);
                 var ScaleEnd = new PointD(ArcEnd.X / ScaleX, ArcEnd.Y);
                 SegArray = CircularArc(ScaleStart, ScaleEnd, Radius.Height, Type);
-                foreach (var Seg in SegArray) Seg.X *= ScaleX;
+                foreach (var Seg in SegArray)
+                {
+                    Seg.X *= ScaleX;
+                }
             }
             // eliptical arc rotated
             else
@@ -157,7 +160,10 @@ namespace PdfFileWriter
             var ChordLength = Math.Sqrt(ChordDeltaX * ChordDeltaX + ChordDeltaY * ChordDeltaY);
 
             // test radius
-            if (2 * Radius < ChordLength) throw new ApplicationException("Radius too small.");
+            if (2 * Radius < ChordLength)
+            {
+                throw new ApplicationException("Radius too small.");
+            }
 
             // line perpendicular to chord at mid point
             // distance from chord mid point to center of circle
@@ -176,10 +182,15 @@ namespace PdfFileWriter
 
             // arc angle
             var ArcAngle = 2 * Math.Asin(ChordLength / (2 * Radius));
-            if (ArcAngle < 0.001) throw new ApplicationException("Angle too small");
+            if (ArcAngle < 0.001)
+            {
+                throw new ApplicationException("Angle too small");
+            }
 
             if (Type == ArcType.LargeCounterClockWise || Type == ArcType.LargeClockWise)
+            {
                 ArcAngle = 2 * Math.PI - ArcAngle;
+            }
 
             // segment array
             PointD[] SegArray;
@@ -188,7 +199,10 @@ namespace PdfFileWriter
             if (ArcAngle < Math.PI / 2 + 0.001)
             {
                 var K1 = 4 * (1 - Math.Cos(ArcAngle / 2)) / (3 * Math.Sin(ArcAngle / 2));
-                if (Type == ArcType.LargeClockWise || Type == ArcType.SmallClockWise) K1 = -K1;
+                if (Type == ArcType.LargeClockWise || Type == ArcType.SmallClockWise)
+                {
+                    K1 = -K1;
+                }
 
                 SegArray = new PointD[4];
                 SegArray[0] = ArcStart;

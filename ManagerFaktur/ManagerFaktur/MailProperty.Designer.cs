@@ -34,21 +34,25 @@
             // 
             // propMail
             // 
-            this.propMail.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.propMail.Anchor =
+                ((System.Windows.Forms.AnchorStyles) ((((System.Windows.Forms.AnchorStyles.Top |
+                                                         System.Windows.Forms.AnchorStyles.Bottom) |
+                                                        System.Windows.Forms.AnchorStyles.Left) |
+                                                       System.Windows.Forms.AnchorStyles.Right)));
             this.propMail.Location = new System.Drawing.Point(1, 2);
             this.propMail.Name = "propMail";
-            this.propMail.Size = new System.Drawing.Size(409, 220);
+            this.propMail.Size = new System.Drawing.Size(477, 254);
             this.propMail.TabIndex = 0;
             // 
             // btnUstaw
             // 
-            this.btnUstaw.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnUstaw.Anchor =
+                ((System.Windows.Forms.AnchorStyles) ((System.Windows.Forms.AnchorStyles.Bottom |
+                                                       System.Windows.Forms.AnchorStyles.Right)));
             this.btnUstaw.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnUstaw.Location = new System.Drawing.Point(335, 228);
+            this.btnUstaw.Location = new System.Drawing.Point(391, 263);
             this.btnUstaw.Name = "btnUstaw";
-            this.btnUstaw.Size = new System.Drawing.Size(75, 23);
+            this.btnUstaw.Size = new System.Drawing.Size(87, 27);
             this.btnUstaw.TabIndex = 1;
             this.btnUstaw.Text = "Ustaw";
             this.btnUstaw.UseVisualStyleBackColor = true;
@@ -56,15 +60,14 @@
             // 
             // MailProperty
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(412, 258);
+            this.ClientSize = new System.Drawing.Size(481, 298);
             this.Controls.Add(this.btnUstaw);
             this.Controls.Add(this.propMail);
             this.Name = "MailProperty";
             this.Text = "MailProp";
             this.ResumeLayout(false);
-
         }
 
         #endregion

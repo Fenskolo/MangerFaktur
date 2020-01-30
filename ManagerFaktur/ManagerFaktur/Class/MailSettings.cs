@@ -1,18 +1,21 @@
-﻿using Infragistics.Win.Design;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Xml.Serialization;
+using Infragistics.Win.Design;
 
 namespace ManagerFaktur
 {
     public class MailSettings
     {
         private static MailSettings ins;
-        private MailSettings() { }
+        private List<string> _listAtach;
 
         private List<string> _listMail;
-        private List<string> _listAtach;
+
+        private MailSettings()
+        {
+        }
 
         public static MailSettings Ins
         {
@@ -22,6 +25,7 @@ namespace ManagerFaktur
                 {
                     ins = new MailSettings();
                 }
+
                 return ins;
             }
             set => ins = value;
@@ -32,24 +36,23 @@ namespace ManagerFaktur
 
         [XmlIgnore]
         [Browsable(false)]
-        public MailSettings MyInstance { get => ins; set => ins = value; }
+        public MailSettings MyInstance
+        {
+            get => ins;
+            set => ins = value;
+        }
 
         [Editor(typeof(MultiLineTextEditor), typeof(UITypeEditor))]
         public string Message { get; set; } = string.Empty;
 
         [XmlIgnore]
-        [Editor(@"System.Windows.Forms.Design.StringCollectionEditor," + "System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
-         typeof(UITypeEditor))]
+        [Editor(
+            @"System.Windows.Forms.Design.StringCollectionEditor," +
+            "System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+            typeof(UITypeEditor))]
         public List<string> ListMail
         {
-            get
-            {
-                if (_listMail == null)
-                {
-                    _listMail = Settings.Instance.ListMail;
-                }
-                return _listMail;
-            }
+            get { return _listMail ?? (_listMail = Settings.Instance.ListMail); }
             set
             {
                 _listMail = value;

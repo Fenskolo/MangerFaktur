@@ -1,7 +1,4 @@
-﻿using Infragistics.Win;
-using Infragistics.Win.UltraWinEditors;
-using Infragistics.Win.UltraWinListView;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -10,14 +7,17 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Infragistics.Win;
+using Infragistics.Win.UltraWinEditors;
+using Infragistics.Win.UltraWinListView;
 
 namespace ManagerFaktur
 {
     public partial class MF : Form
     {
-        private readonly WBHelper wb;
         private readonly ExplorerHelper eh;
         private readonly MailSender.MS ms;
+        private readonly WBHelper wb;
 
         public MF()
         {
@@ -31,24 +31,27 @@ namespace ManagerFaktur
         {
             tCB.Items.AddRange(Enum.GetNames(typeof(UltraListViewStyle)));
             tCB.SelectedIndex = 0;
-            var x = Directory.GetDirectories(Path.Combine( Settings.Instance.WorkPath, "Archiwum"), "*", SearchOption.AllDirectories).OrderByDescending(o=> o)
+            var x = Directory
+                .GetDirectories(Path.Combine(Settings.Instance.WorkPath, "Archiwum"), "*", SearchOption.AllDirectories)
+                .OrderByDescending(o => o)
                 //.Where(f => f.Contains(DateTime.Now.Year.ToString()))
                 .ToDictionary(h => h,
-                z => z.Split('\\').Last());
+                    z => z.Split('\\').Last());
             uComboPath.DataSource = x;
             if (x.Count > 0)
             {
                 uComboPath.DisplayLayout.Bands[0].Columns[0].Hidden = true;
             }
+
             PropertyListView();
             eh.LoadExplorer(Settings.Instance.WorkPath);
         }
 
         private void PropertyListView()
         {
-            var colFileSize = this.uListView.SubItemColumns.Add("FileSize");
-            var colFileType = this.uListView.SubItemColumns.Add("FileType");
-            var colDateModified = this.uListView.SubItemColumns.Add("DateModified");
+            var colFileSize = uListView.SubItemColumns.Add("FileSize");
+            var colFileType = uListView.SubItemColumns.Add("FileType");
+            var colDateModified = uListView.SubItemColumns.Add("DateModified");
             colFileSize.DataType = typeof(int);
             colFileSize.Format = "#,###,##0 KB";
             colFileSize.SubItemAppearance.TextHAlign = HAlign.Right;
@@ -56,14 +59,14 @@ namespace ManagerFaktur
             colDateModified.DataType = typeof(DateTime);
             colFileType.Text = "Type";
             colDateModified.Text = "Date Modified";
-            string shortDateFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
-            string shortTimeFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern;
-            colDateModified.Format = string.Format("{0} {1}", shortDateFormat, shortTimeFormat);
-            this.uListView.MainColumn.DataType = typeof(string);
-            this.uListView.MainColumn.Text = "Name";
+            var shortDateFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+            var shortTimeFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern;
+            colDateModified.Format = $"{shortDateFormat} {shortTimeFormat}";
+            uListView.MainColumn.DataType = typeof(string);
+            uListView.MainColumn.Text = "Name";
 
-            var colOkres = this.uListView.SubItemColumns.Add("Okres");
-            var colSymbol = this.uListView.SubItemColumns.Add("Symbol");
+            var colOkres = uListView.SubItemColumns.Add("Okres");
+            var colSymbol = uListView.SubItemColumns.Add("Symbol");
             colOkres.DataType = typeof(DateTime);
             colSymbol.DataType = typeof(string);
             colSymbol.Text = "Symbol";
@@ -72,13 +75,14 @@ namespace ManagerFaktur
 
         private void Ustawienia_Click(object sender, EventArgs e)
         {
-            Property pG = new Property();
+            var pG = new Property();
             pG.ShowDialog();
         }
 
         private void MF_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (MessageBox.Show("Czy napewno chcesz zakończyć pracę z programem?", typeof(Program).Assembly.GetName().Name, MessageBoxButtons.YesNo) == DialogResult.No)
+            if (MessageBox.Show("Czy napewno chcesz zakończyć pracę z programem?",
+                    typeof(Program).Assembly.GetName().Name, MessageBoxButtons.YesNo) == DialogResult.No)
             {
                 e.Cancel = true;
             }
@@ -112,12 +116,15 @@ namespace ManagerFaktur
 
         private void WBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            if (wb.TempFileName != string.Empty && !e.Url.ToString().ToUpper().Contains(".PDF") && e.Url.ToString() != "about:blank")
+            if (wb.TempFileName == string.Empty || e.Url.ToString().ToUpper().Contains(".PDF") ||
+                e.Url.ToString() == "about:blank")
             {
-                Thread.Sleep(100);
-                File.Delete(wb.TempFileName);
-                wb.TempFileName = string.Empty;
+                return;
             }
+
+            Thread.Sleep(100);
+            File.Delete(wb.TempFileName);
+            wb.TempFileName = string.Empty;
         }
 
         private void RefreshExplorer()
@@ -128,19 +135,19 @@ namespace ManagerFaktur
 
         private void TCB_TextChanged(object sender, EventArgs e)
         {
-            this.uListView.View = (UltraListViewStyle)Enum.Parse(typeof(UltraListViewStyle), tCB.SelectedItem.ToString());
+            uListView.View = (UltraListViewStyle) Enum.Parse(typeof(UltraListViewStyle), tCB.SelectedItem.ToString());
         }
 
         private void UTxt_EditorButtonClick(object sender, EditorButtonEventArgs e)
         {
-            if (e.Button.Key == "rightB")
+            if (e.Button != null && e.Button.Key == "rightB")
             {
-                string MailTo = MailSettings.Ins.MailTo;
-                string message = MailSettings.Ins.Message;
-                string subject = MailSettings.Ins.Subject;
-                List<string> atach = new List<string>();
+                var MailTo = MailSettings.Ins.MailTo;
+                var message = MailSettings.Ins.Message;
+                var subject = MailSettings.Ins.Subject;
+                var atach = new List<string>();
 
-                foreach (UltraListViewItem item in uListView.Items)
+                foreach (var item in uListView.Items)
                 {
                     if (item.CheckState == CheckState.Checked)
                     {
@@ -154,9 +161,9 @@ namespace ManagerFaktur
 
                 uTxt.Value = null;
             }
-            else if ((e.Button.Key == "leftB"))
+            else if (e.Button.Key == "leftB")
             {
-                MailProperty mp = new MailProperty();
+                var mp = new MailProperty();
                 mp.ShowDialog();
             }
         }
@@ -166,7 +173,8 @@ namespace ManagerFaktur
             Task.Run(() =>
             {
                 uTxt.ButtonsLeft[0].Enabled = false;
-                if (ms.SendMail(Settings.Instance.Login, Settings.Instance.Password, Settings.Instance.From, MailTo, atach, message, subject))
+                if (ms.SendMail(Settings.Instance.Login, Settings.Instance.Password, Settings.Instance.From, MailTo,
+                    atach, message, subject))
                 {
                     Logs.Log.SerializeLog();
                     Logs.Log.MyInstance = null;
@@ -177,73 +185,76 @@ namespace ManagerFaktur
                 {
                     MessageBox.Show("coś poszło nie tak");
                 }
+
                 uTxt.ButtonsLeft[0].Enabled = true;
             });
         }
 
         private void UBtnMove_Click(object sender, EventArgs e)
         {
-            foreach (UltraListViewItem x in uListView.Items)
+            foreach (var x in uListView.Items)
             {
-                if (x.CheckState == CheckState.Checked && x.SubItems["Okres"]?.Value != null)
+                if (x.CheckState != CheckState.Checked || x.SubItems["Okres"]?.Value == null)
                 {
-                    DateTime dt = (DateTime)x.SubItems["Okres"].Value;
-                    dt = (DateTime)x.SubItems["Okres"].Value == new DateTime() ? DateTime.Now : dt;
-                    string month = dt.Month.ToString();
-                    month = month.Length == 1 ? "0" + month : month;
-                    string year = dt.Year.ToString();
-                    string MonthYear = month + "-" + year;
-                    string destDirectory = Path.Combine(Settings.Instance.DestPath, MonthYear);
+                    continue;
+                }
 
-                    if (!Directory.Exists(destDirectory))
-                    {
-                        Directory.CreateDirectory(destDirectory);
-                    }
+                var dt = (DateTime) x.SubItems["Okres"].Value;
+                dt = (DateTime) x.SubItems["Okres"].Value == new DateTime() ? DateTime.Now : dt;
+                var month = dt.Month.ToString();
+                month = month.Length == 1 ? "0" + month : month;
+                var year = dt.Year.ToString();
+                var MonthYear = month + "-" + year;
+                var destDirectory = Path.Combine(Settings.Instance.DestPath, MonthYear);
 
-                    string symbol = (string)x.SubItems["Symbol"].Value;
+                if (!Directory.Exists(destDirectory))
+                {
+                    Directory.CreateDirectory(destDirectory);
+                }
 
-                    symbol = string.IsNullOrEmpty(symbol) ? "Faktura" : symbol;
+                var symbol = (string) x.SubItems["Symbol"].Value;
 
-                    int nrFaktury = 1;
+                symbol = string.IsNullOrEmpty(symbol) ? "Faktura" : symbol;
+
+                var nrFaktury = 1;
 
 
-                    string fileName = $"{Settings.Instance.FileNameDest} {symbol} {MonthYear}.pdf";
-                    if (symbol == "Faktura")
+                var fileName = $"{Settings.Instance.FileNameDest} {symbol} {MonthYear}.pdf";
+                if (symbol == "Faktura")
+                {
+                    fileName = $"{Settings.Instance.FileNameDest} {symbol}{nrFaktury} {MonthYear}.pdf";
+                    nrFaktury++;
+                }
+
+                var notExists = false;
+                while (!notExists)
+                {
+                    if (File.Exists(Path.Combine(destDirectory, fileName)))
                     {
                         fileName = $"{Settings.Instance.FileNameDest} {symbol}{nrFaktury} {MonthYear}.pdf";
                         nrFaktury++;
                     }
-
-                    bool notExists = false;
-                    while (!notExists)
+                    else
                     {
-                        if (File.Exists(Path.Combine(destDirectory, fileName)))
-                        {
-                            fileName = $"{Settings.Instance.FileNameDest} {symbol}{nrFaktury} {MonthYear}.pdf";
-                            nrFaktury++;
-                        }
-                        else
-                        {
-                            notExists = true;
-                        }
+                        notExists = true;
                     }
-
-                    WBrowser.Navigate("about:blank");
-                    while (WBrowser.ReadyState != WebBrowserReadyState.Complete)
-                    {
-                        Application.DoEvents();
-                        Thread.Sleep(100);
-                    }
-
-                    PairFiles pf = new PairFiles()
-                    {
-                        Old = x.Key,
-                        News = Path.Combine(destDirectory, fileName)
-                    };
-
-                    Logs.Log.FileOperation.Add(pf);
-                    File.Move(x.Key.ToString(), Path.Combine(destDirectory, fileName));
                 }
+
+                WBrowser.Navigate("about:blank");
+                while (WBrowser.ReadyState != WebBrowserReadyState.Complete)
+                {
+                    Application.DoEvents();
+                    Thread.Sleep(100);
+                }
+
+                var pf = new PairFiles
+                {
+                    Old = x.Key,
+                    News = Path.Combine(destDirectory, fileName)
+                };
+
+                Logs.Log.FileOperation.Add(pf);
+                File.Move(x.Key, Path.Combine(destDirectory, fileName));
             }
 
             Logs.Log.SerializeLog();
@@ -254,19 +265,18 @@ namespace ManagerFaktur
 
         private void UBtnShowTxt_Click(object sender, EventArgs e)
         {
-            string tekst = eh.ExtractTextFromPdf(WBrowser.Url.ToString());
-            TxtFromPdf txt = new TxtFromPdf(tekst);
+            var tekst = eh.ExtractTextFromPdf(WBrowser.Url.ToString());
+            var txt = new TxtFromPdf(tekst);
             txt.ShowDialog();
-
         }
 
         private void UDTEditor_EditorButtonClick(object sender, EditorButtonEventArgs e)
         {
-            foreach (UltraListViewItem x in uListView.Items)
+            foreach (var x in uListView.Items)
             {
                 if (x.CheckState == CheckState.Checked)
                 {
-                    x.SubItems["Okres"].Value = (DateTime)uDTEditor.Value;
+                    x.SubItems["Okres"].Value = (DateTime) uDTEditor.Value;
                 }
             }
         }
@@ -278,7 +288,7 @@ namespace ManagerFaktur
 
         private void UComboPath_ValueChanged(object sender, EventArgs e)
         {
-            Infragistics.Win.UltraWinGrid.UltraGridRow x = uComboPath.SelectedRow;
+            var x = uComboPath.SelectedRow;
 
             uListView.Items.Clear();
             eh.LoadExplorer(x.GetCellValue("Key").ToString());

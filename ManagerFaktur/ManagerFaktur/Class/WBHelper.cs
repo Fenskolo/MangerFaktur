@@ -1,7 +1,9 @@
-﻿using Microsoft.Office.Interop.Word;
-using System;
+﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
+using Microsoft.Office.Interop.Word;
+using Application = Microsoft.Office.Interop.Word.Application;
 
 namespace ManagerFaktur
 {
@@ -9,37 +11,35 @@ namespace ManagerFaktur
     {
         private readonly WebBrowser wb;
 
-        public string TempFileName { get; set; }
-
-        private delegate void ConvertDocumentDelegate(string fileName);
-
         public WBHelper(WebBrowser _wb)
         {
             wb = _wb;
         }
 
+        public string TempFileName { get; set; }
+
         public void LoadDocument(string fileName)
         {
-            ConvertDocumentDelegate del = new ConvertDocumentDelegate(ConvertDocument);
+            ConvertDocumentDelegate del = ConvertDocument;
             del.BeginInvoke(fileName, DocumentConversionComplete, null);
         }
 
         private void ConvertDocument(string fileName)
         {
-            object m = System.Reflection.Missing.Value;
+            object m = Missing.Value;
             object oldFileName = fileName;
             object readOnly = false;
-            Microsoft.Office.Interop.Word.Application ac = null;
+            Application ac = null;
 
             try
             {
                 // First, create a new Microsoft.Office.Interop.Word.ApplicationClass.
-                ac = new Microsoft.Office.Interop.Word.Application();
+                ac = new Application();
 
                 // Now we open the document.
-                Document doc = ac.Documents.Open(ref oldFileName, ref m, ref readOnly,
+                var doc = ac.Documents.Open(ref oldFileName, ref m, ref readOnly,
                     ref m, ref m, ref m, ref m, ref m, ref m, ref m,
-                     ref m, ref m, ref m, ref m, ref m, ref m);
+                    ref m, ref m, ref m, ref m, ref m, ref m);
 
                 // Create a temp file to save the HTML file to. 
                 TempFileName = GetTempFile("html");
@@ -55,15 +55,11 @@ namespace ManagerFaktur
                 doc.SaveAs(ref newFileName, ref fileType,
                     ref m, ref m, ref m, ref m, ref m, ref m, ref m,
                     ref m, ref m, ref m, ref m, ref m, ref m, ref m);
-
             }
             finally
             {
                 // Make sure we close the application class. 
-                if (ac != null)
-                {
-                    ac.Quit(ref readOnly, ref m, ref m);
-                }
+                ac?.Quit(ref readOnly, ref m, ref m);
             }
         }
 
@@ -74,9 +70,11 @@ namespace ManagerFaktur
 
         private string GetTempFile(string extension)
         {
-            string tempPath = Path.GetTempPath();
-            string extensionPath = Path.ChangeExtension(Path.GetRandomFileName(), extension);
+            var tempPath = Path.GetTempPath();
+            var extensionPath = Path.ChangeExtension(Path.GetRandomFileName(), extension);
             return Path.Combine(tempPath, extensionPath);
         }
+
+        private delegate void ConvertDocumentDelegate(string fileName);
     }
 }

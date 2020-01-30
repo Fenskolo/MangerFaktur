@@ -13,7 +13,7 @@ namespace ManagerFaktur
 
         private void btnUstaw_Click(object sender, EventArgs e)
         {
-            MailSettings.Ins.MyInstance = (MailSettings)propMail.SelectedObject;
+            MailSettings.Ins.MyInstance = (MailSettings) propMail.SelectedObject;
         }
     }
 }

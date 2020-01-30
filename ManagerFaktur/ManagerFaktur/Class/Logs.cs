@@ -6,14 +6,17 @@ using System.Xml.Serialization;
 
 namespace ManagerFaktur
 {
-    [Serializable()]
+    [Serializable]
     public class Logs
     {
         private static Logs _log;
-        private Logs() { }
+        private List<PairFiles> _fileOperation;
         private MailSettings _ms;
         private DateTime _timeSent;
-        private List<PairFiles> _fileOperation;
+
+        private Logs()
+        {
+        }
 
         public MailSettings Ms
         {
@@ -23,6 +26,7 @@ namespace ManagerFaktur
                 {
                     _ms = MailSettings.Ins.MyInstance;
                 }
+
                 return _ms;
             }
             set => _ms = value;
@@ -36,15 +40,24 @@ namespace ManagerFaktur
                 {
                     _log = new Logs();
                 }
+
                 return _log;
             }
         }
 
-        public DateTime TimeSent { get => DateTime.Now; set => _timeSent = value; }
+        public DateTime TimeSent
+        {
+            get => DateTime.Now;
+            set => _timeSent = value;
+        }
 
         [XmlIgnore]
         [Browsable(false)]
-        public Logs MyInstance { get => _log; set => _log = value; }
+        public Logs MyInstance
+        {
+            get => _log;
+            set => _log = value;
+        }
 
 
         [Browsable(false)]
@@ -56,6 +69,7 @@ namespace ManagerFaktur
                 {
                     _fileOperation = new List<PairFiles>();
                 }
+
                 return _fileOperation;
             }
             set => _fileOperation = value;
@@ -67,13 +81,9 @@ namespace ManagerFaktur
 
             try
             {
-                XmlSerializer xsSubmit = new XmlSerializer(typeof(Logs));
+                var xsSubmit = new XmlSerializer(typeof(Logs));
                 writer = new StreamWriter(Settings.Instance.LogPath, true);
                 xsSubmit.Serialize(writer, Log);
-            }
-            catch (Exception)
-            {
-                throw;
             }
             finally
             {
@@ -93,10 +103,8 @@ namespace ManagerFaktur
     [Serializable]
     public class PairFiles
     {
-        [XmlElement(Order = 2)]
-        public string News { get; set; }
+        [XmlElement(Order = 2)] public string News { get; set; }
 
-        [XmlElement(Order = 1)]
-        public string Old { get; set; }
+        [XmlElement(Order = 1)] public string Old { get; set; }
     }
 }

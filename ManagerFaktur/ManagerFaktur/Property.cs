@@ -13,7 +13,7 @@ namespace ManagerFaktur
 
         private void Save_Click(object sender, EventArgs e)
         {
-            Settings.Instance.MyInstance = (Settings)propGrid.SelectedObject;
+            Settings.Instance.MyInstance = (Settings) propGrid.SelectedObject;
         }
     }
 }

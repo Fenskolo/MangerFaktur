@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Windows.Forms;
@@ -8,15 +9,16 @@ namespace MailSender
 {
     public class MS
     {
-        public bool SendMail(string login, string haslo, string from, string to, List<string> atach, string message, string subject)
+        public bool SendMail(string login, string haslo, string from, string to, List<string> atach, string message,
+            string subject)
         {
-            bool Sukces = false;
+            var Sukces = false;
 
             try
             {
-                using (MailMessage mail = new MailMessage())
+                using (var mail = new MailMessage())
                 {
-                    using (SmtpClient smtp = new SmtpClient())
+                    using (var smtp = new SmtpClient())
                     {
                         mail.From = new MailAddress(from);
                         smtp.Port = 587;
@@ -34,9 +36,8 @@ namespace MailSender
 
                         if (atach != null && atach.Count > 0)
                         {
-                            foreach (string at in atach)
+                            foreach (var attachment in atach.Select(at => new Attachment(at)))
                             {
-                                Attachment attachment = new Attachment(at);
                                 mail.Attachments.Add(attachment);
                             }
                         }
@@ -55,5 +56,3 @@ namespace MailSender
         }
     }
 }
-
-

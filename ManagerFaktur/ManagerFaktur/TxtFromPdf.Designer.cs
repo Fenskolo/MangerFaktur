@@ -34,32 +34,36 @@
             // 
             // rTxt
             // 
-            this.rTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rTxt.Anchor =
+                ((System.Windows.Forms.AnchorStyles) ((((System.Windows.Forms.AnchorStyles.Top |
+                                                         System.Windows.Forms.AnchorStyles.Bottom) |
+                                                        System.Windows.Forms.AnchorStyles.Left) |
+                                                       System.Windows.Forms.AnchorStyles.Right)));
             this.rTxt.Location = new System.Drawing.Point(2, 3);
             this.rTxt.Name = "rTxt";
-            this.rTxt.Size = new System.Drawing.Size(485, 412);
+            this.rTxt.Size = new System.Drawing.Size(565, 475);
             this.rTxt.TabIndex = 1;
             this.rTxt.Text = "";
             // 
             // uBtnClose
             // 
-            this.uBtnClose.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.uBtnClose.Anchor =
+                ((System.Windows.Forms.AnchorStyles) (((System.Windows.Forms.AnchorStyles.Bottom |
+                                                        System.Windows.Forms.AnchorStyles.Left) |
+                                                       System.Windows.Forms.AnchorStyles.Right)));
             this.uBtnClose.ButtonStyle = Infragistics.Win.UIElementButtonStyle.Windows8Button;
             this.uBtnClose.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.uBtnClose.Location = new System.Drawing.Point(2, 421);
+            this.uBtnClose.Location = new System.Drawing.Point(2, 486);
             this.uBtnClose.Name = "uBtnClose";
-            this.uBtnClose.Size = new System.Drawing.Size(485, 23);
+            this.uBtnClose.Size = new System.Drawing.Size(566, 27);
             this.uBtnClose.TabIndex = 2;
             this.uBtnClose.Text = "Zamknij";
             // 
             // TxtFromPdf
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(488, 445);
+            this.ClientSize = new System.Drawing.Size(569, 513);
             this.Controls.Add(this.uBtnClose);
             this.Controls.Add(this.rTxt);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -67,7 +71,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TxtFromPdf";
             this.ResumeLayout(false);
-
         }
 
         #endregion
